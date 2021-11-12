@@ -2,9 +2,9 @@ import BoardTask from '../../components/features/boardTask/boardTask';
 
 function HomePage () {
 	return (
-		<div className='a'>
+		<main>
 			<BoardTask />
-		</div>
+		</main>
 	);
 }
 

@@ -1,8 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 
-// Styled
-// import { StyledHtml } from './styledApp';
-
 // components
 // components/shared
 import Header from '../components/shared/Header/header';
@@ -18,15 +15,14 @@ function App () {
 
 			{/* Start Router */}
 			<Routes>
-				<Route path='/alo/*' element={<HomePage />} />
+				<Route path='/test/*' element={<HomePage />} />
 
-				<Route path='/alo123' element={<HomePage />} />
+				<Route path='/test123' element={<HomePage />} />
 
 				<Route path='/' element={<HomePage />} />
 			</Routes>
 			{/* End Router */}
 
-			{/* <GoTopButton /> */}
 			<Footer />
 		</div>
 	);
