@@ -6,13 +6,13 @@ import { TaskStyled } from './task.styled';
 
 // interfaces
 import { ITask } from '../iBoardTask';
-interface ITaskCpt {
+interface IProps {
 	provided: DraggableProvided;
 	snapshot: DraggableStateSnapshot;
 	item: ITask;
 }
 
-const Task: React.FC<ITaskCpt> = ({ provided, snapshot, item }) => {
+const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 	return (
 		<TaskStyled
 			ref={provided.innerRef}

@@ -10,12 +10,12 @@ import { WorkSpaceStyled } from './workSpace.styled';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { ILists } from '../iBoardTask';
-interface IWorkSpaceCpt {
+interface IProps {
 	columns: ILists;
 	onDragEnd: (result: DropResult, columns: ILists) => void;
 }
 
-const WorkSpace: React.FC<IWorkSpaceCpt> = ({ columns, onDragEnd }) => {
+const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd }) => {
 	return (
 		<WorkSpaceStyled>
 			<DragDropContext onDragEnd={result => onDragEnd(result, columns)}>

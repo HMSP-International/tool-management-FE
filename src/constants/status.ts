@@ -1,6 +1,6 @@
 const STATUS = {
 	IDLE: 'idle',
-	LOADING: 'loading',
+	PENDING: 'pending',
 	SUCCESS: 'success',
 	ERROR: 'error',
 };

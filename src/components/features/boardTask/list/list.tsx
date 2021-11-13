@@ -7,13 +7,13 @@ import { ListStyled } from './list.styled';
 
 // interfaces
 import { IDataColumn } from '../iBoardTask';
-interface IListCpt {
+interface IProps {
 	provided: DroppableProvided;
 	snapshot: DroppableStateSnapshot;
 	columnData: IDataColumn;
 }
 
-const List: React.FC<IListCpt> = ({ provided, snapshot, columnData }) => {
+const List: React.FC<IProps> = ({ provided, snapshot, columnData }) => {
 	return (
 		<ListStyled
 			{...provided.droppableProps}
