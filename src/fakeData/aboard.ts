@@ -32,9 +32,4 @@ export const columnsFromBe: ILists = {
 			name: 'Review',
 			items: [],
 		},
-	'6':
-		{
-			name: 'Pending',
-			items: [],
-		},
 };

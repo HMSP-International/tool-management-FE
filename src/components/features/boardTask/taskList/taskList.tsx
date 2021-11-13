@@ -3,7 +3,7 @@ import Task from '../task/task';
 import { DroppableStateSnapshot, DroppableProvided, Draggable } from 'react-beautiful-dnd';
 
 // Styled Components
-import { ListStyled } from './list.styled';
+import { ListStyled } from './taskList.styled';
 
 // interfaces
 import { IDataColumn } from '../iBoardTask';

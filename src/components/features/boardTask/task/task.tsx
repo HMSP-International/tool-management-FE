@@ -19,7 +19,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 			{...provided.draggableProps}
 			{...provided.dragHandleProps}
 			style={{
-				backgroundColor: snapshot.isDragging ? 'lightpink' : 'rgb(199, 152, 82)',
+				backgroundColor: snapshot.isDragging ? 'lightpink' : '',
 				...provided.draggableProps.style,
 			}}
 		>

@@ -9,5 +9,5 @@ export const taskListSlice: Slice = createSlice({
 	reducers,
 });
 const { reducer, actions } = taskListSlice;
-export const { allTaskList } = actions;
+export const { getTaskLists } = actions;
 export default reducer;

@@ -2,16 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@apollo/client';
 // import { io } from 'socket.io-client';
 // Redux
-// import { RootState } from '../../../app/rootReducer';
-import { useDispatch } from 'react-redux';
-import * as actions from '../../../app/features/taskList/slice';
+import { RootState } from '../../../app/rootReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import * as taskListAction from '../../../app/features/taskList/slice';
 // component
 import WorkSpace from './workSpace/workSpace';
-import Loading from '../../shared/Loading/loading';
+import LoadingView from '../../shared/Loading/loading';
+import ErrorView from '../../shared/Error/error';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { ILists } from './iBoardTask';
-import { ITaskLists } from '../../../app/features/taskList/interfaces';
+import { ITaskLists, IInitialState } from '../../../app/features/taskList/interfaces';
 // fake data from be
 import { columnsFromBe } from '../../../fakeData/aboard';
 // graphql
@@ -19,13 +20,15 @@ import { queries } from './schema/queries';
 
 const BoardTask: React.FC = () => {
 	// fetch data
-	const { loading, data } = useQuery(queries.taskLists);
+	const { loading, data, error } = useQuery(queries.taskLists);
 
 	// dispatch
 	const dispatch = useDispatch();
 
 	// selector
-	// const taskLists: IInitialState = useSelector((rootState: RootState) => rootState.taskList);
+	const taskListRedux: IInitialState = useSelector((rootState: RootState) => rootState.taskList);
+	console.log(taskListRedux.taskLists);
+
 	// use state
 	const [ columns, setColumns ] = useState(columnsFromBe);
 
@@ -39,16 +42,16 @@ const BoardTask: React.FC = () => {
 	// use effect
 	useEffect(
 		() => {
-			if (!loading) {
-				const newTaskList: Array<ITaskLists> = data.getAllTaskList;
-				dispatch(actions.allTaskList(newTaskList));
-			}
+			if (loading || error) return;
+
+			const newTaskList: Array<ITaskLists> = data.taskLists;
+			dispatch(taskListAction.getTaskLists(newTaskList));
 
 			// socketRef.current.on('message', data => {
 			// 	setColumns(data);
 			// });
 		},
-		[ data, dispatch, loading ],
+		[ data, dispatch, loading, error ],
 	);
 
 	// handle event
@@ -103,7 +106,10 @@ const BoardTask: React.FC = () => {
 
 	// render
 	if (loading) {
-		return <Loading />;
+		return <LoadingView />;
+	}
+	if (error) {
+		return <ErrorView />;
 	}
 	return <WorkSpace columns={columns} onDragEnd={handleDragEnd} />;
 };

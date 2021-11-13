@@ -5,8 +5,12 @@ interface IProps {
 	test?: string;
 }
 
-const Loading: React.FC<IProps> = () => {
-	return <LoadingStyled>Loading</LoadingStyled>;
+const LoadingView: React.FC<IProps> = () => {
+	return (
+		<LoadingStyled>
+			<span>Loading</span>
+		</LoadingStyled>
+	);
 };
 
-export default Loading;
+export default LoadingView;

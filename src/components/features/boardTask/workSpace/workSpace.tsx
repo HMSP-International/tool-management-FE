@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // 3rd Components
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import List from '../list/list';
+import List from '../taskList/taskList';
 
 // Styled Components
 import { WorkSpaceStyled } from './workSpace.styled';

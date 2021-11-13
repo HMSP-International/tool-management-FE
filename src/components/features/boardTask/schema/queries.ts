@@ -3,8 +3,8 @@ import { gql } from '@apollo/client';
 export const queries = {
 	taskLists:
 		gql`
-			query ExampleQuery {
-				getAllTaskList {
+			query GetAllTaskList {
+				taskLists {
 					_id
 					name
 				}

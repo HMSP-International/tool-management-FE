@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Loading from './components/shared/Loading/loading';
+import LoadingView from './components/shared/Loading/loading';
+// Global Style
+import GlobalStyle from './globalStyle/globalStyle';
 // Router
 import { BrowserRouter } from 'react-router-dom';
 import App from './pages/App';
@@ -19,9 +21,11 @@ ReactDOM.render(
 		<BrowserRouter>
 			<ApolloProvider client={client}>
 				<Provider store={store}>
-					<PersistGate loading={<Loading />} persistor={persistor}>
-						<App />
-					</PersistGate>
+					<GlobalStyle>
+						<PersistGate loading={<LoadingView />} persistor={persistor}>
+							<App />
+						</PersistGate>
+					</GlobalStyle>
 				</Provider>
 			</ApolloProvider>
 		</BrowserRouter>
