@@ -5,7 +5,7 @@ export interface ITask {
 	content?: string;
 }
 
-export interface ILists {
+export interface ITaskList {
 	[key: string]: {
 		name: string;
 		items: Array<ITask>;

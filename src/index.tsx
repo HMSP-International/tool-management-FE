@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import LoadingView from './components/shared/Loading/loadingView';
+import LoadingView from './components/shared/loadingView/loadingView';
 // Global Style
 import GlobalStyle from './globalStyle/globalStyle';
 // Router

@@ -2,8 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 
 // components
 // components/shared
-import Header from '../components/shared/Header/header';
-import Footer from '../components/shared/Footer/footer';
+import Header from '../components/shared/header/header';
+import Footer from '../components/shared/footer/footer';
 
 // pages
 import HomePage from './homePage/homePage';

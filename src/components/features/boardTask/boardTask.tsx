@@ -8,16 +8,38 @@ import * as taskListAction from '../../../features/taskList/slice';
 // component
 import WorkSpace from './workSpace/workSpace';
 // import WithFetchedData from '../../../hocs/withFetchedData';
-import LoadingView from '../../shared/Loading/loadingView';
-// import ErrorView from '../../shared/Error/errorView';
+import LoadingView from '../../shared/loadingView/loadingView';
+// import ErrorView from '../../shared/errorView/errorView';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
-import { ILists } from './iBoardTask';
+import { ITaskList, ITask } from './interfaces';
 import { ITaskLists, IInitialState } from '../../../features/taskList/interfaces';
-// fake data from be
-import { columnsFromBe } from '../../../fakeData/aboard';
 // graphql
 import { queries } from './schema/queries';
+// fake data from be
+export const itemsFromBe: Array<ITask> = [
+	{ _listId: '1', content: 'first task' },
+	{ _listId: '2', content: 'two task' },
+	{ _listId: '3', content: 'three task' },
+];
+
+export const columnsFromBe: ITaskList = {
+	'1':
+		{
+			name: 'To Do',
+			items: itemsFromBe,
+		},
+	'2':
+		{
+			name: 'In Progress',
+			items: [],
+		},
+	'3':
+		{
+			name: 'Review',
+			items: [],
+		},
+};
 
 const BoardTask: React.FC = () => {
 	// fetch data
@@ -56,7 +78,7 @@ const BoardTask: React.FC = () => {
 	);
 
 	// handle event
-	const handleDragEnd = useCallback((result: DropResult, columns: ILists) => {
+	const handleDragEnd = useCallback((result: DropResult, columns: ITaskList) => {
 		if (!result.destination) return;
 		const { source, destination } = result;
 

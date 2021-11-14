@@ -9,10 +9,10 @@ import { WorkSpaceStyled } from './workSpace.styled';
 
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
-import { ILists } from '../iBoardTask';
+import { ITaskList } from '../interfaces';
 interface IProps {
-	columns: ILists;
-	onDragEnd: (result: DropResult, columns: ILists) => void;
+	columns: ITaskList;
+	onDragEnd: (result: DropResult, columns: ITaskList) => void;
 }
 
 const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd }) => {

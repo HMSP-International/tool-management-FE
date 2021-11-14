@@ -5,7 +5,7 @@ import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { TaskStyled } from './task.styled';
 
 // interfaces
-import { ITask } from '../iBoardTask';
+import { ITask } from '../interfaces';
 interface IProps {
 	provided: DraggableProvided;
 	snapshot: DraggableStateSnapshot;

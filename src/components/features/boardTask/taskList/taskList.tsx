@@ -6,7 +6,7 @@ import { DroppableStateSnapshot, DroppableProvided, Draggable } from 'react-beau
 import { ListStyled } from './taskList.styled';
 
 // interfaces
-import { IDataColumn } from '../iBoardTask';
+import { IDataColumn } from '../interfaces';
 interface IProps {
 	provided: DroppableProvided;
 	snapshot: DroppableStateSnapshot;
