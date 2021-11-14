@@ -9,25 +9,15 @@ export const itemsFromBe: Array<ITask> = [
 export const columnsFromBe: ILists = {
 	'1':
 		{
-			name: 'Requested',
+			name: 'To Do',
 			items: itemsFromBe,
 		},
 	'2':
 		{
-			name: 'To Do',
-			items: [],
-		},
-	'3':
-		{
 			name: 'In Progress',
 			items: [],
 		},
-	'4':
-		{
-			name: 'Done',
-			items: [],
-		},
-	'5':
+	'3':
 		{
 			name: 'Review',
 			items: [],

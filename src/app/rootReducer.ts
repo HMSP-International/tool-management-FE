@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 // import { persistReducer } from 'redux-persist';
 // reducers
-import taskList from './features/taskList/slice';
+import taskListReducer from '../features/taskList/slice';
 // persist configs
 
 const rootReducer = combineReducers({
-	taskList,
+	taskList: taskListReducer,
 });
 
 export default rootReducer;

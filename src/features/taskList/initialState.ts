@@ -1,4 +1,4 @@
-import STATUS from '../../../constants/status';
+import STATUS from '../../constants/status';
 import { IInitialState } from './interfaces';
 
 const INITIAL_STATE: IInitialState = {

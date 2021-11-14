@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { LoadingStyled } from './loading.styled';
 
-interface IProps {
-	test?: string;
-}
-
-const LoadingView: React.FC<IProps> = () => {
+const LoadingView: React.FC = () => {
 	return (
 		<LoadingStyled>
 			<span>Loading</span>

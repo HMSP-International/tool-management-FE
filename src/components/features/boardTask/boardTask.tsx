@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useQuery } from '@apollo/client';
-// import { io } from 'socket.io-client';
+import { io } from 'socket.io-client';
 // Redux
 import { RootState } from '../../../app/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import * as taskListAction from '../../../app/features/taskList/slice';
+import * as taskListAction from '../../../features/taskList/slice';
 // component
 import WorkSpace from './workSpace/workSpace';
-import LoadingView from '../../shared/Loading/loading';
-import ErrorView from '../../shared/Error/error';
+// import WithFetchedData from '../../../hocs/withFetchedData';
+import LoadingView from '../../shared/Loading/loadingView';
+// import ErrorView from '../../shared/Error/errorView';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { ILists } from './iBoardTask';
-import { ITaskLists, IInitialState } from '../../../app/features/taskList/interfaces';
+import { ITaskLists, IInitialState } from '../../../features/taskList/interfaces';
 // fake data from be
 import { columnsFromBe } from '../../../fakeData/aboard';
 // graphql
@@ -33,11 +34,11 @@ const BoardTask: React.FC = () => {
 	const [ columns, setColumns ] = useState(columnsFromBe);
 
 	// use ref
-	// const socketRef = useRef(
-	// 	io('http://localhost:5000', {
-	// 		reconnection: false,
-	// 	}),
-	// );
+	const socketRef = useRef(
+		io('http://localhost:5000', {
+			reconnection: false,
+		}),
+	);
 
 	// use effect
 	useEffect(
@@ -47,9 +48,9 @@ const BoardTask: React.FC = () => {
 			const newTaskList: Array<ITaskLists> = data.taskLists;
 			dispatch(taskListAction.getTaskLists(newTaskList));
 
-			// socketRef.current.on('message', data => {
-			// 	setColumns(data);
-			// });
+			socketRef.current.on('message', data => {
+				setColumns(data);
+			});
 		},
 		[ data, dispatch, loading, error ],
 	);
@@ -81,7 +82,7 @@ const BoardTask: React.FC = () => {
 					},
 			};
 
-			// socketRef.current.emit('task-changed', newColumns);
+			socketRef.current.emit('task-changed', newColumns);
 			setColumns(newColumns);
 		}
 		else {
@@ -99,17 +100,18 @@ const BoardTask: React.FC = () => {
 					},
 			};
 
-			// socketRef.current.emit('task-changed', newColumns);
+			socketRef.current.emit('task-changed', newColumns);
 			setColumns(newColumns);
 		}
 	}, []);
 
-	// render
+	// render;
 	if (loading) {
 		return <LoadingView />;
 	}
 	if (error) {
-		return <ErrorView />;
+		// return <ErrorView error={error} />;
+		return <WorkSpace columns={columns} onDragEnd={handleDragEnd} />;
 	}
 	return <WorkSpace columns={columns} onDragEnd={handleDragEnd} />;
 };
