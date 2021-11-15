@@ -1,7 +1,12 @@
 const fontSize = {
-	big: '6rem',
-	normal: '4rem',
-	small: '2rem',
+	big1: '62px',
+	big2: '52px',
+	big3: '42px',
+	normal1: '32px',
+	normal2: '22px',
+	small1: '18px',
+	small2: '16px',
+	mini: '12px;',
 };
 
 const backgroundColor = {

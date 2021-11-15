@@ -1,29 +1,24 @@
-import { Route, Routes } from 'react-router-dom';
-
-// components
-// components/shared
-import Header from '../components/shared/header/header';
-import Footer from '../components/shared/footer/footer';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 // pages
+import NotFound from './404/NotFound';
 import HomePage from './homePage/homePage';
+import AuthPage from './authPage/authPage';
 
 function App () {
 	return (
 		<div className='app'>
-			<Header />
-
 			{/* Start Router */}
 			<Routes>
-				<Route path='/test/*' element={<HomePage />} />
-
-				<Route path='/test123' element={<HomePage />} />
-
 				<Route path='/' element={<HomePage />} />
+
+				<Route path='/auth/*' element={<AuthPage />} />
+
+				<Route path='/404' element={<NotFound />} />
+
+				<Route path='*' element={<Navigate to='/404' />} />
 			</Routes>
 			{/* End Router */}
-
-			<Footer />
 		</div>
 	);
 }
