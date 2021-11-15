@@ -1,6 +1,7 @@
 import { ThemeProvider } from 'styled-components';
 import * as React from 'react';
 
+import CustomStyled from './custom';
 import ResetStyled from './reset.styled';
 import ImportFont from './import';
 import theme from './theme.styled'; // global variable
@@ -12,6 +13,7 @@ const GlobalStyle: React.FC = ({ children }) => {
 		<ThemeProvider theme={theme}>
 			<ImportFont />
 			<ResetStyled />
+			<CustomStyled />
 			{children}
 		</ThemeProvider>
 	);
