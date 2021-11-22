@@ -21,6 +21,9 @@ export const itemsFromBe: Array<ITask> = [
 	{ _listId: '1', content: 'first task' },
 	{ _listId: '2', content: 'two task' },
 	{ _listId: '3', content: 'three task' },
+	{ _listId: '4', content: 'three task' },
+	{ _listId: '5', content: 'three task' },
+	{ _listId: '6', content: 'three task' },
 ];
 
 export const columnsFromBe: ITaskList = {
@@ -37,6 +40,46 @@ export const columnsFromBe: ITaskList = {
 	'3':
 		{
 			name: 'Review',
+			items: [],
+		},
+	'4':
+		{
+			name: 'f',
+			items: [],
+		},
+	'5':
+		{
+			name: 'e',
+			items: [],
+		},
+	'6':
+		{
+			name: 'd',
+			items: [],
+		},
+	'7':
+		{
+			name: 'c',
+			items: [],
+		},
+	'8':
+		{
+			name: 'b',
+			items: [],
+		},
+	'9':
+		{
+			name: 'a',
+			items: [],
+		},
+	'10':
+		{
+			name: 'a',
+			items: [],
+		},
+	'11':
+		{
+			name: 'a',
 			items: [],
 		},
 };

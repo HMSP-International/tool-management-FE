@@ -8,7 +8,6 @@ const CustomStyled = createGlobalStyle`
     .text-error{
         color: red !important;
     }
-}
 `;
 
 export default CustomStyled;

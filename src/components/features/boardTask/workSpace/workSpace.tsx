@@ -23,11 +23,29 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd }) => {
 					<Droppable key={columnId} droppableId={columnId}>
 						{(provided, snapshot) => {
 							return (
-								<List
-									snapshot={snapshot}
-									provided={provided}
-									columnData={columnData}
-								/>
+								<div className='wrap-list'>
+									<div className='wrap-list__title'>
+										<div className='wrap-list__title__left'>
+											<div className='wrap-list__title__left__name'>
+												{columnData.name}
+											</div>
+											{'  '}
+											<div className='wrap-list__title__left__number'>
+												{columnData.items.length}
+											</div>
+										</div>
+										<div className='wrap-list__title__right'>
+											<div className='wrap-list__title__right__icon'>
+												<i>+</i>
+											</div>
+										</div>
+									</div>
+									<List
+										snapshot={snapshot}
+										provided={provided}
+										columnData={columnData}
+									/>
+								</div>
 							);
 						}}
 					</Droppable>

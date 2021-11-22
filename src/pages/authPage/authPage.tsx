@@ -3,11 +3,12 @@ import Login from '../../components/features/auth/login/login';
 import Forgot from '../../components/features/auth/forgot/forgot';
 import NotFound from '../../pages/404/NotFound';
 
-import { AuthStyled, MainStyled, HeaderStyled, BottomStyled } from './auth.styled';
+import { AuthStyled, MainStyled, HeaderStyled, BottomStyled, AppStyled } from './auth.styled';
 
 const AuthPage = () => {
 	return (
 		<main className='auth-page'>
+			<AppStyled />
 			<AuthStyled>
 				<HeaderStyled>
 					<Link to={'/'}>Go To Home</Link>

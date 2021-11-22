@@ -13,9 +13,15 @@ const backgroundColor = {
 	primary: 'green',
 };
 
+const fontFamily = {
+	main: '',
+	submain: 'Gotham Pro, sans-serif',
+};
+
 const theme = {
 	fontSize,
 	backgroundColor,
+	fontFamily,
 };
 
 export default theme;

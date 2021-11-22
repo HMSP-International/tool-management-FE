@@ -4,6 +4,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import NotFound from './404/NotFound';
 import HomePage from './homePage/homePage';
 import AuthPage from './authPage/authPage';
+import ManagePage from './managePage/managePage';
 
 function App () {
 	return (
@@ -15,6 +16,8 @@ function App () {
 				<Route path='/auth/*' element={<AuthPage />} />
 
 				<Route path='/404' element={<NotFound />} />
+
+				<Route path='/manage/*' element={<ManagePage />} />
 
 				<Route path='*' element={<Navigate to='/404' />} />
 			</Routes>
