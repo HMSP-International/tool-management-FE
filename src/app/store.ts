@@ -7,7 +7,7 @@ const persistConfig = {
 	key: 'root',
 	version: 1,
 	storage,
-	blacklist: [ 'taskList' ],
+	blacklist: [ 'taskList', 'auth' ],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
