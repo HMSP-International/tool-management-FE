@@ -44,42 +44,7 @@ export const columnsFromBe: ITaskList = {
 		},
 	'4':
 		{
-			name: 'f',
-			items: [],
-		},
-	'5':
-		{
-			name: 'e',
-			items: [],
-		},
-	'6':
-		{
-			name: 'd',
-			items: [],
-		},
-	'7':
-		{
-			name: 'c',
-			items: [],
-		},
-	'8':
-		{
-			name: 'b',
-			items: [],
-		},
-	'9':
-		{
-			name: 'a',
-			items: [],
-		},
-	'10':
-		{
-			name: 'a',
-			items: [],
-		},
-	'11':
-		{
-			name: 'a',
+			name: 'Done',
 			items: [],
 		},
 };

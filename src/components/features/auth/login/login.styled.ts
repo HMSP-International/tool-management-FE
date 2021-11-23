@@ -76,44 +76,44 @@ export const LoginStyled = styled.div`
 		margin-top: 30px;
 
 		button {
-            display: inline-block;
+			display: inline-block;
 			height: 50px;
 			width: 100%;
 			border-radius: 4px;
 			transition: background-color 0.2s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0s;
 			background-color: #7b68ee;
 			cursor: pointer;
-            outline-none;
-            border-radius: none;
+			border-radius: none;
 
-            color: white;
-            font-size: ${props => props.theme.fontSize.mini};
-            font-weight: 700;
+			color: white;
+			font-size: ${props => props.theme.fontSize.mini};
+			font-weight: 700;
 
 			&:hover {
 				background-color: #5f48ea;
 			}
 
-			&:active{
+			&:active {
 				border: 1px solid #fff;
 			}
 		}
 	}
 
-    .login-page__form-forget {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
+	.login-page__form-forget {
+		margin-top: 20px;
+		display: flex;
+		justify-content: center;
 
-        .p{
-            display: inline-block;
-            text-align: center;
-            cursor: pointer;
-            color: #7b68ee;
-            font-size: ${props => props.theme.fontSize.mini};
+		.p {
+			display: inline-block;
+			text-align: center;
+			cursor: pointer;
+			color: #7b68ee;
+			font-size: ${props => props.theme.fontSize.mini};
 
-            &:hover{
-                font-weight: 600;
-            }
-        }
+			&:hover {
+				font-weight: 600;
+			}
+		}
+	}
 `;

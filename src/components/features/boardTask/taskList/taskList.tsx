@@ -3,7 +3,7 @@ import Task from '../task/task';
 import { DroppableStateSnapshot, DroppableProvided, Draggable } from 'react-beautiful-dnd';
 
 // Styled Components
-import { ListStyled } from './taskList.styled';
+import { TaskListStyled } from './taskList.styled';
 
 // interfaces
 import { IDataColumn } from '../interfaces';
@@ -15,11 +15,11 @@ interface IProps {
 
 const List: React.FC<IProps> = ({ provided, snapshot, columnData }) => {
 	return (
-		<ListStyled
+		<TaskListStyled
 			{...provided.droppableProps}
 			ref={provided.innerRef}
 			style={{
-				backgroundColor: snapshot.isDraggingOver ? 'lightGreen' : 'lightGray',
+				backgroundColor: snapshot.isDraggingOver ? '#bcbec4' : '#f4f5f7',
 			}}
 		>
 			{columnData.items.map((item, index) => {
@@ -32,7 +32,7 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData }) => {
 				);
 			})}
 			{provided.placeholder}
-		</ListStyled>
+		</TaskListStyled>
 	);
 };
 

@@ -13,6 +13,7 @@ const Space: React.FC = () => {
 				mode='inline'
 				// theme='dark'
 				inlineCollapsed={false}
+				style={{ transition: 'all 0.3s ease-in-out' }}
 			>
 				<SubMenu key='space' icon={<AppstoreOutlined />} title='Space'>
 					<Menu.Item key='hmsp'>HMSP</Menu.Item>

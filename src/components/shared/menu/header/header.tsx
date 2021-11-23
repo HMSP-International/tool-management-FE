@@ -1,7 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { HeaderStyled } from './header.styled';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
-const Header: React.FC = () => {
+interface IProps {
+	onClose(value: boolean): void;
+}
+
+const Header: React.FC<IProps> = ({ onClose }) => {
 	return (
 		<HeaderStyled className='menu__header'>
 			<div className='menu__header__logo'>
@@ -13,6 +18,7 @@ const Header: React.FC = () => {
 					src='https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png'
 					alt='hmsp'
 				/>
+				<AiOutlineArrowLeft onClick={() => onClose(false)} />
 			</div>
 		</HeaderStyled>
 	);

@@ -23,14 +23,20 @@ export const HeaderStyled = styled.section`
 	}
 
 	.menu__header__avt {
+		display: flex;
+		align-items: center;
+
 		img {
 			height: 40px;
 			width: 40px;
 			object-fit: cover;
 			cursor: pointer;
 			border-radius: 100rem;
+		}
 
-			margin-right: 10px;
+		svg {
+			margin: 0 10px;
+			cursor: pointer;
 		}
 	}
 `;
