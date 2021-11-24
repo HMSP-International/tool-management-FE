@@ -61,7 +61,7 @@ export const WorkSpaceModalStyled = styled(Modal)`
 
     .modal__work-space-modal__title{
         text-align: center;
-        font-size: ${props => props.theme.fontFamily.submain};
+        font-family: ${props => props.theme.fontFamily.submain};
         font-size: 25px;
         font-weight: 600;
     }

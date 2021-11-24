@@ -93,10 +93,8 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 
 				<div className='task-detail__assign'>
 					<div className='task-detail__assign__list-selection'>
-						<select name='list'>
-							<option value='todo' selected>
-								To Do
-							</option>
+						<select name='list' defaultValue='todo'>
+							<option value='todo'>To Do</option>
 							<option value='doing'>Doing</option>
 							<option value='review'>Review</option>
 							<option value='done'>Done</option>
@@ -134,9 +132,9 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 						</div>
 					</div>
 
-					<div className="task-detail__assign__timestamp">
-						<div className="created">Created 2 days ago</div>
-						<div className="updated">Updated 1 hour ago</div>
+					<div className='task-detail__assign__timestamp'>
+						<div className='created'>Created 2 days ago</div>
+						<div className='updated'>Updated 1 hour ago</div>
 					</div>
 				</div>
 			</section>

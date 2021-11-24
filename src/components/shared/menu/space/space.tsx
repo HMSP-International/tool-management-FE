@@ -1,31 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SpaceStyled } from './space.styled';
 import { Menu } from 'antd';
 import { AppstoreOutlined } from '@ant-design/icons';
-import { AiFillFolderAdd } from 'react-icons/ai';
-
-import WorkSpaceModal from '../modals/workSpaceModal';
-import ShareModal from '../modals/shareModal';
+import TitleSubMenu from '../titleSubmenu/titleSubMenu';
 
 const { SubMenu } = Menu;
 
 const Space: React.FC = () => {
-	const [ showSpaceModal, setShowSpaceModal ] = useState(false);
-	const [ showShareModal, setShowShareModal ] = useState(false);
-
-	const handleSubmitSpaceModal = () => {
-		setShowSpaceModal(false);
-		setShowShareModal(true);
-	};
-
-	const handleSubmitShareModal = () => {
-		setShowShareModal(false);
-	};
-	const handleBackShareModal = () => {
-		setShowSpaceModal(true);
-		setShowShareModal(false);
-	};
-
 	return (
 		<React.Fragment>
 			<SpaceStyled>
@@ -37,16 +18,16 @@ const Space: React.FC = () => {
 					inlineCollapsed={false}
 					style={{ transition: 'all 0.3s ease-in-out' }}
 				>
-					<SubMenu key='space' icon={<AppstoreOutlined />} title='Space'>
-						<Menu.Item
-							icon={<AiFillFolderAdd />}
-							key='space__menu__add'
-							onClick={() => setShowSpaceModal(true)}
+					<SubMenu
+						key='space'
+						icon={<AppstoreOutlined />}
+						title={<TitleSubMenu title={'Space'} type={'space'} />}
+					>
+						<SubMenu
+							icon={<AppstoreOutlined />}
+							key='hmsp'
+							title={<TitleSubMenu title={'hsmp'} type={'list'} />}
 						>
-							<div className='space__menu__add'>NEW SPACE</div>
-						</Menu.Item>
-
-						<SubMenu icon={<AppstoreOutlined />} key='hmsp' title='HMSP'>
 							<Menu.Item icon={<AppstoreOutlined />} key='mkt'>
 								Marketing
 							</Menu.Item>
@@ -69,23 +50,6 @@ const Space: React.FC = () => {
 					</SubMenu>
 				</Menu>
 			</SpaceStyled>
-
-			{(showSpaceModal || showShareModal) && (
-				<WorkSpaceModal
-					hidden={showSpaceModal}
-					setHidden={setShowSpaceModal}
-					onSubmit={handleSubmitSpaceModal}
-				/>
-			)}
-
-			{showShareModal && (
-				<ShareModal
-					hidden={showShareModal}
-					setHidden={setShowShareModal}
-					onSubmit={handleSubmitShareModal}
-					onBack={handleBackShareModal}
-				/>
-			)}
 		</React.Fragment>
 	);
 };
