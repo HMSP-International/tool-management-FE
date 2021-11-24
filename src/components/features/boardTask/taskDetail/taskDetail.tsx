@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal } from 'antd';
 // Styled Components
+import { ModalStyled } from './taskDetail.styled';
 // interfaces
 interface IProps {
 	hidden: boolean;
@@ -9,7 +9,7 @@ interface IProps {
 
 const TaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 	return (
-		<Modal
+		<ModalStyled
 			centered
 			visible={hidden}
 			onCancel={() => {
@@ -22,7 +22,7 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 			<div className='modal__'>1</div>
 
 			<div className='modal__'>2</div>
-		</Modal>
+		</ModalStyled>
 	);
 };
 

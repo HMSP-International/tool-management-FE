@@ -1,3 +1,7 @@
-import styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
-export const DetailTask = styled.div``;
+export const DetailTask = createGlobalStyle`
+	.modal__task-detail {
+		background-color: red;
+	}
+`;

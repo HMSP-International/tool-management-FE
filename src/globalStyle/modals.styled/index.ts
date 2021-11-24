@@ -1,8 +1,6 @@
-import { createGlobalStyle } from 'styled-components';
+// import { createGlobalStyle } from 'styled-components';
 import { DetailTask } from './detailTask.styled';
 
-const Modals = createGlobalStyle`
-    ${DetailTask}
-`;
+const Modals = [DetailTask]
 
 export default Modals;
