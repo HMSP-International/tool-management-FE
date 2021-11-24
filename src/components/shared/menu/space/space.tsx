@@ -82,7 +82,7 @@ const Space: React.FC = () => {
 				<ShareModal
 					hidden={showShareModal}
 					setHidden={setShowShareModal}
-					onSubmit={handleSubmitSpaceModal}
+					onSubmit={handleSubmitShareModal}
 					onBack={handleBackShareModal}
 				/>
 			)}

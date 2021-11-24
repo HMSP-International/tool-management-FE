@@ -42,11 +42,11 @@ export const columnsFromBe: ITaskList = {
 			name: 'Review',
 			items: [],
 		},
-	'4':
-		{
-			name: 'Done',
-			items: [],
-		},
+	// '4':
+	// 	{
+	// 		name: 'Done',
+	// 		items: [],
+	// 	},
 };
 
 const BoardTask: React.FC = () => {

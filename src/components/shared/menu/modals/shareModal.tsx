@@ -35,25 +35,29 @@ const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack }) =
 								src='https://cdn.w600.comps.canstockphoto.com/private-stamp-eps-vector_csp6202764.jpg'
 								alt=''
 							/>
+							<div>Private</div>
 						</div>
 					</div>
-					<div className='share-modal__share'>
-						<div className='share-modal__share__text'>Share only with:</div>
-						<div className='share-modal__share__img'>
+					<div className='share-modal__shared'>
+						<div className='share-modal__shared__text'>Share only with:</div>
+						<div className='share-modal__shared__img'>
 							<div>
-								<img src='' alt='' />
+								<img
+									src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
+									alt=''
+								/>
 							</div>
 							<div>
-								<img src='' alt='' />
-							</div>
-							<div>
-								<img src='' alt='' />
+								<img
+									src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
+									alt=''
+								/>
 							</div>
 						</div>
-						<div className='share-modal__share__add'>Add people</div>
+						<div className='share-modal__shared__add'>Add people</div>
 					</div>
-					<div className='share-modal__share__next'>
-						<button>NEXT</button>
+					<div className='share-modal__btn'>
+						<button onClick={onSubmit}>Create Space</button>
 					</div>
 				</div>
 			</ShareModalStyled>
