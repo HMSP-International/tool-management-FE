@@ -1,4 +1,4 @@
-export interface IInitialState {
+export interface IInitialStateAuth {
 	status: string;
 	error?: string | null;
 

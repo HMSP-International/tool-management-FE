@@ -22,6 +22,16 @@ const ResetStyled = createGlobalStyle`
 	a{ 
 		color: black; 
 	}
+
+	img{
+		object-fit: cover;
+	}
+
+	input {
+		&:focus{outline:none}
+		border: 1px solid lightgray;
+	}
+	
 `;
 
 export default ResetStyled;

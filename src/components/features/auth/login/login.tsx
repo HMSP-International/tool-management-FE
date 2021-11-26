@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { BiMailSend } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginStyled } from './login.styled';
 import { LOGIN_MUTAIION } from '../graphql/mutaions';
 import { useDispatch } from 'react-redux';
@@ -31,6 +31,7 @@ const Login: React.FC = () => {
 	const inputPasswordRef = useRef<HTMLInputElement>(null);
 	const [ onLogin, { loading } ] = useMutation(LOGIN_MUTAIION);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const openNotification = (placement: any, err: Boolean = false) => {
 		const sender = {
@@ -104,7 +105,6 @@ const Login: React.FC = () => {
 					},
 			});
 			const { jwt } = data.signin;
-			console.log({ jwt });
 			dispatch(login({ jwt }));
 
 			const showing = {
@@ -112,6 +112,7 @@ const Login: React.FC = () => {
 				description: 'logined',
 			};
 
+			navigate('/');
 			openNotification(showing);
 		} catch (error) {
 			const knowException: ApolloError = error as ApolloError;

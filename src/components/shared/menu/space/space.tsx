@@ -1,12 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SpaceStyled } from './space.styled';
 import { Menu } from 'antd';
 import { AppstoreOutlined } from '@ant-design/icons';
 import TitleSubMenu from '../titleSubmenu/titleSubMenu';
+import WorkSpaceModal from '../modals/workSpaceModal';
+import ShareModal from '../modals/shareModal';
+import ListModal from '../modals/listModal';
 
 const { SubMenu } = Menu;
 
 const Space: React.FC = () => {
+	const [ showSpaceModal, setShowSpaceModal ] = useState(false);
+	const [ showShareModal, setShowShareModal ] = useState(false);
+	const [ showListModal, setShowListModal ] = useState(false);
+
+	const handleSubmitSpaceModal = () => {
+		setShowSpaceModal(false);
+		setShowShareModal(true);
+	};
+
+	const handleSubmitShareModal = () => {
+		setShowShareModal(false);
+	};
+	const handleBackShareModal = () => {
+		setShowSpaceModal(true);
+		setShowShareModal(false);
+	};
+
+	const handleSubmitListModal = () => {
+		setShowListModal(false);
+	};
+
+	const handleOpenModel = (type: string) => {
+		if (type === 'space') {
+			setShowSpaceModal(true);
+		}
+		else if (type === 'list') {
+			setShowListModal(true);
+		}
+	};
+
 	return (
 		<React.Fragment>
 			<SpaceStyled>
@@ -21,12 +54,24 @@ const Space: React.FC = () => {
 					<SubMenu
 						key='space'
 						icon={<AppstoreOutlined />}
-						title={<TitleSubMenu title={'Space'} type={'space'} />}
+						title={
+							<TitleSubMenu
+								title={'Space'}
+								type={'space'}
+								onOpenModal={handleOpenModel}
+							/>
+						}
 					>
 						<SubMenu
 							icon={<AppstoreOutlined />}
 							key='hmsp'
-							title={<TitleSubMenu title={'hsmp'} type={'list'} />}
+							title={
+								<TitleSubMenu
+									title={'hsmp'}
+									type={'list'}
+									onOpenModal={handleOpenModel}
+								/>
+							}
 						>
 							<Menu.Item icon={<AppstoreOutlined />} key='mkt'>
 								Marketing
@@ -50,6 +95,31 @@ const Space: React.FC = () => {
 					</SubMenu>
 				</Menu>
 			</SpaceStyled>
+
+			{(showSpaceModal || showShareModal) && (
+				<WorkSpaceModal
+					hidden={showSpaceModal}
+					setHidden={setShowSpaceModal}
+					onSubmit={handleSubmitSpaceModal}
+				/>
+			)}
+
+			{showShareModal && (
+				<ShareModal
+					hidden={showShareModal}
+					setHidden={setShowShareModal}
+					onSubmit={handleSubmitShareModal}
+					onBack={handleBackShareModal}
+				/>
+			)}
+
+			{showListModal && (
+				<ListModal
+					hidden={showListModal}
+					setHidden={setShowListModal}
+					onSubmit={handleSubmitListModal}
+				/>
+			)}
 		</React.Fragment>
 	);
 };

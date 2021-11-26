@@ -5,8 +5,6 @@ function HomePage () {
 	return (
 		<ContainerPage>
 			<main>
-				<Link to={'/auth/login'}>Login?</Link>
-				<br />
 				<Link to={'/manage'}>manage</Link>
 			</main>
 		</ContainerPage>

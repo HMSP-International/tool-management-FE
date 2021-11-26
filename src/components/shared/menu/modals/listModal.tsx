@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 // Styled Components
 import { ListModalStyled } from './listModal.styled';
@@ -9,7 +9,42 @@ interface IProps {
 	onSubmit(): void;
 }
 
-const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
+const ListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
+	const [ isValidName, setInValidName ] = useState(true);
+	const [ messageError, setMessageError ] = useState('');
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	const handleSubmit = () => {
+		if (inputRef && inputRef.current) {
+			if (inputRef.current.value.length === 0) {
+				setMessageError('Please enter your list name');
+				setInValidName(false);
+			}
+			else {
+				// query Backend
+				if (true) {
+					onSubmit();
+				}
+				else {
+					// return error from DB
+				}
+			}
+		}
+	};
+
+	const handleChangeInput = () => {
+		if (inputRef && inputRef.current) {
+			if (inputRef.current.value.length > 0) {
+				setMessageError('');
+				setInValidName(true);
+			}
+			else {
+				setMessageError('Please enter your list name');
+				setInValidName(false);
+			}
+		}
+	};
+
 	return (
 		<ListModalStyled
 			centered
@@ -28,8 +63,26 @@ const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 				</div>
 				<div className='list-modal__body'>
 					<div className='list-modal__body__input'>
-						<label htmlFor='list'>List Name</label>
-						<input type='text' name='list' />
+						<label htmlFor='list' className={isValidName ? '' : 'text-error'}>
+							List Name
+						</label>
+						<input
+							type='text'
+							name='list'
+							onChange={handleChangeInput}
+							ref={inputRef}
+							placeholder='Enter your list'
+						/>
+						{!isValidName && (
+							<label htmlFor='' className={isValidName ? '' : 'text-error'}>
+								{messageError}
+							</label>
+						)}
+					</div>
+				</div>
+				<div className='list-modal__footer'>
+					<div className='list-modal__footer__button'>
+						<button onClick={handleSubmit}>Create List</button>
 					</div>
 				</div>
 			</div>
@@ -37,4 +90,4 @@ const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 	);
 };
 
-export default ShareModal;
+export default ListModal;

@@ -1,7 +1,6 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import * as devEnv from './dev';
 import * as prodEnv from './prod';
-
 let apis;
 
 if (process.env.NODE_ENV === 'production') {

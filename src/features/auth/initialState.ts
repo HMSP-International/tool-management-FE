@@ -1,7 +1,7 @@
 import STATUS from '../../constants/status';
-import { IInitialState } from './interfaces';
+import { IInitialStateAuth } from './interfaces';
 
-const INITIAL_STATE: IInitialState = {
+const INITIAL_STATE: IInitialStateAuth = {
 	status: STATUS.IDLE,
 	error: null,
 
