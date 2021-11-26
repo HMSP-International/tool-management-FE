@@ -14,7 +14,24 @@ const ResetStyled = createGlobalStyle`
 	button { 
 		border: none;
 	}
-}
+
+	h1, h2, h3, h4, h5, h6, p{
+		margin-bottom: 0;
+	}
+
+	a{ 
+		color: black; 
+	}
+
+	img{
+		object-fit: cover;
+	}
+
+	input {
+		&:focus{outline:none}
+		border: 1px solid lightgray;
+	}
+	
 `;
 
 export default ResetStyled;

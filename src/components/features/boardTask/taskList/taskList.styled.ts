@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ListStyled = styled.article`
+export const TaskListStyled = styled.article`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -8,9 +8,11 @@ export const ListStyled = styled.article`
 	background-color: blanchedalmond;
 	padding: 0.5rem;
 
-	min-height: 100px;
+	min-height: 200px;
 	height: auto;
-	min-width: 150px;
+	min-width: 300px;
 
 	transition: background-color 0.5s ease-in-out;
+
+	border-radius: 5px;
 `;

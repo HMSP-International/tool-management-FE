@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+import { createGlobalStyle } from 'styled-components';
+
+export const AppStyled = createGlobalStyle`
+    .app{
+        display: block
+    }
+`;
+
 export const AuthStyled = styled.section`
 	height: auto;
 	background-color: rgb(241, 211, 150);

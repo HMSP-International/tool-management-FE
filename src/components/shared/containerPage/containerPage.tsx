@@ -2,15 +2,17 @@ import * as React from 'react';
 
 // components
 // components/shared
-import Header from '../header/header';
-import Footer from '../footer/footer';
+// import Header from '../header/header';
+// import Footer from '../footer/footer';
+import Menu from '../menu/menu';
 
 const ContainerPage: React.FC = ({ children }) => {
 	return (
 		<React.Fragment>
-			<Header />
+			{/* <Header /> */}
+			<Menu />
 			{children}
-			<Footer />
+			{/* <Footer /> */}
 		</React.Fragment>
 	);
 };

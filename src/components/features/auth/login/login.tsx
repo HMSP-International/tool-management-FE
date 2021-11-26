@@ -1,8 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { BiMailSend } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginStyled } from './login.styled';
-
+import { LOGIN_MUTAIION } from '../graphql/mutaions';
+import { useDispatch } from 'react-redux';
+import { ApolloError, useMutation } from '@apollo/client';
+import { notification } from 'antd';
+import { login } from '../../../../features/auth/slice';
+import LoadingView from '../../../shared/loadingView/loadingView';
 const NAME_INPUT = {
 	password: 'password',
 	email: 'youremail',
@@ -13,9 +18,10 @@ const validation: { (T: string, Q: string): boolean } = (value: string, name: st
 		const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(String(value).toLowerCase());
 	}
-	else {
-		return true;
+	else if (name === NAME_INPUT.password) {
+		return value.length === 0 ? false : true;
 	}
+	return true;
 };
 
 const Login: React.FC = () => {
@@ -23,6 +29,25 @@ const Login: React.FC = () => {
 	const [ isValidPass, setIsValidPass ] = useState(true);
 	const inputEmailRef = useRef<HTMLInputElement>(null);
 	const inputPasswordRef = useRef<HTMLInputElement>(null);
+	const [ onLogin, { loading } ] = useMutation(LOGIN_MUTAIION);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const openNotification = (placement: any, err: Boolean = false) => {
+		const sender = {
+			message: placement.title,
+			description: placement.description,
+		};
+
+		if (err) {
+			notification.warn(sender);
+		}
+		else {
+			notification.success(sender);
+		}
+	};
+
+	if (loading) return <LoadingView />;
 
 	const handleChangeInput = (e: React.FormEvent<HTMLInputElement>) => {
 		const { name, value } = e.currentTarget;
@@ -56,7 +81,49 @@ const Login: React.FC = () => {
 			return;
 		}
 
-		console.log('submited');
+		handleSaveTokenToLocalStorage();
+	};
+
+	const handleSaveTokenToLocalStorage = async () => {
+		try {
+			let email = '';
+			let password = '';
+
+			if (inputEmailRef.current !== null && inputPasswordRef.current !== null) {
+				email = inputEmailRef.current.value;
+				password = inputPasswordRef.current.value;
+			}
+
+			const { data } = await onLogin({
+				variables:
+					{
+						signinInput:
+							{
+								email,
+								password,
+							},
+					},
+			});
+			const { jwt } = data.signin;
+			dispatch(login({ jwt }));
+
+			const showing = {
+				title: 'Susscess',
+				description: 'logined',
+			};
+
+			navigate('/');
+			openNotification(showing);
+		} catch (error) {
+			const knowException: ApolloError = error as ApolloError;
+
+			const showing = {
+				title: knowException.name,
+				description: knowException.message,
+			};
+
+			openNotification(showing, true);
+		}
 	};
 
 	return (
@@ -87,6 +154,7 @@ const Login: React.FC = () => {
 						type='password'
 						name={NAME_INPUT.password}
 						placeholder='Enter password'
+						onChange={handleChangeInput}
 						ref={inputPasswordRef}
 					/>
 				</div>
@@ -97,7 +165,7 @@ const Login: React.FC = () => {
 			</div>
 			<div className='login-page__form-forget'>
 				<Link className='p' to={'/auth/forgot'}>
-					or Sign in
+					forgot password???
 				</Link>
 			</div>
 		</LoginStyled>

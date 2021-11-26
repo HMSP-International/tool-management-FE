@@ -4,13 +4,41 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import NotFound from './404/NotFound';
 import HomePage from './homePage/homePage';
 import AuthPage from './authPage/authPage';
+import ManagePage from './managePage/managePage';
+import ProfilePage from './profilePage/profilePage';
+import PrivateRoute from './privateRoute';
 
 function App () {
 	return (
 		<div className='app'>
 			{/* Start Router */}
 			<Routes>
-				<Route path='/' element={<HomePage />} />
+				<Route
+					path='/'
+					element={
+						<PrivateRoute>
+							<HomePage />
+						</PrivateRoute>
+					}
+				/>
+
+				<Route
+					path='/manage/*'
+					element={
+						<PrivateRoute>
+							<ManagePage />
+						</PrivateRoute>
+					}
+				/>
+
+				<Route
+					path='/profile/*'
+					element={
+						<PrivateRoute>
+							<ProfilePage />
+						</PrivateRoute>
+					}
+				/>
 
 				<Route path='/auth/*' element={<AuthPage />} />
 
