@@ -4,12 +4,26 @@ export const PasswordStyled = styled.article`
 	border: 1px solid gray;
 	padding: 30px 0;
 
+	.password__button__sucess {
+		margin-top: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		button {
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			background-color: lightblue;
+		}
+	}
+
 	.password__button {
 		margin-top: 30px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		button {
+			pointer-events: none;
 			padding: 10px 20px;
 			border-radius: 5px;
 			cursor: pointer;

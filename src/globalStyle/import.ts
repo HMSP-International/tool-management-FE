@@ -50,8 +50,6 @@ const Import = createGlobalStyle`
             url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.ttf) format("truetype");
         font-weight: 700;
     }
-
-    @import url('http://fonts.cdnfonts.com/css/gotham-pro');
 `;
 
 export default Import;

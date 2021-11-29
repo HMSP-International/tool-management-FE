@@ -116,6 +116,7 @@ const Login: React.FC = () => {
 			openNotification(showing);
 		} catch (error) {
 			const knowException: ApolloError = error as ApolloError;
+			console.log(error);
 
 			const showing = {
 				title: knowException.name,

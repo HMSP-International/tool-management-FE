@@ -1,11 +1,25 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { ProfileStyled } from './profile.styled';
 
+// redux
+import { useDispatch } from 'react-redux';
+import { getProfile } from '../../../features/user/slice';
+// components
 import Email from './email/email';
 import Information from './information/information';
 import Password from './password/password';
+import LoadingView from '../../shared/loadingView/loadingView';
+// graphql
+import { useQuery } from '@apollo/client';
+import { GET_PROFILE_QUERY } from './graphql/queries';
+// interfaces
+import { IInitialStateProfile } from '../../../features/user/interfaces';
 
 const Profile: React.FC = () => {
+	const dispatch = useDispatch();
+
+	const { loading, data, error } = useQuery(GET_PROFILE_QUERY);
+
 	const [ currentTab, setCurrentTab ] = useState(0);
 	const tabRef = useRef([ <Information />, <Email />, <Password /> ]);
 
@@ -17,6 +31,24 @@ const Profile: React.FC = () => {
 		const classNameGroupTab = 'profile-page__header__group-tab__item';
 		return currentTab === id ? classNameGroupTab + ' border-bottom' : classNameGroupTab;
 	};
+
+	// hook ----------------------------------------------------------------------
+	useEffect(
+		() => {
+			if (!data) return;
+			const profile: IInitialStateProfile = data.getProfile;
+
+			dispatch(getProfile(profile));
+		},
+		[ data, dispatch ],
+	);
+
+	// render
+	if (loading) {
+		return <LoadingView />;
+	}
+	if (error) return null;
+
 	return (
 		<ProfileStyled>
 			<section className='profile-page'>

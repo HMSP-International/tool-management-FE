@@ -5,7 +5,7 @@ const INITIAL_STATE: IInitialStateAuth = {
 	status: STATUS.IDLE,
 	error: null,
 
-	jwt: null,
+	jwt: '',
 };
 
 export default INITIAL_STATE;
