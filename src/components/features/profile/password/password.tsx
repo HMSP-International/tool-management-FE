@@ -1,9 +1,10 @@
-import { ApolloError, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import LoadingView from '../../../shared/loadingView/loadingView';
 import { CHANGE_PASSWORD_MUTAIION } from '../graphql/mutations';
 import { PasswordStyled } from './password.styled';
 import { openNotification } from '../../../../helpers/notification';
+import { handleApolloError } from '../../../../helpers/apolloError';
 
 const Password: React.FC = () => {
 	const [ onLogin, { loading } ] = useMutation(CHANGE_PASSWORD_MUTAIION);
@@ -42,20 +43,7 @@ const Password: React.FC = () => {
 				extensions: [ 'changed password' ],
 			});
 		} catch (error) {
-			const { graphQLErrors }: ApolloError = error as ApolloError;
-
-			let extensions: any = [];
-			if (typeof graphQLErrors[0].extensions === 'string') {
-				extensions.push(graphQLErrors[0].extensions);
-			}
-			else {
-				extensions = graphQLErrors[0].extensions;
-			}
-
-			const showing = {
-				title: graphQLErrors[0].message,
-				extensions,
-			};
+			const showing = handleApolloError(error);
 			openNotification(showing, true);
 		}
 	};

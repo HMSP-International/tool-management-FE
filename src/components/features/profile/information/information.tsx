@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ApolloError, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { CHANGE_INFORMATION_MUTAIION } from '../graphql/mutations';
 // helpers
 import { openNotification } from '../../../../helpers/notification';
@@ -10,6 +10,7 @@ import { RootState } from '../../../../app/rootReducer';
 import { IInitialStateUser } from '../../../../features/user/interfaces';
 import { InformationStyled } from './information.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
+import { handleApolloError } from '../../../../helpers/apolloError';
 // import equal from 'deep-equal';
 
 const Information: React.FC = () => {
@@ -45,7 +46,7 @@ const Information: React.FC = () => {
 		setValues({ ...values, [name]: value });
 	};
 
-	const sendPasswordToServer = async () => {
+	const sendInformationToServer = async () => {
 		try {
 			await onChangeInformation({
 				variables:
@@ -62,20 +63,7 @@ const Information: React.FC = () => {
 				extensions: [ 'Changed information' ],
 			});
 		} catch (error) {
-			const { graphQLErrors }: ApolloError = error as ApolloError;
-
-			let extensions: any = [];
-			if (typeof graphQLErrors[0].extensions === 'string') {
-				extensions.push(graphQLErrors[0].extensions);
-			}
-			else {
-				extensions = graphQLErrors[0].extensions;
-			}
-
-			const showing = {
-				title: graphQLErrors[0].message,
-				extensions,
-			};
+			const showing = handleApolloError(error);
 			openNotification(showing, true);
 
 			setValues(userRedux.profile);
@@ -83,7 +71,7 @@ const Information: React.FC = () => {
 	};
 
 	const handleSubmit = () => {
-		sendPasswordToServer();
+		sendInformationToServer();
 	};
 
 	return (

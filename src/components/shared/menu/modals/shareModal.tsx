@@ -8,9 +8,10 @@ interface IProps {
 	setHidden(value: boolean): void;
 	onSubmit(): void;
 	onBack(): void;
+	nameSpace: string;
 }
 
-const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack }) => {
+const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack, nameSpace }) => {
 	return (
 		<React.Fragment>
 			<ShareModalStyled
@@ -23,7 +24,7 @@ const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack }) =
 					<div className='share-modal__header__back' onClick={onBack}>
 						{'<'}
 					</div>
-					<div className='share-modal__header__title'>{'Share HMSP'}</div>
+					<div className='share-modal__header__title'>{'Share ' + nameSpace}</div>
 					<div className='share-modal__header__close' onClick={() => setHidden(false)}>
 						{'X'}
 					</div>

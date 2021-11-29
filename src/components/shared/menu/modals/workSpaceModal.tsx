@@ -5,7 +5,7 @@ import { WorkSpaceModalStyled } from './workSpaceModal.styled';
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(): void;
+	onSubmit(nameSpace: string): void;
 }
 
 const WorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
@@ -22,7 +22,7 @@ const WorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 			else {
 				// query Backend
 				if (true) {
-					onSubmit();
+					onSubmit(inputRef.current.value);
 				}
 				else {
 					// return error from DB

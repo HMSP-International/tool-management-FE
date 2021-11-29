@@ -4,10 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LoginStyled } from './login.styled';
 import { LOGIN_MUTAIION } from '../graphql/mutaions';
 import { useDispatch } from 'react-redux';
-import { ApolloError, useMutation } from '@apollo/client';
-import { notification } from 'antd';
+import { useMutation } from '@apollo/client';
 import { login } from '../../../../features/auth/slice';
 import LoadingView from '../../../shared/loadingView/loadingView';
+import { handleApolloError } from '../../../../helpers/apolloError';
+import { openNotification } from '../../../../helpers/notification';
 const NAME_INPUT = {
 	password: 'password',
 	email: 'youremail',
@@ -32,20 +33,6 @@ const Login: React.FC = () => {
 	const [ onLogin, { loading } ] = useMutation(LOGIN_MUTAIION);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
-	const openNotification = (placement: any, err: Boolean = false) => {
-		const sender = {
-			message: placement.title,
-			description: placement.description,
-		};
-
-		if (err) {
-			notification.warn(sender);
-		}
-		else {
-			notification.success(sender);
-		}
-	};
 
 	if (loading) return <LoadingView />;
 
@@ -107,22 +94,15 @@ const Login: React.FC = () => {
 			const { jwt } = data.signin;
 			dispatch(login({ jwt }));
 
+			navigate('/');
+
 			const showing = {
 				title: 'Susscess',
-				description: 'logined',
+				extensions: 'logined',
 			};
-
-			navigate('/');
 			openNotification(showing);
 		} catch (error) {
-			const knowException: ApolloError = error as ApolloError;
-			console.log(error);
-
-			const showing = {
-				title: knowException.name,
-				description: knowException.message,
-			};
-
+			const showing = handleApolloError(error);
 			openNotification(showing, true);
 		}
 	};

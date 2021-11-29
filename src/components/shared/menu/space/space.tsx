@@ -1,26 +1,90 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SpaceStyled } from './space.styled';
+// antd
 import { Menu } from 'antd';
 import { AppstoreOutlined } from '@ant-design/icons';
 import TitleSubMenu from '../titleSubmenu/titleSubMenu';
+// modals
 import WorkSpaceModal from '../modals/workSpaceModal';
 import ShareModal from '../modals/shareModal';
+// components
+import LoadingView from '../../loadingView/loadingView';
+import ErrorView from '../../errorView/errorView';
 import ListModal from '../modals/listModal';
+// graphql
+import { useQuery, useMutation, ApolloError } from '@apollo/client';
+import { GET_SPACE_QUERY } from '../graphql/queries';
+import { CREATE_SPACE_MUTATION } from '../graphql/mutations';
+// interfaces
+import { openNotification } from '../../../../helpers/notification';
+import { handleApolloError } from '../../../../helpers/apolloError';
+import { RootState } from '../../../../app/rootReducer';
+import { IInitialStateSpace } from '../../../../features/space/interfaces';
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import { getSpaces } from '../../../../features/space/slice';
 
 const { SubMenu } = Menu;
 
 const Space: React.FC = () => {
+	// graphql
+	const { data, error, loading: loadingGetSpace } = useQuery(GET_SPACE_QUERY);
+	const [ onCreateSpace, { loading: loadingCreateSpace } ] = useMutation(CREATE_SPACE_MUTATION);
+	// state
+	const [ nameSpace, setNameSpace ] = useState('');
 	const [ showSpaceModal, setShowSpaceModal ] = useState(false);
 	const [ showShareModal, setShowShareModal ] = useState(false);
 	const [ showListModal, setShowListModal ] = useState(false);
+	// redux
+	const dispatch = useDispatch();
+	const spaceRedux: IInitialStateSpace = useSelector((state: RootState) => state.space);
 
-	const handleSubmitSpaceModal = () => {
+	useEffect(
+		() => {
+			if (data) {
+				const { getSpaces: spaces } = data;
+				dispatch(getSpaces(spaces));
+			}
+		},
+		[ data, dispatch ],
+	);
+
+	if (loadingGetSpace || loadingCreateSpace) return <LoadingView />;
+	if (error) return <ErrorView error={error} />;
+
+	const sendSpaceToServer = async () => {
+		try {
+			const { data: { createSpace: spaces } } = await onCreateSpace({
+				variables:
+					{
+						createSpaceInput:
+							{
+								name: nameSpace,
+							},
+					},
+			});
+
+			dispatch(getSpaces(spaces));
+			setShowShareModal(false);
+
+			openNotification({
+				title: 'Susscessfully',
+				extensions: [ 'Created space' ],
+			});
+		} catch (error) {
+			const showing = handleApolloError(error as ApolloError);
+			openNotification(showing, true);
+		}
+	};
+
+	const handleSubmitSpaceModal = (nameSpace: string) => {
 		setShowSpaceModal(false);
 		setShowShareModal(true);
+		setNameSpace(nameSpace);
 	};
 
 	const handleSubmitShareModal = () => {
-		setShowShareModal(false);
+		sendSpaceToServer();
 	};
 	const handleBackShareModal = () => {
 		setShowSpaceModal(true);
@@ -43,14 +107,7 @@ const Space: React.FC = () => {
 	return (
 		<React.Fragment>
 			<SpaceStyled>
-				{/* <div className='space__add'>+ NEW SPACE</div> */}
-				<Menu
-					defaultOpenKeys={[ 'space' ]}
-					mode='inline'
-					// theme='dark'
-					inlineCollapsed={false}
-					style={{ transition: 'all 0.3s ease-in-out' }}
-				>
+				<Menu mode='inline' inlineCollapsed={false}>
 					<SubMenu
 						key='space'
 						icon={<AppstoreOutlined />}
@@ -62,36 +119,11 @@ const Space: React.FC = () => {
 							/>
 						}
 					>
-						<SubMenu
-							icon={<AppstoreOutlined />}
-							key='hmsp'
-							title={
-								<TitleSubMenu
-									title={'hsmp'}
-									type={'list'}
-									onOpenModal={handleOpenModel}
-								/>
-							}
-						>
-							<Menu.Item icon={<AppstoreOutlined />} key='mkt'>
-								Marketing
+						{spaceRedux.spaces.map(space => (
+							<Menu.Item icon={<AppstoreOutlined />} key={space._id}>
+								{space.name}
 							</Menu.Item>
-							<Menu.Item icon={<AppstoreOutlined />} key='web'>
-								Web
-							</Menu.Item>
-							<Menu.Item icon={<AppstoreOutlined />} key='designer'>
-								Designer
-							</Menu.Item>
-						</SubMenu>
-
-						<SubMenu icon={<AppstoreOutlined />} key='hg' title='Harrt - Group'>
-							<Menu.Item icon={<AppstoreOutlined />} key='hg2'>
-								HARTT - GROUP
-							</Menu.Item>
-							<Menu.Item icon={<AppstoreOutlined />} key='clickup'>
-								CLICK UP
-							</Menu.Item>
-						</SubMenu>
+						))}
 					</SubMenu>
 				</Menu>
 			</SpaceStyled>
@@ -110,6 +142,7 @@ const Space: React.FC = () => {
 					setHidden={setShowShareModal}
 					onSubmit={handleSubmitShareModal}
 					onBack={handleBackShareModal}
+					nameSpace={nameSpace}
 				/>
 			)}
 
