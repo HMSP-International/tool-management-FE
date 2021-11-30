@@ -23,7 +23,7 @@ function App () {
 				/>
 
 				<Route
-					path='/manage/*'
+					path='/manage/:_id'
 					element={
 						<PrivateRoute>
 							<ManagePage />

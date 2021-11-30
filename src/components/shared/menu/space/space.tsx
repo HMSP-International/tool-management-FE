@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { SpaceStyled } from './space.styled';
+// helpers
+import { convertProject } from '../../../../helpers/convertProject';
+import STATUS from '../../../../constants/status';
 // antd
 import { Menu } from 'antd';
 import { AppstoreOutlined } from '@ant-design/icons';
 import TitleSubMenu from '../titleSubmenu/titleSubMenu';
 // modals
+import ProjectModal from '../modals/projectModal';
 import WorkSpaceModal from '../modals/workSpaceModal';
 import ShareModal from '../modals/shareModal';
 // components
@@ -13,43 +17,86 @@ import ErrorView from '../../errorView/errorView';
 import ListModal from '../modals/listModal';
 // graphql
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
-import { GET_SPACE_QUERY } from '../graphql/queries';
-import { CREATE_SPACE_MUTATION } from '../graphql/mutations';
+import { GET_SPACES_QUERY } from '../graphql/queries';
+import {
+	CREATE_PROJECT_MUTATION,
+	CREATE_SPACE_MUTATION,
+	GET_PROJECTS_MUTATION,
+} from '../graphql/mutations';
 // interfaces
 import { openNotification } from '../../../../helpers/notification';
 import { handleApolloError } from '../../../../helpers/apolloError';
 import { RootState } from '../../../../app/rootReducer';
-import { IInitialStateSpace } from '../../../../features/space/interfaces';
+import { IInitialStateSpace, ISpace } from '../../../../features/space/interfaces';
+import { IInitialStateProject, IProject } from '../../../../features/project/interfaces';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpaces } from '../../../../features/space/slice';
+import { getProjects, createProject } from '../../../../features/project/slice';
 
 const { SubMenu } = Menu;
 
 const Space: React.FC = () => {
 	// graphql
-	const { data, error, loading: loadingGetSpace } = useQuery(GET_SPACE_QUERY);
+	const { data: dataSpace, error, loading: loadingGetSpace } = useQuery(GET_SPACES_QUERY);
 	const [ onCreateSpace, { loading: loadingCreateSpace } ] = useMutation(CREATE_SPACE_MUTATION);
+	const [ onGetProjects, { loading: loadingGetProjects } ] = useMutation(GET_PROJECTS_MUTATION);
+	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(
+		CREATE_PROJECT_MUTATION,
+	);
 	// state
 	const [ nameSpace, setNameSpace ] = useState('');
 	const [ showSpaceModal, setShowSpaceModal ] = useState(false);
 	const [ showShareModal, setShowShareModal ] = useState(false);
 	const [ showListModal, setShowListModal ] = useState(false);
+	const [ showProjectModal, setShowProjectModal ] = useState(false);
+	const [ spaceId, setSpaceId ] = useState('');
 	// redux
 	const dispatch = useDispatch();
 	const spaceRedux: IInitialStateSpace = useSelector((state: RootState) => state.space);
+	const projectRedux: IInitialStateProject = useSelector((state: RootState) => state.project);
 
 	useEffect(
 		() => {
-			if (data) {
-				const { getSpaces: spaces } = data;
+			if (dataSpace) {
+				const { getSpaces: spaces } = dataSpace;
 				dispatch(getSpaces(spaces));
 			}
 		},
-		[ data, dispatch ],
+		[ dataSpace, dispatch ],
 	);
 
-	if (loadingGetSpace || loadingCreateSpace) return <LoadingView />;
+	useEffect(
+		() => {
+			if (spaceRedux.status === STATUS.SUCCESS) {
+				const getProject = async () => {
+					const { getSpaces } = dataSpace;
+					const spaces: string[] = getSpaces.map((space: ISpace) => space._id);
+					const { data } = await onGetProjects({
+						variables:
+							{
+								getProjectsInput:
+									{
+										_spacesId: spaces,
+									},
+							},
+					});
+
+					const projects: IProject[] = data.getProjects;
+					const newProjects = convertProject(projects);
+
+					dispatch(getProjects(newProjects));
+				};
+
+				getProject();
+			}
+		},
+		[ dataSpace, spaceRedux, onGetProjects, dispatch ],
+	);
+
+	if (loadingGetSpace || loadingCreateSpace || loadingGetProjects || loadingCreateProject) {
+		return <LoadingView />;
+	}
 	if (error) return <ErrorView error={error} />;
 
 	const sendSpaceToServer = async () => {
@@ -95,19 +142,42 @@ const Space: React.FC = () => {
 		setShowListModal(false);
 	};
 
-	const handleOpenModel = (type: string) => {
+	const handleSubmitProjectModal = async (nameProject: string) => {
+		const { data } = await onCreateProject({
+			variables:
+				{
+					createProjectInput:
+						{
+							name: nameProject,
+							_spaceId: spaceId,
+						},
+				},
+		});
+
+		const projects: IProject[] = data.createProject;
+		const newProjects = convertProject(projects);
+		dispatch(createProject(newProjects));
+
+		setShowProjectModal(false);
+	};
+
+	const handleOpenModel = (type: string, _id?: string) => {
 		if (type === 'space') {
 			setShowSpaceModal(true);
 		}
 		else if (type === 'list') {
 			setShowListModal(true);
 		}
+		else if (type === 'project') {
+			setSpaceId(_id || '');
+			setShowProjectModal(true);
+		}
 	};
 
 	return (
 		<React.Fragment>
 			<SpaceStyled>
-				<Menu mode='inline' inlineCollapsed={false}>
+				<Menu mode='inline' inlineCollapsed={false} key={'menu'}>
 					<SubMenu
 						key='space'
 						icon={<AppstoreOutlined />}
@@ -120,9 +190,24 @@ const Space: React.FC = () => {
 						}
 					>
 						{spaceRedux.spaces.map(space => (
-							<Menu.Item icon={<AppstoreOutlined />} key={space._id}>
-								{space.name}
-							</Menu.Item>
+							<SubMenu
+								key={space._id}
+								icon={<AppstoreOutlined />}
+								title={
+									<TitleSubMenu
+										title={space.name}
+										_id={space._id}
+										type={'project'}
+										onOpenModal={handleOpenModel}
+									/>
+								}
+							>
+								{projectRedux.projects[space._id].map(project => (
+									<Menu.Item key={project._id} icon={<AppstoreOutlined />}>
+										{project.name}
+									</Menu.Item>
+								))}
+							</SubMenu>
 						))}
 					</SubMenu>
 				</Menu>
@@ -151,6 +236,14 @@ const Space: React.FC = () => {
 					hidden={showListModal}
 					setHidden={setShowListModal}
 					onSubmit={handleSubmitListModal}
+				/>
+			)}
+
+			{showProjectModal && (
+				<ProjectModal
+					hidden={showProjectModal}
+					setHidden={setShowProjectModal}
+					onSubmit={handleSubmitProjectModal}
 				/>
 			)}
 		</React.Fragment>

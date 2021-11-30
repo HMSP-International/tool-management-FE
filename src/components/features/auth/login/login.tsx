@@ -98,10 +98,12 @@ const Login: React.FC = () => {
 
 			const showing = {
 				title: 'Susscess',
-				extensions: 'logined',
+				extensions: [ 'logined' ],
 			};
 			openNotification(showing);
 		} catch (error) {
+			console.log(error);
+
 			const showing = handleApolloError(error);
 			openNotification(showing, true);
 		}

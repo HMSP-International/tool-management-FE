@@ -5,7 +5,7 @@ function HomePage () {
 	return (
 		<ContainerPage>
 			<main>
-				<Link to={'/manage'}>manage</Link>
+				<Link to={'/manage/123'}>manage</Link>
 			</main>
 		</ContainerPage>
 	);
