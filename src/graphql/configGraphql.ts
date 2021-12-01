@@ -19,6 +19,7 @@ const httpLink = createHttpLink({
 const authLink = setContext((_, { headers }) => {
 	// get the authentication token from local storage if it exists
 	const token = localStorage.getItem('persist:auth');
+	console.log(token);
 
 	if (!token) return { headers };
 

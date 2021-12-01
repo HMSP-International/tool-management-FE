@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { SpaceStyled } from './space.styled';
 // helpers
 import { convertProject } from '../../../../helpers/convertProject';
@@ -99,7 +100,13 @@ const Space: React.FC = () => {
 	}
 	if (error) return <ErrorView error={error} />;
 
-	const sendSpaceToServer = async () => {
+	const handleSubmitSpaceModal = (nameSpace: string) => {
+		setShowSpaceModal(false);
+		setShowShareModal(true);
+		setNameSpace(nameSpace);
+	};
+
+	const handleSubmitShareModal = async () => {
 		try {
 			const { data: { createSpace: spaces } } = await onCreateSpace({
 				variables:
@@ -119,19 +126,10 @@ const Space: React.FC = () => {
 				extensions: [ 'Created space' ],
 			});
 		} catch (error) {
+			console.log(error);
 			const showing = handleApolloError(error as ApolloError);
 			openNotification(showing, true);
 		}
-	};
-
-	const handleSubmitSpaceModal = (nameSpace: string) => {
-		setShowSpaceModal(false);
-		setShowShareModal(true);
-		setNameSpace(nameSpace);
-	};
-
-	const handleSubmitShareModal = () => {
-		sendSpaceToServer();
 	};
 	const handleBackShareModal = () => {
 		setShowSpaceModal(true);
@@ -143,22 +141,32 @@ const Space: React.FC = () => {
 	};
 
 	const handleSubmitProjectModal = async (nameProject: string) => {
-		const { data } = await onCreateProject({
-			variables:
-				{
-					createProjectInput:
-						{
-							name: nameProject,
-							_spaceId: spaceId,
-						},
-				},
-		});
+		try {
+			const { data } = await onCreateProject({
+				variables:
+					{
+						createProjectInput:
+							{
+								name: nameProject,
+								_spaceId: spaceId,
+							},
+					},
+			});
 
-		const projects: IProject[] = data.createProject;
-		const newProjects = convertProject(projects);
-		dispatch(createProject(newProjects));
+			const projects: IProject[] = data.createProject;
+			const newProjects = convertProject(projects);
+			dispatch(createProject(newProjects));
 
-		setShowProjectModal(false);
+			setShowProjectModal(false);
+
+			openNotification({
+				title: 'Susscessfully',
+				extensions: [ 'Created project' ],
+			});
+		} catch (error) {
+			const showing = handleApolloError(error as ApolloError);
+			openNotification(showing, true);
+		}
 	};
 
 	const handleOpenModel = (type: string, _id?: string) => {
@@ -189,7 +197,7 @@ const Space: React.FC = () => {
 							/>
 						}
 					>
-						{spaceRedux.spaces.map(space => (
+						{/* {spaceRedux.spaces.map(space => (
 							<SubMenu
 								key={space._id}
 								icon={<AppstoreOutlined />}
@@ -204,11 +212,42 @@ const Space: React.FC = () => {
 							>
 								{projectRedux.projects[space._id].map(project => (
 									<Menu.Item key={project._id} icon={<AppstoreOutlined />}>
-										{project.name}
+										<Link to={`/manage/${project._id}`}>{project.name}</Link>
 									</Menu.Item>
 								))}
 							</SubMenu>
-						))}
+						))} */}
+						{spaceRedux.spaces.map(space => {
+							const keys = Object.keys(projectRedux.projects);
+
+							return (
+								<SubMenu
+									key={space._id}
+									icon={<AppstoreOutlined />}
+									title={
+										<TitleSubMenu
+											title={space.name}
+											_id={space._id}
+											type={'project'}
+											onOpenModal={handleOpenModel}
+										/>
+									}
+								>
+									{keys.map(key =>
+										projectRedux.projects[key].map(project => (
+											<Menu.Item
+												key={project._id}
+												icon={<AppstoreOutlined />}
+											>
+												<Link to={`/manage/${project._id}`}>
+													{project.name}
+												</Link>
+											</Menu.Item>
+										)),
+									)}
+								</SubMenu>
+							);
+						})}
 					</SubMenu>
 				</Menu>
 			</SpaceStyled>

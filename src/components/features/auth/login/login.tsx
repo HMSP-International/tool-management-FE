@@ -94,7 +94,7 @@ const Login: React.FC = () => {
 			const { jwt } = data.signin;
 			dispatch(login({ jwt }));
 
-			navigate('/');
+			navigate('/', { replace: true });
 
 			const showing = {
 				title: 'Susscess',

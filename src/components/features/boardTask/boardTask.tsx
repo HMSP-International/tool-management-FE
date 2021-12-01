@@ -4,6 +4,7 @@ import { io } from 'socket.io-client';
 // Redux
 import { RootState } from '../../../app/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
+// import { useParams } from 'react-router-dom';
 import * as taskListAction from '../../../features/taskList/slice';
 // component
 import WorkSpace from './workSpace/workSpace';
@@ -50,6 +51,8 @@ export const columnsFromBe: ITaskList = {
 };
 
 const BoardTask: React.FC = () => {
+	// const params = useParams();
+
 	// fetch data
 	const { loading, data, error } = useQuery(queries.taskLists);
 
