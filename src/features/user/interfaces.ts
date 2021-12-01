@@ -11,4 +11,5 @@ export interface IInitialStateProfile {
 	position: string;
 	title: string;
 	email: string;
+	_id: string;
 }

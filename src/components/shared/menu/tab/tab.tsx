@@ -20,7 +20,7 @@ const Tab: React.FC = () => {
 				<div className='menu__body__tabs-item'>
 					<AiFillInfoCircle style={{ color: 'white', fontSize: '20px' }} />
 					<h4>
-						<Link to='/manage/123'>Manager</Link>
+						<Link to='/dashboard'>Dashboard</Link>
 					</h4>
 				</div>
 				<div className='menu__body__tabs-item'>

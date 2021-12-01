@@ -102,8 +102,6 @@ const Login: React.FC = () => {
 			};
 			openNotification(showing);
 		} catch (error) {
-			console.log(error);
-
 			const showing = handleApolloError(error);
 			openNotification(showing, true);
 		}

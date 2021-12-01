@@ -197,28 +197,9 @@ const Space: React.FC = () => {
 							/>
 						}
 					>
-						{/* {spaceRedux.spaces.map(space => (
-							<SubMenu
-								key={space._id}
-								icon={<AppstoreOutlined />}
-								title={
-									<TitleSubMenu
-										title={space.name}
-										_id={space._id}
-										type={'project'}
-										onOpenModal={handleOpenModel}
-									/>
-								}
-							>
-								{projectRedux.projects[space._id].map(project => (
-									<Menu.Item key={project._id} icon={<AppstoreOutlined />}>
-										<Link to={`/manage/${project._id}`}>{project.name}</Link>
-									</Menu.Item>
-								))}
-							</SubMenu>
-						))} */}
 						{spaceRedux.spaces.map(space => {
-							const keys = Object.keys(projectRedux.projects);
+							let keys = Object.keys(projectRedux.projects);
+							keys = keys.filter(key => key === space._id);
 
 							return (
 								<SubMenu

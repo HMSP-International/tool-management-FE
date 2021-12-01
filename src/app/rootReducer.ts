@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 // reducers
 import authReducer from '../features/auth/slice';
+import dashboardReducer from '../features/dashboard/slice';
 import projectReducer from '../features/project/slice';
 import spaceReducer from '../features/space/slice';
 import userReducer from '../features/user/slice';
@@ -10,10 +11,11 @@ import taskListReducer from '../features/taskList/slice';
 import authPersistConfig from '../features/auth/persistConfig';
 
 const rootReducer = combineReducers({
-	taskList: taskListReducer,
+	auth: persistReducer(authPersistConfig, authReducer),
+	dashboard: dashboardReducer,
 	project: projectReducer,
 	space: spaceReducer,
-	auth: persistReducer(authPersistConfig, authReducer),
+	taskList: taskListReducer,
 	user: userReducer,
 });
 

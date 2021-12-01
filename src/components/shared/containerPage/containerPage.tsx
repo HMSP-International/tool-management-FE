@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 
 // components
 // components/shared
@@ -6,7 +6,18 @@ import * as React from 'react';
 // import Footer from '../footer/footer';
 import Menu from '../menu/menu';
 
-const ContainerPage: React.FC = ({ children }) => {
+interface IProps {
+	title?: string;
+}
+
+const ContainerPage: React.FC<IProps> = ({ children, title }) => {
+	useEffect(
+		() => {
+			document.title = title || 'HMSP';
+		},
+		[ title ],
+	);
+
 	return (
 		<React.Fragment>
 			{/* <Header /> */}
