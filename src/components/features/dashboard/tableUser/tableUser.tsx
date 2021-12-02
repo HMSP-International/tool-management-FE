@@ -11,11 +11,11 @@ import PutAction from './action/put';
 import { TableUserStyled } from './tableUser.styled';
 
 // interfaces
-import { IInitialStateDashboard, IUser } from '../../../../features/dashboard/interfaces';
+import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
 import { RootState } from '../../../../app/rootReducer';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../../../features/dashboard/slice';
+import { getUsers } from '../../../../slices/dashboard/slice';
 
 // Graphql
 import { useQuery } from '@apollo/client';

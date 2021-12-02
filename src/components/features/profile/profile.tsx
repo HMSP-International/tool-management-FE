@@ -3,7 +3,7 @@ import { ProfileStyled } from './profile.styled';
 
 // redux
 import { useDispatch } from 'react-redux';
-import { getProfile } from '../../../features/user/slice';
+import { getProfile } from '../../../slices/user/slice';
 // components
 import Email from './email/email';
 import Information from './information/information';
@@ -13,7 +13,7 @@ import LoadingView from '../../shared/loadingView/loadingView';
 import { useQuery } from '@apollo/client';
 import { GET_PROFILE_QUERY } from './graphql/queries';
 // interfaces
-import { IInitialStateProfile } from '../../../features/user/interfaces';
+import { IInitialStateProfile } from '../../../slices/user/interfaces';
 
 const Profile: React.FC = () => {
 	const dispatch = useDispatch();

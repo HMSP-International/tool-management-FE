@@ -1,67 +1,80 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Form, Input } from 'antd';
+import equal from 'deep-equal';
 // Styled Components
 import { PutUserDrawerStyled } from './putUser.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
 // Graphql
-import { CREATE_USER_MUTATION } from '../graphql/mutations';
 import { useMutation } from '@apollo/client';
+import { CHANGE_INFORMATION_BY_ADMIN_MUTAIION } from '../graphql/mutations';
 // interface
-import { IUser } from '../../../../features/dashboard/interfaces';
+import { IUser } from '../../../../slices/dashboard/interfaces';
 import { openNotification } from '../../../../helpers/notification';
 import { handleApolloError } from '../../../../helpers/apolloError';
 
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(newUser: IUser): void;
+	onSubmit(putUser: IUser): void;
+	user: IUser;
 }
 
-const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
-	const [ onCreateUser, { loading } ] = useMutation(CREATE_USER_MUTATION);
+const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) => {
+	const [ onChangeInformation, { loading } ] = useMutation(CHANGE_INFORMATION_BY_ADMIN_MUTAIION);
 	const [ form ] = Form.useForm();
 	const btnRef = useRef<HTMLButtonElement>(null);
+
+	useEffect(
+		() => {
+			form.setFieldsValue(user);
+		},
+		[ form, user ],
+	);
 
 	if (loading) return <LoadingView />;
 
 	const onFinish = async () => {
 		try {
 			const values = form.getFieldsValue();
-			const { data } = await onCreateUser({ variables: { createUserInput: values } });
+			values._id = user._id;
 
-			onSubmit(data.createUser);
+			const { data } = await onChangeInformation({
+				variables: { changeInformationInputByAdmin: values },
+			});
+
+			onSubmit(data.chageInformationByAdmin);
 			setHidden(false);
 
 			const showing = {
 				title: 'Susscess',
-				extensions: [ 'Created new user' ],
+				extensions: [ 'Edited user' ],
 			};
 			openNotification(showing);
 		} catch (error) {
 			const showing = handleApolloError(error);
+			form.setFieldsValue(user);
 			openNotification(showing, true);
 		}
 	};
 
 	const handleChangeInput = () => {
-		const values: Array<string | undefined> = Object.values(form.getFieldsValue());
-		let canSubmit = true;
+		const newUser = form.getFieldsValue();
+		const currentUser = user;
 
-		for (let value of values) {
-			if (!value || value.length <= 0) {
-				canSubmit = false;
-				break;
-			}
-		}
+		delete newUser.password;
+		newUser.__typename = currentUser.__typename;
+		newUser._id = currentUser._id;
 
-		if (canSubmit) {
+		const isMatched = equal(newUser, currentUser);
+
+		if (isMatched) {
 			if (btnRef.current) {
-				btnRef.current.className = 'canSubmit';
+				btnRef.current.className = 'canNotSubmit';
 			}
 		}
 		else {
 			if (btnRef.current) {
-				btnRef.current.className = 'canNotSubmit';
+				btnRef.current.className = 'canSubmit';
 			}
 		}
 	};
@@ -74,6 +87,7 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 			className='modal__add-new-user-modal'
 			onClose={() => setHidden(false)}
 			closable={false}
+			getContainer={false}
 		>
 			<Form
 				name='basic'
@@ -115,7 +129,24 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 					<Form.Item label='Role' name='role'>
 						<Input placeholder='Admin' value='' />
 					</Form.Item>
+				</div>
 
+				<Form.Item className='btn-submit'>
+					<button type='submit' ref={btnRef} className='canNotSubmit'>
+						Update User
+					</button>
+				</Form.Item>
+			</Form>
+			{/* <Form
+				name='basic'
+				autoComplete='off'
+				layout='vertical'
+				form={form}
+				onFinish={onFinish}
+				onChange={handleChangeInput}
+				className='create-new-user__drawer-form'
+			>
+				<div className='create-new-user__container'>
 					<Form.Item
 						label='Password'
 						name='password'
@@ -141,10 +172,10 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 
 				<Form.Item className='btn-submit'>
 					<button type='submit' ref={btnRef} className='canNotSubmit'>
-						Create User
+						Change Password
 					</button>
 				</Form.Item>
-			</Form>
+			</Form> */}
 		</PutUserDrawerStyled>
 	);
 };

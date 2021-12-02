@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 import { RootState } from '../../../app/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useParams } from 'react-router-dom';
-import * as taskListAction from '../../../features/taskList/slice';
+import * as taskListAction from '../../../slices/taskList/slice';
 // component
 import WorkSpace from './workSpace/workSpace';
 // import WithFetchedData from '../../../hocs/withFetchedData';
@@ -14,7 +14,7 @@ import LoadingView from '../../shared/loadingView/loadingView';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { ITaskList, ITask } from './interfaces';
-import { ITaskLists, IInitialState } from '../../../features/taskList/interfaces';
+import { ITaskLists, IInitialState } from '../../../slices/taskList/interfaces';
 // graphql
 import { queries } from './schema/queries';
 // fake data from be

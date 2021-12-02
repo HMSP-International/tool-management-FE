@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../app/rootReducer';
-import { IInitialStateAuth } from '../features/auth/interfaces';
-import { logout } from '../features/auth/slice';
+import { IInitialStateAuth } from '../slices/auth/interfaces';
+import { logout } from '../slices/auth/slice';
 import jwt_decode from 'jwt-decode';
 
 interface IDecode {

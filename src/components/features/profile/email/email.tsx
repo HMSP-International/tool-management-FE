@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../app/rootReducer';
-import { IInitialStateUser } from '../../../../features/user/interfaces';
+import { IInitialStateUser } from '../../../../slices/user/interfaces';
 import { EmailStyled } from './email.styled';
 
 const Email: React.FC = () => {

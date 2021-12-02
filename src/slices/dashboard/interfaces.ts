@@ -14,4 +14,5 @@ export interface IUser {
 	position: string;
 	title: string;
 	action: string;
+	__typename?: string;
 }

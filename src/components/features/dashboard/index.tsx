@@ -9,10 +9,10 @@ import TableUser from './tableUser/tableUser';
 import { DashboardStyled } from './index.styled';
 
 // interfaces
-import { IUser } from '../../../features/dashboard/interfaces';
+import { IUser } from '../../../slices/dashboard/interfaces';
 
 // redux
-import { createUser } from '../../../features/dashboard/slice';
+import { createUser } from '../../../slices/dashboard/slice';
 import { useDispatch } from 'react-redux';
 
 const Dashboard: React.FC = () => {

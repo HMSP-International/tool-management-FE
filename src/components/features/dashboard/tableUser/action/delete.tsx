@@ -12,7 +12,7 @@ import { ApolloError, useMutation } from '@apollo/client';
 import { DELETE_USER_MUTATION } from '../../graphql/mutations';
 // redux
 import { useDispatch } from 'react-redux';
-import { deleteUser } from '../../../../../features/dashboard/slice';
+import { deleteUser } from '../../../../../slices/dashboard/slice';
 
 interface IProps {
 	user: {

@@ -5,7 +5,7 @@ import { LoginStyled } from './login.styled';
 import { LOGIN_MUTAIION } from '../graphql/mutaions';
 import { useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/client';
-import { login } from '../../../../features/auth/slice';
+import { login } from '../../../../slices/auth/slice';
 import LoadingView from '../../../shared/loadingView/loadingView';
 import { handleApolloError } from '../../../../helpers/apolloError';
 import { openNotification } from '../../../../helpers/notification';

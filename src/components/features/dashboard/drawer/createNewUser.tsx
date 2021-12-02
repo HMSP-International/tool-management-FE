@@ -7,7 +7,7 @@ import LoadingView from '../../../shared/loadingView/loadingView';
 import { CREATE_USER_MUTATION } from '../graphql/mutations';
 import { useMutation } from '@apollo/client';
 // interface
-import { IUser } from '../../../../features/dashboard/interfaces';
+import { IUser } from '../../../../slices/dashboard/interfaces';
 import { openNotification } from '../../../../helpers/notification';
 import { handleApolloError } from '../../../../helpers/apolloError';
 

@@ -1,4 +1,4 @@
-import { IProject, IElementProject } from '../features/project/interfaces';
+import { IProject, IElementProject } from '../slices/project/interfaces';
 
 export interface IConverProject {
 	(projects: IProject[]): IElementProject;

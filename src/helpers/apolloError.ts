@@ -1,8 +1,9 @@
 import { ApolloError } from '@apollo/client';
 
 export const handleApolloError = (error: unknown): { title: string; extensions: [] } => {
-	const { graphQLErrors } = error as ApolloError;
-	console.log(graphQLErrors);
+	const apolloError = error as ApolloError;
+	const { graphQLErrors } = apolloError;
+	console.log(apolloError.message);
 
 	let extensions: any = [];
 	if (typeof graphQLErrors[0].extensions === 'string') {

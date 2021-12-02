@@ -28,12 +28,12 @@ import {
 import { openNotification } from '../../../../helpers/notification';
 import { handleApolloError } from '../../../../helpers/apolloError';
 import { RootState } from '../../../../app/rootReducer';
-import { IInitialStateSpace, ISpace } from '../../../../features/space/interfaces';
-import { IInitialStateProject, IProject } from '../../../../features/project/interfaces';
+import { IInitialStateSpace, ISpace } from '../../../../slices/space/interfaces';
+import { IInitialStateProject, IProject } from '../../../../slices/project/interfaces';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { getSpaces } from '../../../../features/space/slice';
-import { getProjects, createProject } from '../../../../features/project/slice';
+import { getSpaces } from '../../../../slices/space/slice';
+import { getProjects, createProject } from '../../../../slices/project/slice';
 
 const { SubMenu } = Menu;
 

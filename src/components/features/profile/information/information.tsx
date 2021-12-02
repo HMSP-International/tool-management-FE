@@ -7,11 +7,10 @@ import { openNotification } from '../../../../helpers/notification';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../app/rootReducer';
 // Interfaces
-import { IInitialStateUser } from '../../../../features/user/interfaces';
+import { IInitialStateUser } from '../../../../slices/user/interfaces';
 import { InformationStyled } from './information.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
 import { handleApolloError } from '../../../../helpers/apolloError';
-// import equal from 'deep-equal';
 
 const Information: React.FC = () => {
 	const [ onChangeInformation, { loading } ] = useMutation(CHANGE_INFORMATION_MUTAIION);

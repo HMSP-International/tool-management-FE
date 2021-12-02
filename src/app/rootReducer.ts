@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 // reducers
-import authReducer from '../features/auth/slice';
-import dashboardReducer from '../features/dashboard/slice';
-import projectReducer from '../features/project/slice';
-import spaceReducer from '../features/space/slice';
-import userReducer from '../features/user/slice';
-import taskListReducer from '../features/taskList/slice';
+import authReducer from '../slices/auth/slice';
+import dashboardReducer from '../slices/dashboard/slice';
+import projectReducer from '../slices/project/slice';
+import spaceReducer from '../slices/space/slice';
+import userReducer from '../slices/user/slice';
+import taskListReducer from '../slices/taskList/slice';
 // persist configs
-import authPersistConfig from '../features/auth/persistConfig';
+import authPersistConfig from '../slices/auth/persistConfig';
 
 const rootReducer = combineReducers({
 	auth: persistReducer(authPersistConfig, authReducer),
