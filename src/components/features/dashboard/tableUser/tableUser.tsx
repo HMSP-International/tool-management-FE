@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 // table
 import DataTable from 'react-data-table-component';
@@ -14,15 +14,7 @@ import { TableUserStyled } from './tableUser.styled';
 import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
 import { RootState } from '../../../../app/rootReducer';
 // Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../../../slices/dashboard/slice';
-
-// Graphql
-import { useQuery } from '@apollo/client';
-import { GET_USERS_QUERY } from '../graphql/queries';
-// components
-import LoadingView from '../../../shared/loadingView/loadingView';
-import ErrorView from '../../../shared/errorView/errorView';
+import { useSelector } from 'react-redux';
 
 const columns: TableColumn<IUser>[] = [
 	{
@@ -80,28 +72,9 @@ const columns: TableColumn<IUser>[] = [
 
 const TableUser: React.FC = () => {
 	// redux
-	const dispatch = useDispatch();
 	const dashboardRedux: IInitialStateDashboard = useSelector(
 		(state: RootState) => state.dashboard,
 	);
-
-	// Graphql
-	const { data, error, loading } = useQuery(GET_USERS_QUERY);
-
-	// useEffect
-	useEffect(
-		() => {
-			if (!loading) {
-				const users: IUser[] = data.getUsers;
-
-				dispatch(getUsers(users));
-			}
-		},
-		[ dispatch, loading, data ],
-	);
-
-	if (loading) return <LoadingView />;
-	else if (error) return <ErrorView error={error} />;
 
 	return (
 		<TableUserStyled>

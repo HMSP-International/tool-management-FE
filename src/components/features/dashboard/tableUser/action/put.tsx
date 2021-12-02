@@ -28,12 +28,14 @@ const PutAction: React.FC<IProps> = ({ user }) => {
 				Edit
 			</Tag>
 
-			<PutUserDrawer
-				user={user}
-				hidden={showUserDrawer}
-				setHidden={setShowUserDrawer}
-				onSubmit={handlePutUser}
-			/>
+			{showUserDrawer && (
+				<PutUserDrawer
+					user={user}
+					hidden={showUserDrawer}
+					setHidden={setShowUserDrawer}
+					onSubmit={handlePutUser}
+				/>
+			)}
 		</React.Fragment>
 	);
 };

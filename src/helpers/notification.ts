@@ -1,12 +1,17 @@
 import { notification } from 'antd';
 
 export const openNotification = (
-	{ title, extensions }: { title: string; extensions: any },
+	{ title, extensions = [] }: { title: string; extensions: any },
 	err: Boolean = false,
 ) => {
-	const description = extensions.reduce((result: string, message: string) => {
-		return result + ' and ' + message;
-	});
+	console.log(extensions);
+
+	const description =
+		extensions.length === 0
+			? ''
+			: extensions.reduce((result: string, message: string) => {
+					return result + ' and ' + message;
+				});
 
 	const sender = {
 		message: title,

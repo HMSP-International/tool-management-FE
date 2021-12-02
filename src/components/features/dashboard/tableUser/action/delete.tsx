@@ -66,12 +66,14 @@ const DeleteAction: React.FC<IProps> = ({ user }) => {
 				Delete
 			</Tag>
 
-			<DeleteUserModal
-				hidden={showDeleteUserModal}
-				setHidden={setShowDeleteUserModal}
-				onSubmit={handleDeleteUser}
-				user={user}
-			/>
+			{showDeleteUserModal && (
+				<DeleteUserModal
+					hidden={showDeleteUserModal}
+					setHidden={setShowDeleteUserModal}
+					onSubmit={handleDeleteUser}
+					user={user}
+				/>
+			)}
 		</React.Fragment>
 	);
 };

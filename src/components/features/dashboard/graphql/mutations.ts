@@ -49,3 +49,17 @@ export const CHANGE_PASSWORD_BY_ADMIN_MUTAIION = gql`
 		}
 	}
 `;
+
+export const GET_USERS_MUTATION = gql`
+	mutation Users {
+		getUsers {
+			_id
+			department
+			displayName
+			email
+			position
+			role
+			title
+		}
+	}
+`;
