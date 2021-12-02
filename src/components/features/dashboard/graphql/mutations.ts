@@ -28,7 +28,9 @@ export const DELETE_USER_MUTATION = gql`
 `;
 
 export const CHANGE_INFORMATION_BY_ADMIN_MUTAIION = gql`
-	mutation ChangeInformationByAdmin($changeInformationInputByAdmin: ChangeInformationInputByAdmin!) {
+	mutation ChangeInformationByAdmin(
+		$changeInformationInputByAdmin: ChangeInformationInputByAdmin!
+	) {
 		chageInformationByAdmin(changeInformationInputByAdmin: $changeInformationInputByAdmin) {
 			_id
 			displayName
@@ -36,6 +38,14 @@ export const CHANGE_INFORMATION_BY_ADMIN_MUTAIION = gql`
 			department
 			email
 			position
+		}
+	}
+`;
+
+export const CHANGE_PASSWORD_BY_ADMIN_MUTAIION = gql`
+	mutation ChangePasswordByAdmin($changePasswordInputByAdmin: ChangePasswordInputByAdmin!) {
+		chagePasswordByAdmin(changePasswordInputByAdmin: $changePasswordInputByAdmin) {
+			_id
 		}
 	}
 `;

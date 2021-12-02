@@ -15,8 +15,8 @@ const PutAction: React.FC<IProps> = ({ user }) => {
 	const dispatch = useDispatch();
 	const [ showUserDrawer, setShowUserDrawer ] = useState(false);
 
-	const handlePutUser = (putUser: IUser) => {
-		dispatch(updateInformationUser(putUser));
+	const handlePutUser = (putUser: IUser, type: string) => {
+		if (type === 'infomation') dispatch(updateInformationUser(putUser));
 	};
 
 	return (

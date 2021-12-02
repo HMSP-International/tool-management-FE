@@ -13,12 +13,20 @@ export const PutUserDrawerStyled = styled(Drawer)`
             cursor: pointer;
         }
 
+        span{ 
+            display: inline-block;
+            transition: all 1s ease-out;
+            display: flex;
+            justify-content:center;
+            cursor: pointer;
+        }
+
         .canNotSubmit{
             width: 100%;
             padding: 5px 0;
             border-radius: 5px;
             pointer-events: none;
-
+            background-color: lightgray;
         }
         
         .canSubmit { 
