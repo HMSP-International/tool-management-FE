@@ -1,18 +1,21 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 // pages
-import NotFound from './404/NotFound';
-import HomePage from './homePage/homePage';
-import AuthPage from './authPage/authPage';
-import DashboardPage from './dashboardPage/dashboardPage';
-import ManagePage from './managePage/managePage';
-import ProfilePage from './profilePage/profilePage';
-import PrivateRoute from './privateRoute';
+import HomePage from './pages';
+import AuthPage from './pages/auth';
+import DashboardPage from './pages/dashboard';
+import ManagePage from './pages/manage';
+import NotFound from './pages/notFound';
+import ProfilePage from './pages/profile';
+import VerifyPage from './pages/verify';
+
+import PrivateRoute from './components/shared/privateRoute/privateRoute';
 
 function App () {
 	return (
 		<div className='app'>
 			{/* Start Router */}
+
 			<Routes>
 				<Route
 					path='/'
@@ -22,6 +25,8 @@ function App () {
 						</PrivateRoute>
 					}
 				/>
+
+				<Route path='/auth/*' element={<AuthPage />} />
 
 				<Route
 					path='/dashboard'
@@ -41,6 +46,8 @@ function App () {
 					}
 				/>
 
+				<Route path='/notFound' element={<NotFound />} />
+
 				<Route
 					path='/profile/*'
 					element={
@@ -50,11 +57,16 @@ function App () {
 					}
 				/>
 
-				<Route path='/auth/*' element={<AuthPage />} />
+				<Route
+					path='/verify/:name'
+					element={
+						<PrivateRoute>
+							<VerifyPage />
+						</PrivateRoute>
+					}
+				/>
 
-				<Route path='/404' element={<NotFound />} />
-
-				<Route path='*' element={<Navigate to='/404' />} />
+				<Route path='*' element={<Navigate to='/notFound' />} />
 			</Routes>
 			{/* End Router */}
 		</div>

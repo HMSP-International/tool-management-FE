@@ -5,7 +5,7 @@ import LoadingView from './components/shared/loadingView/loadingView';
 import GlobalStyle from './globalStyle/globalStyle';
 // Router
 import { BrowserRouter } from 'react-router-dom';
-import App from './pages/App';
+import App from './App';
 // Graphql
 import client, { ApolloProvider } from './graphql/configGraphql';
 // Redux

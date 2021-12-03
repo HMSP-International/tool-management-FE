@@ -1,4 +1,4 @@
-import ContainerPage from '../../components/shared/containerPage/containerPage';
+import ContainerPage from '../components/shared/containerPage/containerPage';
 import { Link } from 'react-router-dom';
 
 function HomePage () {

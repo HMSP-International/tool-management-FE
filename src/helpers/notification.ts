@@ -4,7 +4,7 @@ export const openNotification = (
 	{ title, extensions = [] }: { title: string; extensions: any },
 	err: Boolean = false,
 ) => {
-	console.log(extensions);
+	// console.log(extensions);
 
 	const description =
 		extensions.length === 0

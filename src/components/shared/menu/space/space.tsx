@@ -191,7 +191,54 @@ const Space: React.FC = () => {
 						icon={<AppstoreOutlined />}
 						title={
 							<TitleSubMenu
-								title={'Space'}
+								title={'Your Space'}
+								type={'space'}
+								onOpenModal={handleOpenModel}
+							/>
+						}
+					>
+						{spaceRedux.spaces.map(space => {
+							let keys = Object.keys(projectRedux.projects);
+							keys = keys.filter(key => key === space._id);
+
+							return (
+								<SubMenu
+									key={space._id}
+									icon={<AppstoreOutlined />}
+									title={
+										<TitleSubMenu
+											title={space.name}
+											_id={space._id}
+											type={'project'}
+											onOpenModal={handleOpenModel}
+										/>
+									}
+								>
+									{keys.map(key =>
+										projectRedux.projects[key].map(project => (
+											<Menu.Item
+												key={project._id}
+												icon={<AppstoreOutlined />}
+											>
+												<Link to={`/manage/${project._id}`}>
+													{project.name}
+												</Link>
+											</Menu.Item>
+										)),
+									)}
+								</SubMenu>
+							);
+						})}
+					</SubMenu>
+				</Menu>
+
+				<Menu mode='inline' inlineCollapsed={false} key={'menu2'}>
+					<SubMenu
+						key='space'
+						icon={<AppstoreOutlined />}
+						title={
+							<TitleSubMenu
+								title={'Invited Space'}
 								type={'space'}
 								onOpenModal={handleOpenModel}
 							/>

@@ -7,8 +7,8 @@ const NotFound: React.FC = () => {
 
 	useEffect(
 		() => {
-			if (pathname !== '404') {
-				navigate('/404');
+			if (pathname !== 'notFound') {
+				navigate('/notFound');
 			}
 		},
 		[ navigate, pathname ],
