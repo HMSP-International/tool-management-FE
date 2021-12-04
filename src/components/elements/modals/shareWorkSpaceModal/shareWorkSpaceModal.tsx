@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-
+import { Tooltip } from 'antd';
 // Styled Components
 import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 // Components
 import ListUserDrawer from '../../drawers/listUserDrawer/listUserDrawer';
 import LoadingView from '../../../shared/loadingView/loadingView';
+// interfaces
+import { IUser } from 'slices/dashboard/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from '../../../../apis/users/mutations';
 import { useMutation } from '@apollo/client';
@@ -15,13 +17,24 @@ import { getUsers } from '../../../../slices/dashboard/slice';
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(): void;
+	onSubmit(inviteUsers: IUser[]): void;
 	onBack(): void;
 	nameSpace: string;
 }
 
-const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack, nameSpace }) => {
-	const [ onGetUsers, { loading } ] = useMutation(GET_USERS_MUTATION);
+const showText = (text: string) => {
+	return <span>{text}</span>;
+};
+
+const ShareWorkSpaceModal: React.FC<IProps> = ({
+	hidden,
+	setHidden,
+	onSubmit,
+	onBack,
+	nameSpace,
+}) => {
+	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
+	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
 	const dispatch = useDispatch();
 	const [ showListUserDrawer, setShowListUserDrawer ] = useState(false);
 
@@ -38,7 +51,13 @@ const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack, nam
 		[ onGetUsers, dispatch ],
 	);
 
-	if (loading) return <LoadingView />;
+	if (loadingGetUsers) return <LoadingView />;
+
+	const handleSubmit = async () => {
+		// Create Space
+		onSubmit(inviteUsers);
+		// send email to comfirm
+	};
 
 	return (
 		<React.Fragment>
@@ -70,12 +89,28 @@ const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack, nam
 					<div className='share-modal__shared'>
 						<div className='share-modal__shared__text'>Share only with:</div>
 						<div className='share-modal__shared__img'>
-							<div>
-								<img
-									src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-									alt=''
-								/>
-							</div>
+							<Tooltip placement='top' title={showText('pham duc huy')}>
+								<div>
+									<img
+										src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
+										alt=''
+									/>
+								</div>
+							</Tooltip>
+							{inviteUsers.map(user => (
+								<Tooltip
+									placement='top'
+									title={showText(user.email)}
+									key={user._id}
+								>
+									<div>
+										<img
+											src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
+											alt=''
+										/>
+									</div>
+								</Tooltip>
+							))}
 						</div>
 						<div
 							className='share-modal__shared__add'
@@ -85,16 +120,21 @@ const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack, nam
 						</div>
 					</div>
 					<div className='share-modal__btn'>
-						<button onClick={onSubmit}>Create Space</button>
+						<button onClick={handleSubmit}>Create Space</button>
 					</div>
 				</div>
 			</ShareModalStyled>
 
 			{showListUserDrawer && (
-				<ListUserDrawer hidden={showListUserDrawer} setHidden={setShowListUserDrawer} />
+				<ListUserDrawer
+					hidden={showListUserDrawer}
+					setHidden={setShowListUserDrawer}
+					inviteUsers={inviteUsers}
+					setInviteUsers={setInviteUsers}
+				/>
 			)}
 		</React.Fragment>
 	);
 };
 
-export default ShareModal;
+export default ShareWorkSpaceModal;

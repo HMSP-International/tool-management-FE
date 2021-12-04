@@ -5,11 +5,11 @@ import DataTable from 'react-data-table-component';
 import { TableColumn } from 'react-data-table-component';
 
 // cell
+// import { Tooltip } from 'antd';
 import DeleteAction from './action/delete';
 import PutAction from './action/put';
 // styled-component
 import { TableUserStyled } from './tableUser.styled';
-
 // interfaces
 import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
 import { RootState } from '../../../../global/redux/rootReducer';

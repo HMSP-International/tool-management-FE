@@ -31,10 +31,12 @@ import {
 import { RootState } from '../../../../global/redux/rootReducer';
 import { IInitialStateSpace, ISpace } from '../../../../slices/space/interfaces';
 import { IInitialStateProject, IProject } from '../../../../slices/project/interfaces';
+import { IUser } from 'slices/dashboard/interfaces';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpaces } from '../../../../slices/space/slice';
 import { getProjects, createProject } from '../../../../slices/project/slice';
+import { INVITE_SPACE_MUTAIION } from 'apis/collaborators/mutations';
 
 const { SubMenu } = Menu;
 
@@ -46,6 +48,7 @@ const Space: React.FC = () => {
 	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(
 		CREATE_PROJECT_MUTATION,
 	);
+	const [ onInviteSpace, { loading: loadingInviteSpace } ] = useMutation(INVITE_SPACE_MUTAIION);
 	// state
 	const [ nameSpace, setNameSpace ] = useState('');
 	const [ showSpaceModal, setShowSpaceModal ] = useState(false);
@@ -96,7 +99,13 @@ const Space: React.FC = () => {
 		[ dataSpace, spaceRedux, onGetProjects, dispatch ],
 	);
 
-	if (loadingGetSpace || loadingCreateSpace || loadingGetProjects || loadingCreateProject) {
+	if (
+		loadingGetSpace ||
+		loadingCreateSpace ||
+		loadingGetProjects ||
+		loadingCreateProject ||
+		loadingInviteSpace
+	) {
 		return <LoadingView />;
 	}
 	if (error) return <ErrorView error={error} />;
@@ -107,7 +116,7 @@ const Space: React.FC = () => {
 		setNameSpace(nameSpace);
 	};
 
-	const handleSubmitShareModal = async () => {
+	const handleSubmitShareModal = async (inviteUsers: IUser[]) => {
 		try {
 			const { data: { createSpace: spaces } } = await onCreateSpace({
 				variables:
@@ -126,10 +135,35 @@ const Space: React.FC = () => {
 				title: 'Susscessfully',
 				extensions: [ 'Created space' ],
 			});
+
+			const newSpace = spaces.filter((space: ISpace) => space.name === nameSpace);
+			console.log(newSpace);
+			handleVerifyInviteSpace(inviteUsers, newSpace);
 		} catch (error) {
 			console.log(error);
 			const showing = handleApolloError(error as ApolloError);
 			openNotification(showing, true);
+		}
+	};
+
+	const handleVerifyInviteSpace = async (inviteUsers: IUser[], newSpace: ISpace[]) => {
+		if (newSpace.length >= 1) {
+			const _workSpaceId = newSpace[0]._id;
+			const role = 'MEMBER';
+
+			for (let i = 0; i < inviteUsers.length; i++) {
+				await onInviteSpace({
+					variables:
+						{
+							inviteSpaceInput:
+								{
+									_workSpaceId,
+									role,
+									_memberId: inviteUsers[i]._id,
+								},
+						},
+				});
+			}
 		}
 	};
 
