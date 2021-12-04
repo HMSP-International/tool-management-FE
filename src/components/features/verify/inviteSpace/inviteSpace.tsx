@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import LoadingView from '../../../shared/loadingView/loadingView';
+import LoadingView from '../../../../components/shared/loadingView/loadingView';
 import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { openNotification } from '../../../../global/helpers/notification';

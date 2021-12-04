@@ -6,6 +6,8 @@ import { ListUserDrawerStyled } from './listUserDrawer.styled';
 // interfaces
 import { RootState } from '../../../../global/redux/rootReducer';
 import { IInitialStateDashboard } from '../../../../slices/dashboard/interfaces';
+// graphql
+import {} from '../../../../apis/users/mutations'
 
 interface IProps {
 	hidden: boolean;

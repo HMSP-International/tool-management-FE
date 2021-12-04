@@ -12,6 +12,7 @@ import {
 } from '../../../../apis/users/mutations';
 // interface
 import { IUser } from '../../../../slices/dashboard/interfaces';
+// helpers
 import { openNotification } from '../../../../global/helpers/notification';
 import { handleApolloError } from '../../../../global/helpers/apolloError';
 

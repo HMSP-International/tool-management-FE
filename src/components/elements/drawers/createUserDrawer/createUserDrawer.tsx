@@ -8,6 +8,7 @@ import { CREATE_USER_MUTATION } from '../../../../apis/users/mutations';
 import { useMutation } from '@apollo/client';
 // interface
 import { IUser } from '../../../../slices/dashboard/interfaces';
+// helpers
 import { openNotification } from '../../../../global/helpers/notification';
 import { handleApolloError } from '../../../../global/helpers/apolloError';
 

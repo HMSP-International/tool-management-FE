@@ -3,30 +3,31 @@ import { Link } from 'react-router-dom';
 import { SpaceStyled } from './space.styled';
 // helpers
 import { convertProject } from '../../../../global/helpers/convertProject';
+import { openNotification } from '../../../../global/helpers/notification';
+import { handleApolloError } from '../../../../global/helpers/apolloError';
+// contants
 import STATUS from '../../../../global/constants/status';
 // antd
 import { Menu } from 'antd';
 import { AppstoreOutlined } from '@ant-design/icons';
 import TitleSubMenu from '../titleSubmenu/titleSubMenu';
 // modals
-import CreateProjectModal from '../../../elements/modals/createProjectModal/createProjectModal';
-import CreateWorkSpaceModal from '../../../elements/modals/createWorkSpaceModal/createWorkSpaceModal';
-import ShareWorkSpaceModal from '../../../elements/modals/shareWorkSpaceModal/shareWorkSpaceModal';
+import CreateProjectModal from '../../../../components/elements/modals/createProjectModal/createProjectModal';
+import CreateWorkSpaceModal from '../../../../components/elements/modals/createWorkSpaceModal/createWorkSpaceModal';
+import ShareWorkSpaceModal from '../../../../components/elements/modals/shareWorkSpaceModal/shareWorkSpaceModal';
 // components
 import LoadingView from '../../loadingView/loadingView';
 import ErrorView from '../../errorView/errorView';
-import CreateListModal from '../../../elements/modals/createListModal/createListModal';
+import CreateListModal from '../../../../components/elements/modals/createListModal/createListModal';
 // graphql
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
 import { GET_SPACES_QUERY } from '../../../../apis/spaces/queries';
+import { CREATE_SPACE_MUTATION } from '../../../../apis/spaces/mutations';
 import {
 	CREATE_PROJECT_MUTATION,
 	GET_PROJECTS_MUTATION,
 } from '../../../../apis/projects/mutations';
-import { CREATE_SPACE_MUTATION } from '../../../../apis/spaces/mutations';
 // interfaces
-import { openNotification } from '../../../../global/helpers/notification';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
 import { RootState } from '../../../../global/redux/rootReducer';
 import { IInitialStateSpace, ISpace } from '../../../../slices/space/interfaces';
 import { IInitialStateProject, IProject } from '../../../../slices/project/interfaces';

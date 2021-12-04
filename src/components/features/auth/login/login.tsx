@@ -9,6 +9,7 @@ import { login } from '../../../../slices/auth/slice';
 import LoadingView from '../../../shared/loadingView/loadingView';
 import { handleApolloError } from '../../../../global/helpers/apolloError';
 import { openNotification } from '../../../../global/helpers/notification';
+
 const NAME_INPUT = {
 	password: 'password',
 	email: 'youremail',
