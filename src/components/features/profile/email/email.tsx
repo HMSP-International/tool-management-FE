@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../app/rootReducer';
+import { RootState } from '../../../../global/redux/rootReducer';
 import { IInitialStateUser } from '../../../../slices/user/interfaces';
 import { EmailStyled } from './email.styled';
 

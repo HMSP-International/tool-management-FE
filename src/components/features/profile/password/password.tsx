@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import LoadingView from '../../../shared/loadingView/loadingView';
-import { CHANGE_PASSWORD_MUTAIION } from '../graphql/mutations';
+import { CHANGE_PASSWORD_MUTAIION } from '../../../../apis/profile/mutations';
 import { PasswordStyled } from './password.styled';
-import { openNotification } from '../../../../helpers/notification';
-import { handleApolloError } from '../../../../helpers/apolloError';
+import { openNotification } from '../../../../global/helpers/notification';
+import { handleApolloError } from '../../../../global/helpers/apolloError';
 
 const Password: React.FC = () => {
 	const [ onLogin, { loading } ] = useMutation(CHANGE_PASSWORD_MUTAIION);

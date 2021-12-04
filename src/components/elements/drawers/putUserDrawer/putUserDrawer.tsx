@@ -9,11 +9,11 @@ import { useMutation } from '@apollo/client';
 import {
 	CHANGE_INFORMATION_BY_ADMIN_MUTAIION,
 	CHANGE_PASSWORD_BY_ADMIN_MUTAIION,
-} from '../../../features/dashboard/graphql/mutations';
+} from '../../../../apis/dashboard/mutations';
 // interface
 import { IUser } from '../../../../slices/dashboard/interfaces';
-import { openNotification } from '../../../../helpers/notification';
-import { handleApolloError } from '../../../../helpers/apolloError';
+import { openNotification } from '../../../../global/helpers/notification';
+import { handleApolloError } from '../../../../global/helpers/apolloError';
 
 interface IProps {
 	hidden: boolean;
@@ -139,7 +139,6 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 			visible={hidden}
 			placement={'right'}
 			footer={null}
-			className='modal__add-new-user-modal'
 			onClose={() => setHidden(false)}
 			closable={false}
 			getContainer={false}

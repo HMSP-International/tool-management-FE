@@ -4,12 +4,12 @@ import { Form, Input } from 'antd';
 import { CreateNewUserDrawerStyled } from './createUserDrawer.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
 // Graphql
-import { CREATE_USER_MUTATION } from '../../../features/dashboard/graphql/mutations';
+import { CREATE_USER_MUTATION } from '../../../../apis/dashboard/mutations';
 import { useMutation } from '@apollo/client';
 // interface
 import { IUser } from '../../../../slices/dashboard/interfaces';
-import { openNotification } from '../../../../helpers/notification';
-import { handleApolloError } from '../../../../helpers/apolloError';
+import { openNotification } from '../../../../global/helpers/notification';
+import { handleApolloError } from '../../../../global/helpers/apolloError';
 
 interface IProps {
 	hidden: boolean;
@@ -71,7 +71,6 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 			visible={hidden}
 			placement={'right'}
 			footer={null}
-			className='modal__add-new-user-modal'
 			onClose={() => setHidden(false)}
 			closable={false}
 		>

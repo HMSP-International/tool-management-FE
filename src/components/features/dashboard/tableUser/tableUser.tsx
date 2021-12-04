@@ -12,7 +12,7 @@ import { TableUserStyled } from './tableUser.styled';
 
 // interfaces
 import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
-import { RootState } from '../../../../app/rootReducer';
+import { RootState } from '../../../../global/redux/rootReducer';
 // Redux
 import { useSelector } from 'react-redux';
 

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { CHANGE_INFORMATION_MUTAIION } from '../graphql/mutations';
+import { CHANGE_INFORMATION_MUTAIION } from '../../../../apis/profile/mutations';
 // helpers
-import { openNotification } from '../../../../helpers/notification';
+import { openNotification } from '../../../../global/helpers/notification';
 // Redux
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../app/rootReducer';
+import { RootState } from '../../../../global/redux/rootReducer';
 // Interfaces
 import { IInitialStateUser } from '../../../../slices/user/interfaces';
 import { InformationStyled } from './information.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
-import { handleApolloError } from '../../../../helpers/apolloError';
+import { handleApolloError } from '../../../../global/helpers/apolloError';
 
 const Information: React.FC = () => {
 	const [ onChangeInformation, { loading } ] = useMutation(CHANGE_INFORMATION_MUTAIION);

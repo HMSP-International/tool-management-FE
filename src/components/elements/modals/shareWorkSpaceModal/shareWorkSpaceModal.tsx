@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Styled Components
 import { ShareModalStyled } from './shareWorkSpaceModal.styled';
+// Components
+import ListUserDrawer from '../../drawers/listUserDrawer/listUserDrawer';
 
 interface IProps {
 	hidden: boolean;
@@ -12,6 +14,8 @@ interface IProps {
 }
 
 const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack, nameSpace }) => {
+	const [ showListUserDrawer, setShowListUserDrawer ] = useState(false);
+
 	return (
 		<React.Fragment>
 			<ShareModalStyled
@@ -48,20 +52,23 @@ const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack, nam
 									alt=''
 								/>
 							</div>
-							<div>
-								<img
-									src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-									alt=''
-								/>
-							</div>
 						</div>
-						<div className='share-modal__shared__add'>Add people</div>
+						<div
+							className='share-modal__shared__add'
+							onClick={() => setShowListUserDrawer(true)}
+						>
+							Add people
+						</div>
 					</div>
 					<div className='share-modal__btn'>
 						<button onClick={onSubmit}>Create Space</button>
 					</div>
 				</div>
 			</ShareModalStyled>
+
+			{showListUserDrawer && (
+				<ListUserDrawer hidden={showListUserDrawer} setHidden={setShowListUserDrawer} />
+			)}
 		</React.Fragment>
 	);
 };

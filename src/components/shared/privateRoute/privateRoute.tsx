@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../app/rootReducer';
+import { RootState } from '../../../global/redux/rootReducer';
 import { IInitialStateAuth } from '../../../slices/auth/interfaces';
 import { logout } from '../../../slices/auth/slice';
 import jwt_decode from 'jwt-decode';

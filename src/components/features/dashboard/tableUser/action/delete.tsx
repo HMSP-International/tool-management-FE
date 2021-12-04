@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Tag } from 'antd';
 
 // helpers
-import { openNotification } from '../../../../../helpers/notification';
-import { handleApolloError } from '../../../../../helpers/apolloError';
+import { openNotification } from '../../../../../global/helpers/notification';
+import { handleApolloError } from '../../../../../global/helpers/apolloError';
 // components
 import DeleteUserModal from '../../../../elements/modals/deleteUserModal/deleteUser';
 import LoadingView from '../../../../shared/loadingView/loadingView';
 // graphql
 import { ApolloError, useMutation } from '@apollo/client';
-import { DELETE_USER_MUTATION } from '../../graphql/mutations';
+import { DELETE_USER_MUTATION } from '../../../../../apis/dashboard/mutations';
 // redux
 import { useDispatch } from 'react-redux';
 import { deleteUser } from '../../../../../slices/dashboard/slice';

@@ -11,7 +11,7 @@ import Password from './password/password';
 import LoadingView from '../../shared/loadingView/loadingView';
 // graphql
 import { useQuery } from '@apollo/client';
-import { GET_PROFILE_QUERY } from './graphql/queries';
+import { GET_PROFILE_QUERY } from '../../../apis/profile/queries';
 // interfaces
 import { IInitialStateProfile } from '../../../slices/user/interfaces';
 

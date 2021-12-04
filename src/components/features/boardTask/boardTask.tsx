@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import { io } from 'socket.io-client';
 // Redux
-import { RootState } from '../../../app/rootReducer';
+import { RootState } from '../../../global/redux/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useParams } from 'react-router-dom';
 import * as taskListAction from '../../../slices/taskList/slice';
@@ -16,7 +16,7 @@ import { DropResult } from 'react-beautiful-dnd';
 import { ITaskList, ITask } from './interfaces';
 import { ITaskLists, IInitialState } from '../../../slices/taskList/interfaces';
 // graphql
-import { queries } from './schema/queries';
+import { queries } from '../../../apis/boardTask/queries';
 // fake data from be
 export const itemsFromBe: Array<ITask> = [
 	{ _listId: '1', content: 'first task' },

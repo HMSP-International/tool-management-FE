@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // Modal
-import CreateNewUserDrawer from '../../elements/drawer/createUserDrawer/createUserDrawer';
+import CreateNewUserDrawer from '../../elements/drawers/createUserDrawer/createUserDrawer';
 
 // components
 import ContainerPage from '../../shared/containerPage/containerPage';
@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 
 // graphql
 import { useMutation } from '@apollo/client';
-import { GET_USERS_MUTATION } from './graphql/mutations';
+import { GET_USERS_MUTATION } from '../../../apis/dashboard/mutations';
 
 const Dashboard: React.FC = () => {
 	const dispatch = useDispatch();

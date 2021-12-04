@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { ICollaborator, IInitialStateCollaborator } from '../interfaces';
-import STATUS from '../../../constants/status';
+import STATUS from '../../../global/constants/status';
 
 export const getCollaborators = (
 	state: IInitialStateCollaborator,

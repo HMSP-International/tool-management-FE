@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SpaceStyled } from './space.styled';
 // helpers
-import { convertProject } from '../../../../helpers/convertProject';
-import STATUS from '../../../../constants/status';
+import { convertProject } from '../../../../global/helpers/convertProject';
+import STATUS from '../../../../global/constants/status';
 // antd
 import { Menu } from 'antd';
 import { AppstoreOutlined } from '@ant-design/icons';
@@ -18,16 +18,16 @@ import ErrorView from '../../errorView/errorView';
 import CreateListModal from '../../../elements/modals/createListModal/createListModal';
 // graphql
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
-import { GET_SPACES_QUERY } from '../graphql/queries';
+import { GET_SPACES_QUERY } from '../../../../apis/spaces/queries';
 import {
 	CREATE_PROJECT_MUTATION,
-	CREATE_SPACE_MUTATION,
 	GET_PROJECTS_MUTATION,
-} from '../graphql/mutations';
+} from '../../../../apis/projects/mutations';
+import { CREATE_SPACE_MUTATION } from '../../../../apis/spaces/mutations';
 // interfaces
-import { openNotification } from '../../../../helpers/notification';
-import { handleApolloError } from '../../../../helpers/apolloError';
-import { RootState } from '../../../../app/rootReducer';
+import { openNotification } from '../../../../global/helpers/notification';
+import { handleApolloError } from '../../../../global/helpers/apolloError';
+import { RootState } from '../../../../global/redux/rootReducer';
 import { IInitialStateSpace, ISpace } from '../../../../slices/space/interfaces';
 import { IInitialStateProject, IProject } from '../../../../slices/project/interfaces';
 // redux
