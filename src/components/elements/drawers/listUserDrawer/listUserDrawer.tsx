@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 // Redux
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 // css
 import { ListUserDrawerStyled } from './listUserDrawer.styled';
 // interfaces
@@ -14,12 +13,9 @@ interface IProps {
 }
 
 const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden }) => {
-	const dispatch = useDispatch();
 	const dashboardRedux: IInitialStateDashboard = useSelector(
 		(state: RootState) => state.dashboard,
 	);
-
-	useEffect(() => {}, [ dispatch ]);
 
 	return (
 		<ListUserDrawerStyled

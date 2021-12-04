@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 
 // graphql
 import { useMutation } from '@apollo/client';
-import { GET_USERS_MUTATION } from '../../../apis/dashboard/mutations';
+import { GET_USERS_MUTATION } from '../../../apis/users/mutations';
 
 const Dashboard: React.FC = () => {
 	const dispatch = useDispatch();

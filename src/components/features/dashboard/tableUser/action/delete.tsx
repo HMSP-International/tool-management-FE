@@ -9,7 +9,7 @@ import DeleteUserModal from '../../../../elements/modals/deleteUserModal/deleteU
 import LoadingView from '../../../../shared/loadingView/loadingView';
 // graphql
 import { ApolloError, useMutation } from '@apollo/client';
-import { DELETE_USER_MUTATION } from '../../../../../apis/dashboard/mutations';
+import { DELETE_USER_MUTATION } from '../../../../../apis/users/mutations';
 // redux
 import { useDispatch } from 'react-redux';
 import { deleteUser } from '../../../../../slices/dashboard/slice';

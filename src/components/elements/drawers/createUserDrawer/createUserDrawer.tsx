@@ -4,7 +4,7 @@ import { Form, Input } from 'antd';
 import { CreateNewUserDrawerStyled } from './createUserDrawer.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
 // Graphql
-import { CREATE_USER_MUTATION } from '../../../../apis/dashboard/mutations';
+import { CREATE_USER_MUTATION } from '../../../../apis/users/mutations';
 import { useMutation } from '@apollo/client';
 // interface
 import { IUser } from '../../../../slices/dashboard/interfaces';

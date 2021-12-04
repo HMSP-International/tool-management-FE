@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Styled Components
 import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 // Components
 import ListUserDrawer from '../../drawers/listUserDrawer/listUserDrawer';
+import LoadingView from '../../../shared/loadingView/loadingView';
+// graphql
+import { GET_USERS_MUTATION } from '../../../../apis/users/mutations';
+import { useMutation } from '@apollo/client';
+// redux
+import { useDispatch } from 'react-redux';
+import { getUsers } from '../../../../slices/dashboard/slice';
 
 interface IProps {
 	hidden: boolean;
@@ -14,7 +21,24 @@ interface IProps {
 }
 
 const ShareModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, onBack, nameSpace }) => {
+	const [ onGetUsers, { loading } ] = useMutation(GET_USERS_MUTATION);
+	const dispatch = useDispatch();
 	const [ showListUserDrawer, setShowListUserDrawer ] = useState(false);
+
+	useEffect(
+		() => {
+			const fetchUsers = async () => {
+				const { data } = await onGetUsers();
+
+				dispatch(getUsers(data.getUsers));
+			};
+
+			fetchUsers();
+		},
+		[ onGetUsers, dispatch ],
+	);
+
+	if (loading) return <LoadingView />;
 
 	return (
 		<React.Fragment>
