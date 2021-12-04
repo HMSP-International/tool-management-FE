@@ -2,14 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { Form, Input } from 'antd';
 import equal from 'deep-equal';
 // Styled Components
-import { PutUserDrawerStyled } from './putUser.styled';
+import { PutUserDrawerStyled } from './putUserDrawer.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
 // Graphql
 import { useMutation } from '@apollo/client';
 import {
 	CHANGE_INFORMATION_BY_ADMIN_MUTAIION,
 	CHANGE_PASSWORD_BY_ADMIN_MUTAIION,
-} from '../graphql/mutations';
+} from '../../../features/dashboard/graphql/mutations';
 // interface
 import { IUser } from '../../../../slices/dashboard/interfaces';
 import { openNotification } from '../../../../helpers/notification';

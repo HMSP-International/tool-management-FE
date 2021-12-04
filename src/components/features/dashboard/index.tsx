@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // Modal
-import CreateNewUserDrawer from './drawer/createNewUser';
+import CreateNewUserDrawer from '../../elements/drawer/createUserDrawer/createUserDrawer';
 
 // components
 import ContainerPage from '../../shared/containerPage/containerPage';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Styled Components
-import { ShareModalStyled } from './shareModal.styled';
+import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 
 interface IProps {
 	hidden: boolean;

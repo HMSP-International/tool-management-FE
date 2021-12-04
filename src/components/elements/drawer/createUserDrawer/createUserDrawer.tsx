@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { Form, Input } from 'antd';
 // Styled Components
-import { CreateNewUserDrawerStyled } from './createNewUser.styled';
+import { CreateNewUserDrawerStyled } from './createUserDrawer.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
 // Graphql
-import { CREATE_USER_MUTATION } from '../graphql/mutations';
+import { CREATE_USER_MUTATION } from '../../../features/dashboard/graphql/mutations';
 import { useMutation } from '@apollo/client';
 // interface
 import { IUser } from '../../../../slices/dashboard/interfaces';

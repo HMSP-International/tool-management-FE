@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 // Styled Components
-import { ListModalStyled } from './listModal.styled';
+import { ListModalStyled } from './createListModal.styled';
 
 interface IProps {
 	hidden: boolean;
@@ -9,7 +9,7 @@ interface IProps {
 	onSubmit(): void;
 }
 
-const ListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
+const CreateListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -90,4 +90,4 @@ const ListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 	);
 };
 
-export default ListModal;
+export default CreateListModal;

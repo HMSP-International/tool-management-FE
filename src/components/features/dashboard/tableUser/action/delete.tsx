@@ -5,7 +5,7 @@ import { Tag } from 'antd';
 import { openNotification } from '../../../../../helpers/notification';
 import { handleApolloError } from '../../../../../helpers/apolloError';
 // components
-import DeleteUserModal from '../../modal/deleteUser';
+import DeleteUserModal from '../../../../elements/modals/deleteUserModal/deleteUser';
 import LoadingView from '../../../../shared/loadingView/loadingView';
 // graphql
 import { ApolloError, useMutation } from '@apollo/client';

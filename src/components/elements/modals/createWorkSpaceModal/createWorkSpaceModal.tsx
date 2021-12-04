@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 // Styled Components
-import { WorkSpaceModalStyled } from './workSpaceModal.styled';
+import { WorkSpaceModalStyled } from './createWorkSpaceModal.styled';
 
 interface IProps {
 	hidden: boolean;
@@ -8,7 +8,7 @@ interface IProps {
 	onSubmit(nameSpace: string): void;
 }
 
-const WorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
+const CreateWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -86,4 +86,4 @@ const WorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 	);
 };
 
-export default WorkSpaceModal;
+export default CreateWorkSpaceModal;

@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 // reducers
 import authReducer from '../slices/auth/slice';
+import collaboratorReducer from '../slices/collaborator/slice';
 import dashboardReducer from '../slices/dashboard/slice';
 import projectReducer from '../slices/project/slice';
 import spaceReducer from '../slices/space/slice';
@@ -12,6 +13,7 @@ import authPersistConfig from '../slices/auth/persistConfig';
 
 const rootReducer = combineReducers({
 	auth: persistReducer(authPersistConfig, authReducer),
+	collaborator: collaboratorReducer,
 	dashboard: dashboardReducer,
 	project: projectReducer,
 	space: spaceReducer,

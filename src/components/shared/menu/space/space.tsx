@@ -9,13 +9,13 @@ import { Menu } from 'antd';
 import { AppstoreOutlined } from '@ant-design/icons';
 import TitleSubMenu from '../titleSubmenu/titleSubMenu';
 // modals
-import ProjectModal from '../modals/projectModal';
-import WorkSpaceModal from '../modals/workSpaceModal';
-import ShareModal from '../modals/shareModal';
+import CreateProjectModal from '../../../elements/modals/createProjectModal/createProjectModal';
+import CreateWorkSpaceModal from '../../../elements/modals/createWorkSpaceModal/createWorkSpaceModal';
+import ShareWorkSpaceModal from '../../../elements/modals/shareWorkSpaceModal/shareWorkSpaceModal';
 // components
 import LoadingView from '../../loadingView/loadingView';
 import ErrorView from '../../errorView/errorView';
-import ListModal from '../modals/listModal';
+import CreateListModal from '../../../elements/modals/createListModal/createListModal';
 // graphql
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
 import { GET_SPACES_QUERY } from '../graphql/queries';
@@ -131,6 +131,7 @@ const Space: React.FC = () => {
 			openNotification(showing, true);
 		}
 	};
+
 	const handleBackShareModal = () => {
 		setShowSpaceModal(true);
 		setShowShareModal(false);
@@ -281,7 +282,7 @@ const Space: React.FC = () => {
 			</SpaceStyled>
 
 			{(showSpaceModal || showShareModal) && (
-				<WorkSpaceModal
+				<CreateWorkSpaceModal
 					hidden={showSpaceModal}
 					setHidden={setShowSpaceModal}
 					onSubmit={handleSubmitSpaceModal}
@@ -289,7 +290,7 @@ const Space: React.FC = () => {
 			)}
 
 			{showShareModal && (
-				<ShareModal
+				<ShareWorkSpaceModal
 					hidden={showShareModal}
 					setHidden={setShowShareModal}
 					onSubmit={handleSubmitShareModal}
@@ -299,7 +300,7 @@ const Space: React.FC = () => {
 			)}
 
 			{showListModal && (
-				<ListModal
+				<CreateListModal
 					hidden={showListModal}
 					setHidden={setShowListModal}
 					onSubmit={handleSubmitListModal}
@@ -307,7 +308,7 @@ const Space: React.FC = () => {
 			)}
 
 			{showProjectModal && (
-				<ProjectModal
+				<CreateProjectModal
 					hidden={showProjectModal}
 					setHidden={setShowProjectModal}
 					onSubmit={handleSubmitProjectModal}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Tag } from 'antd';
 import { IUser } from '../../../../../slices/dashboard/interfaces';
 
-import PutUserDrawer from '../../drawer/putUser';
+import PutUserDrawer from '../../../../elements/drawer/putUserDrawer/putUserDrawer';
 // Redux
 import { useDispatch } from 'react-redux';
 import { updateInformationUser } from '../../../../../slices/dashboard/slice';

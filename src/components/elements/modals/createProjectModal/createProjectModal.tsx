@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 // Styled Components
-import { ProjectModalStyled } from './projectModal.styled';
+import { ProjectModalStyled } from './createProjectModal.styled';
 
 interface IProps {
 	hidden: boolean;
@@ -9,7 +9,7 @@ interface IProps {
 	onSubmit(projectName: string): void;
 }
 
-const ProjectModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
+const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 	const [ isValidName, setInValidName ] = useState(true);
 
 	const [ messageError, setMessageError ] = useState('');
@@ -94,4 +94,4 @@ const ProjectModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 	);
 };
 
-export default ProjectModal;
+export default CreateProjectModal;
