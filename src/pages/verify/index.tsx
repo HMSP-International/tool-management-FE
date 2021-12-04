@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useParams, Navigate, useLocation } from 'react-router-dom';
-import InviteSpace from '../../components/features/verify/inviteSpace/inviteSpace';
+import InviteSpace from '@components/features/verify/inviteSpace/inviteSpace';
 
 const VerifyPage: React.FC = () => {
 	const { search } = useLocation();

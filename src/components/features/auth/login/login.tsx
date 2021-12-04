@@ -2,13 +2,14 @@ import React, { useState, useRef } from 'react';
 import { BiMailSend } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginStyled } from './login.styled';
-import { LOGIN_MUTAIION } from '../../../../apis/auth/mutaions';
+import { LOGIN_MUTAIION } from '@apis/auth/mutaions';
 import { useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/client';
-import { login } from '../../../../slices/auth/slice';
-import LoadingView from '../../../shared/loadingView/loadingView';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
-import { openNotification } from '../../../../global/helpers/notification';
+import { login } from '@slices/auth/slice';
+import LoadingView from '@components/shared/loadingView/loadingView';
+import { handleApolloError } from '@helpers/apolloError';
+import { openNotification } from '@helpers/notification';
+
 const NAME_INPUT = {
 	password: 'password',
 	email: 'youremail',

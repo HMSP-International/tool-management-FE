@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AiFillHome, AiFillInfoCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { TabStyled } from './tab.styled';
-import { logout } from '../../../../slices/auth/slice';
+import { logout } from '@slices/auth/slice';
 import { useDispatch } from 'react-redux';
 
 const Tab: React.FC = () => {

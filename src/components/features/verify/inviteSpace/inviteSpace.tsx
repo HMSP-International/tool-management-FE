@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import LoadingView from '../../../shared/loadingView/loadingView';
+import LoadingView from '@components/shared/loadingView/loadingView';
 import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import { openNotification } from '../../../../global/helpers/notification';
-import { VERIFY_INVITE_SPACE_MUTATION } from '../../../../apis/verify/mutations';
+import { openNotification } from '@helpers/notification';
+import { VERIFY_INVITE_SPACE_MUTATION } from '@apis/verify/mutations';
 import { useMutation } from '@apollo/client';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
+import { handleApolloError } from '@helpers/apolloError';
 
 interface IProps {
 	token: string;

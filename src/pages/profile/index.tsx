@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ContainerPage from '../../components/shared/containerPage/containerPage';
-import Profile from '../../components/features/profile/profile';
+import ContainerPage from '@components/shared/containerPage/containerPage';
+import Profile from '@components/features/profile/profile';
 
 const ManagePage: React.FC = () => {
 	return (

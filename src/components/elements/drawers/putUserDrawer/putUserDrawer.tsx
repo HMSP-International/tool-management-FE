@@ -3,17 +3,18 @@ import { Form, Input } from 'antd';
 import equal from 'deep-equal';
 // Styled Components
 import { PutUserDrawerStyled } from './putUserDrawer.styled';
-import LoadingView from '../../../shared/loadingView/loadingView';
+import LoadingView from '@components/shared/loadingView/loadingView';
 // Graphql
 import { useMutation } from '@apollo/client';
 import {
 	CHANGE_INFORMATION_BY_ADMIN_MUTAIION,
 	CHANGE_PASSWORD_BY_ADMIN_MUTAIION,
-} from '../../../../apis/dashboard/mutations';
+} from '@apis/users/mutations';
 // interface
-import { IUser } from '../../../../slices/dashboard/interfaces';
-import { openNotification } from '../../../../global/helpers/notification';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
+import { IUser } from '@slices/dashboard/interfaces';
+// helpers
+import { openNotification } from '@helpers/notification';
+import { handleApolloError } from '@helpers/apolloError';
 
 interface IProps {
 	hidden: boolean;

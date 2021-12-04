@@ -2,14 +2,15 @@ import React, { useRef } from 'react';
 import { Form, Input } from 'antd';
 // Styled Components
 import { CreateNewUserDrawerStyled } from './createUserDrawer.styled';
-import LoadingView from '../../../shared/loadingView/loadingView';
+import LoadingView from '@components/shared/loadingView/loadingView';
 // Graphql
-import { CREATE_USER_MUTATION } from '../../../../apis/dashboard/mutations';
+import { CREATE_USER_MUTATION } from '@apis/users/mutations';
 import { useMutation } from '@apollo/client';
 // interface
-import { IUser } from '../../../../slices/dashboard/interfaces';
-import { openNotification } from '../../../../global/helpers/notification';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
+import { IUser } from '@slices/dashboard/interfaces';
+// helpers
+import { openNotification } from '@helpers/notification';
+import { handleApolloError } from '@helpers/apolloError';
 
 interface IProps {
 	hidden: boolean;

@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
 // Modal
-import CreateNewUserDrawer from '../../elements/drawers/createUserDrawer/createUserDrawer';
+import CreateNewUserDrawer from '@components/elements/drawers/createUserDrawer/createUserDrawer';
 
 // components
-import ContainerPage from '../../shared/containerPage/containerPage';
+import ContainerPage from '@components/shared/containerPage/containerPage';
 import TableUser from './tableUser/tableUser';
 import { DashboardStyled } from './index.styled';
-import LoadingView from '../../shared/loadingView/loadingView';
+import LoadingView from '@components/shared/loadingView/loadingView';
 
 // interfaces
-import { IUser } from '../../../slices/dashboard/interfaces';
+import { IUser } from '@slices/dashboard/interfaces';
 
 // redux
-import { createUser, getUsers } from '../../../slices/dashboard/slice';
+import { createUser, getUsers } from '@slices/dashboard/slice';
 import { useDispatch } from 'react-redux';
 
 // graphql
 import { useMutation } from '@apollo/client';
-import { GET_USERS_MUTATION } from '../../../apis/dashboard/mutations';
+import { GET_USERS_MUTATION } from '@apis/users/mutations';
 
 const Dashboard: React.FC = () => {
 	const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import Login from '../../components/features/auth/login/login';
-import Forgot from '../../components/features/auth/forgot/forgot';
+import Login from '@components/features/auth/login/login';
+import Forgot from '@components/features/auth/forgot/forgot';
 // import NotFound from '../../pages/404/NotFound';
 
 import { AuthStyled, MainStyled, BottomStyled, AppStyled } from './auth.styled';

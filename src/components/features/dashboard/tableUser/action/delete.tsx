@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { Tag } from 'antd';
 
 // helpers
-import { openNotification } from '../../../../../global/helpers/notification';
-import { handleApolloError } from '../../../../../global/helpers/apolloError';
+import { openNotification } from '@helpers/notification';
+import { handleApolloError } from '@helpers/apolloError';
 // components
-import DeleteUserModal from '../../../../elements/modals/deleteUserModal/deleteUser';
-import LoadingView from '../../../../shared/loadingView/loadingView';
+import DeleteUserModal from '@components/elements/modals/deleteUserModal/deleteUser';
+import LoadingView from '@components/shared/loadingView/loadingView';
 // graphql
 import { ApolloError, useMutation } from '@apollo/client';
-import { DELETE_USER_MUTATION } from '../../../../../apis/dashboard/mutations';
+import { DELETE_USER_MUTATION } from '@apis/users/mutations';
 // redux
 import { useDispatch } from 'react-redux';
-import { deleteUser } from '../../../../../slices/dashboard/slice';
+import { deleteUser } from '@slices/dashboard/slice';
 
 interface IProps {
 	user: {

@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
-
 // css
 import { ListUserDrawerStyled } from './listUserDrawer.styled';
 // interfaces
-import { RootState } from '../../../../global/redux/rootReducer';
-import { IInitialStateDashboard } from '../../../../slices/dashboard/interfaces';
+import { RootState } from '@redux/rootReducer';
+import { IInitialStateDashboard } from '@slices/dashboard/interfaces';
+// graphql
+import {} from '@apis/users/mutations'
 
 interface IProps {
 	hidden: boolean;

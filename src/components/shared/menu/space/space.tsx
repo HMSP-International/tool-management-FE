@@ -2,38 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SpaceStyled } from './space.styled';
 // helpers
-import { convertProject } from '../../../../global/helpers/convertProject';
-import STATUS from '../../../../global/constants/status';
+import { convertProject } from '@helpers/convertProject';
+import { openNotification } from '@helpers/notification';
+import { handleApolloError } from '@helpers/apolloError';
+// contants
+import STATUS from '@constants/status';
 // antd
 import { Menu } from 'antd';
 import { AppstoreOutlined } from '@ant-design/icons';
 import TitleSubMenu from '../titleSubmenu/titleSubMenu';
 // modals
-import CreateProjectModal from '../../../elements/modals/createProjectModal/createProjectModal';
-import CreateWorkSpaceModal from '../../../elements/modals/createWorkSpaceModal/createWorkSpaceModal';
-import ShareWorkSpaceModal from '../../../elements/modals/shareWorkSpaceModal/shareWorkSpaceModal';
+import CreateProjectModal from '@components/elements/modals/createProjectModal/createProjectModal';
+import CreateWorkSpaceModal from '@components/elements/modals/createWorkSpaceModal/createWorkSpaceModal';
+import ShareWorkSpaceModal from '@components/elements/modals/shareWorkSpaceModal/shareWorkSpaceModal';
 // components
 import LoadingView from '../../loadingView/loadingView';
 import ErrorView from '../../errorView/errorView';
-import CreateListModal from '../../../elements/modals/createListModal/createListModal';
+import CreateListModal from '@components/elements/modals/createListModal/createListModal';
 // graphql
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
-import { GET_SPACES_QUERY } from '../../../../apis/spaces/queries';
-import {
-	CREATE_PROJECT_MUTATION,
-	GET_PROJECTS_MUTATION,
-} from '../../../../apis/projects/mutations';
-import { CREATE_SPACE_MUTATION } from '../../../../apis/spaces/mutations';
+import { GET_SPACES_QUERY } from '@apis/spaces/queries';
+import { CREATE_SPACE_MUTATION } from '@apis/spaces/mutations';
+import { CREATE_PROJECT_MUTATION, GET_PROJECTS_MUTATION } from '@apis/projects/mutations';
 // interfaces
-import { openNotification } from '../../../../global/helpers/notification';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
-import { RootState } from '../../../../global/redux/rootReducer';
-import { IInitialStateSpace, ISpace } from '../../../../slices/space/interfaces';
-import { IInitialStateProject, IProject } from '../../../../slices/project/interfaces';
+import { RootState } from '@global/redux/rootReducer';
+import { IInitialStateSpace, ISpace } from '@slices/space/interfaces';
+import { IInitialStateProject, IProject } from '@slices/project/interfaces';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { getSpaces } from '../../../../slices/space/slice';
-import { getProjects, createProject } from '../../../../slices/project/slice';
+import { getSpaces } from '@slices/space/slice';
+import { getProjects, createProject } from '@slices/project/slice';
 
 const { SubMenu } = Menu;
 

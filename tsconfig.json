@@ -18,10 +18,34 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "paths": {
+      "@apis/*": [
+        "apis/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@global/*": [
+        "global/*"
+      ],
+      "@constants/*": [
+        "global/constants/*"
+      ],
+      "@helpers/*": [
+        "global/helpers/*"
+      ],
+      "@redux/*": [
+        "global/redux/*"
+      ],
+      "@slices/*": [
+        "slices/*"
+      ],
+    },
   },
   "include": [
     "src",
-    "index.tsx",
+    "index.tsx"
   ]
 }

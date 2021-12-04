@@ -11,8 +11,8 @@ import PutAction from './action/put';
 import { TableUserStyled } from './tableUser.styled';
 
 // interfaces
-import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
-import { RootState } from '../../../../global/redux/rootReducer';
+import { IInitialStateDashboard, IUser } from '@slices/dashboard/interfaces';
+import { RootState } from '@redux/rootReducer';
 // Redux
 import { useSelector } from 'react-redux';
 

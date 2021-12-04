@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Tag } from 'antd';
-import { IUser } from '../../../../../slices/dashboard/interfaces';
+import { IUser } from '@slices/dashboard/interfaces';
 
-import PutUserDrawer from '../../../../elements/drawers/putUserDrawer/putUserDrawer';
+import PutUserDrawer from '@components/elements/drawers/putUserDrawer/putUserDrawer';
 // Redux
 import { useDispatch } from 'react-redux';
-import { updateInformationUser } from '../../../../../slices/dashboard/slice';
+import { updateInformationUser } from '@slices/dashboard/slice';
 
 interface IProps {
 	user: IUser;
