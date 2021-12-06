@@ -3,11 +3,20 @@ import styled from 'styled-components';
 export const TitleSubMenuStyled = styled.div`
 	display: flex;
 	justify-content: space-between;
+	height: 48px;
 
-	.submenu__add {
-		font-size: 20px;
-		position: relative;
-		top: -3.3px;
-		right: 5px;
+	.submenu__icons {
+		display: flex;
+
+		> * {
+			margin-right: 10px;
+		}
+
+		&__edit {
+			svg {
+				position: relative;
+				top: 3px;
+			}
+		}
 	}
 `;

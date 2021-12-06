@@ -15,6 +15,7 @@ import TitleSubMenu from '../titleSubmenu/titleSubMenu';
 import CreateProjectModal from '../../../../components/elements/modals/createProjectModal/createProjectModal';
 import CreateWorkSpaceModal from '../../../../components/elements/modals/createWorkSpaceModal/createWorkSpaceModal';
 import ShareWorkSpaceModal from '../../../../components/elements/modals/shareWorkSpaceModal/shareWorkSpaceModal';
+import PutSpaceModal from '../../../elements/modals/putSpaceModal/putSpaceModal';
 // components
 import LoadingView from '../../loadingView/loadingView';
 import ErrorView from '../../errorView/errorView';
@@ -72,6 +73,8 @@ const Space: React.FC = () => {
 	const [ showShareModal, setShowShareModal ] = useState(false);
 	const [ showListModal, setShowListModal ] = useState(false);
 	const [ showProjectModal, setShowProjectModal ] = useState(false);
+	const [ currentSpace, setCurrentSpace ] = useState<any>();
+	const [ showPutProjectModal, setPutShowProjectModal ] = useState(false);
 	const [ spaceId, setSpaceId ] = useState('');
 	// redux
 	const dispatch = useDispatch();
@@ -264,7 +267,36 @@ const Space: React.FC = () => {
 		}
 	};
 
-	const handleOpenModel = (type: string, _id?: string) => {
+	const handlePutProjectModal = async (nameProject: string) => {
+		// try {
+		// 	const { data } = await onCreateProject({
+		// 		variables:
+		// 			{
+		// 				createProjectInput:
+		// 					{
+		// 						name: nameProject,
+		// 						_spaceId: spaceId,
+		// 					},
+		// 			},
+		// 	});
+
+		// 	const projects: IProject[] = data.createProject;
+		// 	const newProjects = convertProject(projects);
+		// 	dispatch(createProject(newProjects));
+
+		// 	setShowProjectModal(false);
+
+		// 	openNotification({
+		// 		title: 'Susscessfully',
+		// 		extensions: [ 'Created project' ],
+		// 	});
+		// } catch (error) {
+		// 	const showing = handleApolloError(error as ApolloError);
+		// 	openNotification(showing, true);
+		// }
+	};
+
+	const handleOpenModel = (type: string, _id?: string, space?: ISpace) => {
 		if (type === 'space') {
 			setShowSpaceModal(true);
 		}
@@ -273,7 +305,13 @@ const Space: React.FC = () => {
 		}
 		else if (type === 'project') {
 			setSpaceId(_id || '');
-			setShowProjectModal(true);
+			if (!space) {
+				setShowProjectModal(true);
+			}
+			else {
+				setCurrentSpace(space);
+				setPutShowProjectModal(true);
+			}
 		}
 	};
 
@@ -308,6 +346,7 @@ const Space: React.FC = () => {
 											type={'project'}
 											onOpenModal={handleOpenModel}
 											isCreated={true}
+											space={space}
 										/>
 									}
 								>
@@ -412,6 +451,15 @@ const Space: React.FC = () => {
 					hidden={showProjectModal}
 					setHidden={setShowProjectModal}
 					onSubmit={handleSubmitProjectModal}
+				/>
+			)}
+
+			{showPutProjectModal && (
+				<PutSpaceModal
+					hidden={showPutProjectModal}
+					setHidden={setPutShowProjectModal}
+					onSubmit={handlePutProjectModal}
+					currentSpace={currentSpace}
 				/>
 			)}
 		</React.Fragment>
