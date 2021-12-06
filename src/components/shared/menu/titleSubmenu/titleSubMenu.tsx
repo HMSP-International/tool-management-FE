@@ -4,20 +4,24 @@ import { TitleSubMenuStyled } from './titleSubMenu.styled';
 interface IProps {
 	title: string;
 	type: string;
-	onOpenModal(type: string): void;
+	onOpenModal(type: string, _id?: string): void;
+	_id?: string;
+	isCreated: boolean;
 }
 
-const Header: React.FC<IProps> = ({ title, onOpenModal, type }) => {
+const TitleSubMenu: React.FC<IProps> = ({ title, onOpenModal, type, _id, isCreated }) => {
 	return (
 		<React.Fragment>
 			<TitleSubMenuStyled className='submenu'>
 				<div className='submenu__title'>{title}</div>
-				<div className='submenu__add' onClick={() => onOpenModal(type)}>
-					+
-				</div>
+				{isCreated && (
+					<div className='submenu__add' onClick={() => onOpenModal(type, _id)}>
+						+
+					</div>
+				)}
 			</TitleSubMenuStyled>
 		</React.Fragment>
 	);
 };
 
-export default Header;
+export default TitleSubMenu;

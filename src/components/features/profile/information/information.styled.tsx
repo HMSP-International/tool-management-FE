@@ -1,11 +1,26 @@
 import styled from 'styled-components';
 
 export const InformationStyled = styled.article`
+	.information__button__suscess {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transition: all 0.3s ease-out;
+
+		button {
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			background-color: lightblue;
+		}
+	}
+
 	.information__button {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		button {
+			pointer-events: none;
 			padding: 10px 20px;
 			border-radius: 5px;
 			cursor: pointer;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AiFillHome, AiFillInfoCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { TabStyled } from './tab.styled';
-import { logout } from '../../../../features/auth/slice';
+import { logout } from '../../../../slices/auth/slice';
 import { useDispatch } from 'react-redux';
 
 const Tab: React.FC = () => {
@@ -20,7 +20,7 @@ const Tab: React.FC = () => {
 				<div className='menu__body__tabs-item'>
 					<AiFillInfoCircle style={{ color: 'white', fontSize: '20px' }} />
 					<h4>
-						<Link to='/manage'>Manager</Link>
+						<Link to='/dashboard'>Dashboard</Link>
 					</h4>
 				</div>
 				<div className='menu__body__tabs-item'>

@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { CHANGE_INFORMATION_MUTAIION } from '../../../../apis/profile/mutations';
+// helpers
+import { openNotification } from '../../../../global/helpers/notification';
+// Redux
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../global/redux/rootReducer';
+// Interfaces
+import { IInitialStateUser } from '../../../../slices/user/interfaces';
 import { InformationStyled } from './information.styled';
-// components
 import LoadingView from '../../../shared/loadingView/loadingView';
-// graphql
-import { useQuery } from '@apollo/client';
-import { GET_PROFILE_QUERY } from '../graphql/queries';
-// interfaces
-import { RootState } from '../../../../app/rootReducer';
-import { IInitialStateProfile } from '../../../../features/profile/interfaces';
-import { IInitialStateAuth } from '../../../../features/auth/interfaces';
+import { handleApolloError } from '../../../../global/helpers/apolloError';
 
 const Information: React.FC = () => {
-	const dispatch = useDispatch();
-	const profile: IInitialStateProfile = useSelector((state: RootState) => state.profile);
-	const auth: IInitialStateAuth = useSelector((state: RootState) => state.auth);
-	const { loading } = useQuery(GET_PROFILE_QUERY);
-
+	const [ onChangeInformation, { loading } ] = useMutation(CHANGE_INFORMATION_MUTAIION);
+	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
+	const [ isSubmit, setIsSubmit ] = useState(true);
 	const [ values, setValues ] = useState({
 		displayName: '',
 		department: '',
@@ -24,14 +23,55 @@ const Information: React.FC = () => {
 		title: '',
 	});
 
+	useEffect(
+		() => {
+			const profile = userRedux.profile;
+			setValues(profile);
+		},
+		[ userRedux ],
+	);
+
+	useEffect(
+		() => {
+			setIsSubmit(userRedux.profile.displayName !== values.displayName);
+		},
+		[ values, userRedux.profile ],
+	);
+
+	if (loading) return <LoadingView />;
+	// handle event --------------------------------------------------------------
 	const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
 		const { name, value } = e.currentTarget;
 		setValues({ ...values, [name]: value });
 	};
 
-	if (loading) {
-		return <LoadingView />;
-	}
+	const sendInformationToServer = async () => {
+		try {
+			await onChangeInformation({
+				variables:
+					{
+						changeInformationInput:
+							{
+								displayName: values.displayName,
+							},
+					},
+			});
+
+			openNotification({
+				title: 'Susscessfully',
+				extensions: [ 'Changed information' ],
+			});
+		} catch (error) {
+			const showing = handleApolloError(error);
+			openNotification(showing, true);
+
+			setValues(userRedux.profile);
+		}
+	};
+
+	const handleSubmit = () => {
+		sendInformationToServer();
+	};
 
 	return (
 		<InformationStyled>
@@ -49,7 +89,7 @@ const Information: React.FC = () => {
 					<div className='information__profile__item'>
 						<label className='information__profile__item__title'>Name</label>
 						<input
-							name='name'
+							name='displayName'
 							className='information__profile__item__content'
 							value={values.displayName}
 							onChange={handleOnChange}
@@ -61,7 +101,8 @@ const Information: React.FC = () => {
 							name='department'
 							className='information__profile__item__content'
 							value={values.department}
-							onChange={handleOnChange}
+							// onChange={handleOnChange}
+							readOnly
 						/>
 					</div>
 					<div className='information__profile__item'>
@@ -70,7 +111,8 @@ const Information: React.FC = () => {
 							name='position'
 							className='information__profile__item__content'
 							value={values.position}
-							onChange={handleOnChange}
+							// onChange={handleOnChange}
+							readOnly
 						/>
 					</div>
 					<div className='information__profile__item'>
@@ -79,13 +121,14 @@ const Information: React.FC = () => {
 							name='title'
 							className='information__profile__item__content'
 							value={values.title}
-							onChange={handleOnChange}
+							// onChange={handleOnChange}
+							readOnly
 						/>
 					</div>
 				</div>
 
-				<div className='information__button'>
-					<button>Update</button>
+				<div className={isSubmit ? 'information__button__suscess' : 'information__button'}>
+					<button onClick={handleSubmit}>Update</button>
 				</div>
 			</div>
 		</InformationStyled>
