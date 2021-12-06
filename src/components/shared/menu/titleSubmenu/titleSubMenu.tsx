@@ -21,7 +21,9 @@ const TitleSubMenu: React.FC<IProps> = ({ title, onOpenModal, type, _id, isCreat
 					<div className='submenu__icons'>
 						{type === 'project' && (
 							<div className='submenu__icons__edit'>
-								<AiOutlineEdit onClick={() => onOpenModal(type, _id, space)} />
+								<AiOutlineEdit
+									onClick={() => onOpenModal('editSpace', _id, space)}
+								/>
 							</div>
 						)}
 						<div className='submenu__icons__add' onClick={() => onOpenModal(type, _id)}>

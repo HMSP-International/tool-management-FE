@@ -82,6 +82,8 @@ const CreateWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit })
 					<button onClick={handleSubmit}>Next</button>
 				</div>
 			</WorkSpaceModalStyled>
+
+			
 		</React.Fragment>
 	);
 };

@@ -9,15 +9,21 @@ import LoadingView from '../../../shared/loadingView/loadingView';
 import { IUser } from 'slices/dashboard/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from '../../../../apis/users/mutations';
-import { useMutation } from '@apollo/client';
+import { ApolloError, useMutation } from '@apollo/client';
+import { CREATE_SPACE_MUTATION, INVITE_SPACES_MUTATION } from 'apis/spaces/mutations';
 // redux
 import { useDispatch } from 'react-redux';
 import { getUsers } from '../../../../slices/dashboard/slice';
+import { getSpaces } from 'slices/space/slice';
+// interfaces
+import { ISpace } from 'slices/space/interfaces';
+// error
+import { openNotification } from 'global/helpers/notification';
+import { handleApolloError } from 'global/helpers/apolloError';
 
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(inviteUsers: IUser[]): void;
 	onBack(): void;
 	nameSpace: string;
 }
@@ -26,16 +32,16 @@ const showText = (text: string) => {
 	return <span>{text}</span>;
 };
 
-const ShareWorkSpaceModal: React.FC<IProps> = ({
-	hidden,
-	setHidden,
-	onSubmit,
-	onBack,
-	nameSpace,
-}) => {
+const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, nameSpace }) => {
+	// state
 	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
+	// graphql
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
+	const [ onCreateSpace, { loading: loadingCreateSpace } ] = useMutation(CREATE_SPACE_MUTATION);
+	const [ onInviteSpace, { loading: loadingInviteSpace } ] = useMutation(INVITE_SPACES_MUTATION);
+	// redux
 	const dispatch = useDispatch();
+	// drawer
 	const [ showListUserDrawer, setShowListUserDrawer ] = useState(false);
 
 	useEffect(
@@ -51,12 +57,63 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({
 		[ onGetUsers, dispatch ],
 	);
 
-	if (loadingGetUsers) return <LoadingView />;
+	if (loadingGetUsers || loadingCreateSpace || loadingInviteSpace) return <LoadingView />;
 
 	const handleSubmit = async () => {
 		// Create Space
-		onSubmit(inviteUsers);
+		handleSubmitShareModal(inviteUsers);
 		// send email to comfirm
+	};
+
+	const handleSubmitShareModal = async (inviteUsers: IUser[]) => {
+		try {
+			const { data: { createSpace: spaces } } = await onCreateSpace({
+				variables:
+					{
+						createSpaceInput:
+							{
+								name: nameSpace,
+							},
+					},
+			});
+
+			dispatch(getSpaces(spaces));
+			setHidden(false);
+
+			openNotification({
+				title: 'Susscessfully',
+				extensions: [ 'Created space' ],
+			});
+
+			const newSpace = spaces.filter((space: ISpace) => space.name === nameSpace);
+			console.log(newSpace);
+			handleVerifyInviteSpace(inviteUsers, newSpace);
+		} catch (error) {
+			console.log(error);
+			const showing = handleApolloError(error as ApolloError);
+			openNotification(showing, true);
+		}
+	};
+
+	const handleVerifyInviteSpace = async (inviteUsers: IUser[], newSpace: ISpace[]) => {
+		if (newSpace.length >= 1) {
+			const _workSpaceId = newSpace[0]._id;
+			const role = 'MEMBER';
+
+			for (let i = 0; i < inviteUsers.length; i++) {
+				await onInviteSpace({
+					variables:
+						{
+							inviteSpaceInput:
+								{
+									_workSpaceId,
+									role,
+									_memberId: inviteUsers[i]._id,
+								},
+						},
+				});
+			}
+		}
 	};
 
 	return (

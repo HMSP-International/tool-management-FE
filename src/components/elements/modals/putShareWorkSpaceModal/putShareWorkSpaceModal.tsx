@@ -7,6 +7,7 @@ import ListUserDrawer from '../../drawers/listUserDrawer/listUserDrawer';
 import LoadingView from '../../../shared/loadingView/loadingView';
 // interfaces
 import { IUser } from 'slices/dashboard/interfaces';
+import { ISpace } from 'slices/space/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from '../../../../apis/users/mutations';
 import { useMutation } from '@apollo/client';
@@ -17,22 +18,15 @@ import { getUsers } from '../../../../slices/dashboard/slice';
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(inviteUsers: IUser[]): void;
 	onBack(): void;
-	nameSpace: string;
+	currentSpace: ISpace;
 }
 
 const showText = (text: string) => {
 	return <span>{text}</span>;
 };
 
-const ShareWorkSpaceModal: React.FC<IProps> = ({
-	hidden,
-	setHidden,
-	onSubmit,
-	onBack,
-	nameSpace,
-}) => {
+const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, currentSpace }) => {
 	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
 	const dispatch = useDispatch();
@@ -55,7 +49,8 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({
 
 	const handleSubmit = async () => {
 		// Create Space
-		onSubmit(inviteUsers);
+		console.log('submit');
+
 		// send email to comfirm
 	};
 
@@ -71,7 +66,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({
 					<div className='share-modal__header__back' onClick={onBack}>
 						{'<'}
 					</div>
-					<div className='share-modal__header__title'>{'Share ' + nameSpace}</div>
+					<div className='share-modal__header__title'>{'Share ' + currentSpace.name}</div>
 					<div className='share-modal__header__close' onClick={() => setHidden(false)}>
 						{'X'}
 					</div>
