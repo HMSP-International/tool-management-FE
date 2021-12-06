@@ -3,6 +3,8 @@ export interface IInitialStateProject {
 	error?: string | null;
 
 	projects: IElementProject;
+
+	projectsFromCollaborator: IElementProject;
 }
 
 export interface IElementProject {

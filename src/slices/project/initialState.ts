@@ -6,6 +6,8 @@ const INITIAL_STATE: IInitialStateProject = {
 	error: null,
 
 	projects: {},
+
+	projectsFromCollaborator: {},
 };
 
 export default INITIAL_STATE;

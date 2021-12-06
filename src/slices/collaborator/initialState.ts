@@ -5,7 +5,7 @@ const INITIAL_STATE: IInitialStateCollaborator = {
 	status: STATUS.IDLE,
 	error: null,
 
-	collaborators: []
+	collaborators: [],
 };
 
 export default INITIAL_STATE;

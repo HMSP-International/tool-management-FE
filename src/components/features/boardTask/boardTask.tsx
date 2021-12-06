@@ -54,7 +54,7 @@ const BoardTask: React.FC = () => {
 	// const params = useParams();
 
 	// fetch data
-	const { loading, data, error } = useQuery(queries.taskLists);
+	const { loading, data, errorInvitedSpace: error } = useQuery(queries.taskLists);
 
 	// dispatch
 	const dispatch = useDispatch();

@@ -10,3 +10,18 @@ export const CREATE_SPACE_MUTATION = gql`
 		}
 	}
 `;
+
+export const INVITE_SPACES_MUTATION = gql`
+	mutation INVITE_SPACE($inviteSpaceInput: InviteSpaceInput!) {
+		inviteSpace(inviteSpaceInput: $inviteSpaceInput) {
+			_adminId
+			_id
+			_memberId
+			_workSpaceId {
+				_id
+			}
+			confirmEmail
+			role
+		}
+	}
+`;

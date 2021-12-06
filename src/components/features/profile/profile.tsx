@@ -18,7 +18,7 @@ import { IInitialStateProfile } from '../../../slices/user/interfaces';
 const Profile: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const { loading, data, error } = useQuery(GET_PROFILE_QUERY);
+	const { loading, data, errorInvitedSpace: error } = useQuery(GET_PROFILE_QUERY);
 
 	const [ currentTab, setCurrentTab ] = useState(0);
 	const tabRef = useRef([ <Information />, <Email />, <Password /> ]);

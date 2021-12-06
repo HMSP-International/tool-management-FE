@@ -21,34 +21,51 @@ import ErrorView from '../../errorView/errorView';
 import CreateListModal from '../../../../components/elements/modals/createListModal/createListModal';
 // graphql
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
-import { GET_SPACES_QUERY } from '../../../../apis/spaces/queries';
-import { CREATE_SPACE_MUTATION } from '../../../../apis/spaces/mutations';
+import { GET_SPACES_QUERY, GET_INVITED_SPACES_QUERY } from '../../../../apis/spaces/queries';
+import { CREATE_SPACE_MUTATION, INVITE_SPACES_MUTATION } from '../../../../apis/spaces/mutations';
 import {
 	CREATE_PROJECT_MUTATION,
 	GET_PROJECTS_MUTATION,
+	GET_PROJECTS_BY_COLLABORATORS_MUTATION,
 } from '../../../../apis/projects/mutations';
 // interfaces
 import { RootState } from '../../../../global/redux/rootReducer';
 import { IInitialStateSpace, ISpace } from '../../../../slices/space/interfaces';
 import { IInitialStateProject, IProject } from '../../../../slices/project/interfaces';
 import { IUser } from 'slices/dashboard/interfaces';
+import { ICollaborator, IInitialStateCollaborator } from 'slices/collaborator/interfaces';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpaces } from '../../../../slices/space/slice';
-import { getProjects, createProject } from '../../../../slices/project/slice';
-import { INVITE_SPACE_MUTAIION } from 'apis/collaborators/mutations';
+import {
+	getProjects,
+	createProject,
+	getProjectsFromCollaborator,
+} from '../../../../slices/project/slice';
+import { getCollaborators } from '../../../../slices/collaborator/slice';
 
 const { SubMenu } = Menu;
 
 const Space: React.FC = () => {
 	// graphql
-	const { data: dataSpace, error, loading: loadingGetSpace } = useQuery(GET_SPACES_QUERY);
+	const {
+		data: dataSpace,
+		errorInvitedSpace: errorGetSpace,
+		loading: loadingGetSpace,
+	} = useQuery(GET_SPACES_QUERY);
+	const { data: dataInvitedSpace, errorInvitedSpace, loading: loadingGetInvitedSpace } = useQuery(
+		GET_INVITED_SPACES_QUERY,
+	);
 	const [ onCreateSpace, { loading: loadingCreateSpace } ] = useMutation(CREATE_SPACE_MUTATION);
 	const [ onGetProjects, { loading: loadingGetProjects } ] = useMutation(GET_PROJECTS_MUTATION);
+	const [
+		onGetProjectsByCollaborators,
+		{ loading: loadingGetProjectsByCollaborators },
+	] = useMutation(GET_PROJECTS_BY_COLLABORATORS_MUTATION);
 	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(
 		CREATE_PROJECT_MUTATION,
 	);
-	const [ onInviteSpace, { loading: loadingInviteSpace } ] = useMutation(INVITE_SPACE_MUTAIION);
+	const [ onInviteSpace, { loading: loadingInviteSpace } ] = useMutation(INVITE_SPACES_MUTATION);
 	// state
 	const [ nameSpace, setNameSpace ] = useState('');
 	const [ showSpaceModal, setShowSpaceModal ] = useState(false);
@@ -60,6 +77,9 @@ const Space: React.FC = () => {
 	const dispatch = useDispatch();
 	const spaceRedux: IInitialStateSpace = useSelector((state: RootState) => state.space);
 	const projectRedux: IInitialStateProject = useSelector((state: RootState) => state.project);
+	const collaboratorRedux: IInitialStateCollaborator = useSelector(
+		(state: RootState) => state.collaborator,
+	);
 
 	useEffect(
 		() => {
@@ -67,8 +87,12 @@ const Space: React.FC = () => {
 				const { getSpaces: spaces } = dataSpace;
 				dispatch(getSpaces(spaces));
 			}
+			if (dataInvitedSpace) {
+				const { getInvitedSpaces: invitedSpaces } = dataInvitedSpace;
+				dispatch(getCollaborators(invitedSpaces));
+			}
 		},
-		[ dataSpace, dispatch ],
+		[ dataSpace, dispatch, dataInvitedSpace ],
 	);
 
 	useEffect(
@@ -99,16 +123,51 @@ const Space: React.FC = () => {
 		[ dataSpace, spaceRedux, onGetProjects, dispatch ],
 	);
 
+	useEffect(
+		() => {
+			if (collaboratorRedux.status === STATUS.SUCCESS) {
+				const getProjectByCollaborators = async () => {
+					const { getInvitedSpaces } = dataInvitedSpace;
+
+					const spaces: string[] = getInvitedSpaces.map(
+						(collaborator: ICollaborator) => collaborator._workSpaceId._id,
+					);
+
+					const { data } = await onGetProjectsByCollaborators({
+						variables:
+							{
+								getProjectsInput:
+									{
+										_spacesId: spaces,
+									},
+							},
+					});
+
+					const projects: IProject[] = data.getProjectsByCollaborator;
+					const newProjects = convertProject(projects);
+
+					dispatch(getProjectsFromCollaborator(newProjects));
+				};
+
+				getProjectByCollaborators();
+			}
+		},
+		[ dataInvitedSpace, collaboratorRedux, onGetProjectsByCollaborators, dispatch ],
+	);
+
 	if (
 		loadingGetSpace ||
 		loadingCreateSpace ||
 		loadingGetProjects ||
 		loadingCreateProject ||
-		loadingInviteSpace
+		loadingInviteSpace ||
+		loadingGetInvitedSpace ||
+		loadingGetProjectsByCollaborators
 	) {
 		return <LoadingView />;
 	}
-	if (error) return <ErrorView error={error} />;
+	if (errorGetSpace) return <ErrorView error={errorGetSpace} />;
+	if (errorInvitedSpace) return <ErrorView error={errorInvitedSpace} />;
 
 	const handleSubmitSpaceModal = (nameSpace: string) => {
 		setShowSpaceModal(false);
@@ -230,6 +289,7 @@ const Space: React.FC = () => {
 								title={'Your Space'}
 								type={'space'}
 								onOpenModal={handleOpenModel}
+								isCreated={true}
 							/>
 						}
 					>
@@ -247,6 +307,7 @@ const Space: React.FC = () => {
 											_id={space._id}
 											type={'project'}
 											onOpenModal={handleOpenModel}
+											isCreated={true}
 										/>
 									}
 								>
@@ -277,11 +338,14 @@ const Space: React.FC = () => {
 								title={'Invited Space'}
 								type={'space'}
 								onOpenModal={handleOpenModel}
+								isCreated={false}
 							/>
 						}
 					>
-						{spaceRedux.spaces.map(space => {
-							let keys = Object.keys(projectRedux.projects);
+						{collaboratorRedux.collaborators.map(collaborator => {
+							const { _workSpaceId: space } = collaborator;
+
+							let keys = Object.keys(projectRedux.projectsFromCollaborator);
 							keys = keys.filter(key => key === space._id);
 
 							return (
@@ -294,11 +358,12 @@ const Space: React.FC = () => {
 											_id={space._id}
 											type={'project'}
 											onOpenModal={handleOpenModel}
+											isCreated={false}
 										/>
 									}
 								>
 									{keys.map(key =>
-										projectRedux.projects[key].map(project => (
+										projectRedux.projectsFromCollaborator[key].map(project => (
 											<Menu.Item
 												key={project._id}
 												icon={<AppstoreOutlined />}
