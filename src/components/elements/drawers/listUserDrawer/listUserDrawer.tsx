@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 // Redux
 import { useSelector } from 'react-redux';
@@ -22,10 +22,28 @@ interface IJWTDecode {
 
 const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden, setInviteUsers, inviteUsers }) => {
 	const authRedux: IInitialStateAuth = useSelector((state: RootState) => state.auth);
-	const dashboardRedux: IInitialStateDashboard = useSelector(
-		(state: RootState) => state.dashboard,
+	const dashboardRedux: IInitialStateDashboard = useSelector((state: RootState) => state.dashboard);
+	const [ listUser, setListUSer ] = useState<IUser[]>([]);
+
+	useEffect(
+		() => {
+			const newListUser = dashboardRedux.users.filter(user => {
+				let flag = true;
+
+				for (let inviteUser of inviteUsers) {
+					if (user._id === inviteUser._id) {
+						flag = false;
+						break;
+					}
+				}
+
+				return flag;
+			});
+
+			setListUSer(newListUser);
+		},
+		[ inviteUsers, dashboardRedux ],
 	);
-	const [ listUser, setListUSer ] = useState(dashboardRedux.users);
 
 	const handleDeleteOwer = (users: IUser[], authRedux: IInitialStateAuth) => {
 		const listUser: IUser[] = JSON.parse(JSON.stringify(users));

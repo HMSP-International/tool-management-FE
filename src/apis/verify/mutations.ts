@@ -5,8 +5,17 @@ export const VERIFY_INVITE_SPACE_MUTATION = gql`
 		verifyInviteSpace(verifyInviteSpaceInput: $verifyInviteSpaceInput) {
 			_adminId
 			_id
-			_memberId
-			_workSpaceId
+			_memberId {
+				displayName
+				department
+				position
+				title
+				email
+				_id
+			}
+			_workSpaceId {
+				_id
+			}
 			confirmEmail
 			role
 		}

@@ -16,7 +16,14 @@ export const INVITE_SPACES_MUTATION = gql`
 		inviteSpace(inviteSpaceInput: $inviteSpaceInput) {
 			_adminId
 			_id
-			_memberId
+			_memberId {
+				displayName
+				department
+				position
+				title
+				email
+				_id
+			}
 			_workSpaceId {
 				_id
 			}

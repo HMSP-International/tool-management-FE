@@ -21,10 +21,33 @@ export const GET_INVITED_SPACES_QUERY = gql`
 				order
 				owner
 			}
-			_memberId
+			_memberId {
+				displayName
+				department
+				position
+				title
+				email
+				_id
+			}
 			_adminId
 			role
 			confirmEmail
+		}
+	}
+`;
+
+export const FIND_USERS_BY_SPACE_ID_QUERY = gql`
+	query findUsersBySpaceId($findUsersBySpaceId: FindUsersBySpaceId!) {
+		findUsersBySpaceId(findUsersBySpaceId: $findUsersBySpaceId) {
+			_id
+			_memberId {
+				_id
+				displayName
+				email
+				department
+				position
+				title
+			}
 		}
 	}
 `;
