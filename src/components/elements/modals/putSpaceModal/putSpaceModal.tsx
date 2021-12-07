@@ -24,22 +24,27 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 		[ currentSpace ],
 	);
 
-	const handleSubmit = () => {
+	const updateNewSpace = () => {
 		if (inputRef && inputRef.current) {
 			if (inputRef.current.value.length === 0) {
 				setMessageError('Please enter your spane name');
 				setInValidName(false);
 			}
 			else {
-				// query Backend
-				if (true) {
-					onSubmit(inputRef.current.value);
-				}
-				else {
-					// return error from DB
-				}
+				console.log('update name');
 			}
 		}
+	};
+
+	const handleOpenSpaceSubmit = () => {
+		if (inputRef && inputRef.current)
+			if (inputRef.current.value.length === 0) {
+				setMessageError('Please enter your spane name');
+				setInValidName(false);
+			}
+			else {
+				onSubmit(inputRef.current.value);
+			}
 	};
 
 	const handleChangeInput = () => {
@@ -72,7 +77,7 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 						alt=''
 					/>
 				</div>
-				<div className='modal__work-space-modal__title'>Create New Space</div>
+				<div className='modal__work-space-modal__title'>Edit New Space</div>
 				<div className='modal__work-space-modal__input'>
 					<label htmlFor='' className={isValidName ? '' : 'text-error'}>
 						Space Name
@@ -90,8 +95,13 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 						</label>
 					)}
 				</div>
-				<div className='modal__work-space-modal__button'>
-					<button onClick={handleSubmit}>Next</button>
+				<div className='modal__work-space-modal__btn-group'>
+					<div className='modal__work-space-modal__button'>
+						<button onClick={updateNewSpace}>Update NameSpace</button>
+					</div>
+					<div className='modal__work-space-modal__button'>
+						<button onClick={handleOpenSpaceSubmit}>Next</button>
+					</div>
 				</div>
 			</WorkSpaceModalStyled>
 		</React.Fragment>

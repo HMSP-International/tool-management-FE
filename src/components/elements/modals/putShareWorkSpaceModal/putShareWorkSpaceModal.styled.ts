@@ -60,11 +60,22 @@ export const ShareModalStyled = styled(Modal)`
             align-items: center;
 
             div {
+                position: relative;
                 margin-right: 5px;
+
                 img {
                     width: 40px;
                     height: 40px;
                     object-fit: cover;
+                }
+
+                span {
+                    cursor: pointer;
+
+                    position: absolute;
+                    top: -22px;
+                    right: 16px;
+
                 }
             }
         }

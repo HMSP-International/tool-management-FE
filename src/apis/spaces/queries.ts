@@ -35,19 +35,3 @@ export const GET_INVITED_SPACES_QUERY = gql`
 		}
 	}
 `;
-
-export const FIND_USERS_BY_SPACE_ID_QUERY = gql`
-	query findUsersBySpaceId($findUsersBySpaceId: FindUsersBySpaceId!) {
-		findUsersBySpaceId(findUsersBySpaceId: $findUsersBySpaceId) {
-			_id
-			_memberId {
-				_id
-				displayName
-				email
-				department
-				position
-				title
-			}
-		}
-	}
-`;

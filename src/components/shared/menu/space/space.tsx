@@ -37,15 +37,19 @@ const Space: React.FC = () => {
 		setShowShareModal(false);
 	};
 
-	const handleBackPutShareModal = () => {};
+	const handleBackPutShareModal = () => {
+		setShowPutSpaceModal(true);
+		setShowPutShareModal(false);
+	};
 
 	const handleSubmitListModal = () => {
 		setShowListModal(false);
 	};
 
-	const handlePutSpaceModal = async () => {
+	const handlePutSpaceModal = async (nameSpace: string) => {
 		setShowPutSpaceModal(false);
 		setShowPutShareModal(true);
+		setNameSpace(nameSpace);
 	};
 
 	const handleOpenModel = (type: string, _id?: string, space?: ISpace) => {
@@ -91,19 +95,11 @@ const Space: React.FC = () => {
 			)}
 
 			{showListModal && (
-				<CreateListModal
-					hidden={showListModal}
-					setHidden={setShowListModal}
-					onSubmit={handleSubmitListModal}
-				/>
+				<CreateListModal hidden={showListModal} setHidden={setShowListModal} onSubmit={handleSubmitListModal} />
 			)}
 
 			{showProjectModal && (
-				<CreateProjectModal
-					hidden={showProjectModal}
-					setHidden={setShowProjectModal}
-					spaceId={spaceId}
-				/>
+				<CreateProjectModal hidden={showProjectModal} setHidden={setShowProjectModal} spaceId={spaceId} />
 			)}
 
 			{(showPutSpaceModal || showPutSpaceModal) && (
@@ -121,6 +117,7 @@ const Space: React.FC = () => {
 					setHidden={setShowPutShareModal}
 					onBack={handleBackPutShareModal}
 					currentSpace={currentSpace}
+					nameSpace={nameSpace}
 				/>
 			)}
 		</React.Fragment>

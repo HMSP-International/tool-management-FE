@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@apollo/client';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 // Redux
 import { RootState } from '../../../global/redux/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useParams } from 'react-router-dom';
-import * as taskListAction from '../../../slices/taskList/slice';
+// import * as taskListAction from '../../../slices/taskList/slice';
 // component
 import WorkSpace from './workSpace/workSpace';
 // import WithFetchedData from '../../../hocs/withFetchedData';
@@ -14,7 +14,7 @@ import LoadingView from '../../shared/loadingView/loadingView';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { ITaskList, ITask } from './interfaces';
-import { ITaskLists, IInitialState } from '../../../slices/taskList/interfaces';
+import { IInitialState } from '../../../slices/taskList/interfaces';
 // graphql
 import { queries } from '../../../apis/boardTask/queries';
 // fake data from be
@@ -67,23 +67,23 @@ const BoardTask: React.FC = () => {
 	const [ columns, setColumns ] = useState(columnsFromBe);
 
 	// use ref
-	const socketRef = useRef(
-		io('http://localhost:5000', {
-			reconnection: false,
-		}),
-	);
+	// const socketRef = useRef(
+	// 	io('http://localhost:5000', {
+	// 		reconnection: false,
+	// 	}),
+	// );
 
 	// use effect
 	useEffect(
 		() => {
 			if (loading || error) return;
 
-			const newTaskList: Array<ITaskLists> = data.taskLists;
-			dispatch(taskListAction.getTaskLists(newTaskList));
+			// const newTaskList: Array<ITaskLists> = data.taskLists;
+			// dispatch(taskListAction.getTaskLists(newTaskList));
 
-			socketRef.current.on('message', data => {
-				setColumns(data);
-			});
+			// socketRef.current.on('message', data => {
+			// 	setColumns(data);
+			// });
 		},
 		[ data, dispatch, loading, error ],
 	);
@@ -115,7 +115,7 @@ const BoardTask: React.FC = () => {
 					},
 			};
 
-			socketRef.current.emit('task-changed', newColumns);
+			// socketRef.current.emit('task-changed', newColumns);
 			setColumns(newColumns);
 		}
 		else {
@@ -133,7 +133,7 @@ const BoardTask: React.FC = () => {
 					},
 			};
 
-			socketRef.current.emit('task-changed', newColumns);
+			// socketRef.current.emit('task-changed', newColumns);
 			setColumns(newColumns);
 		}
 	}, []);

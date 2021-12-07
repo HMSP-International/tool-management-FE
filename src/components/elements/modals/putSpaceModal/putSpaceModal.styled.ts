@@ -5,6 +5,12 @@ export const WorkSpaceModalStyled = styled(Modal)`
     padding: 0;
     width: 650px !important;
 
+    .modal__work-space-modal__btn-group{
+        display: grid;
+        gap: 10%;
+        grid-template-columns: 1fr 1fr;
+    }
+
     .modal__work-space-modal__button{
         height: 50px;
         width: 100%;

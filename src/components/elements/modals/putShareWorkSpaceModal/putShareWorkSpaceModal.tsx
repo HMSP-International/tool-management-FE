@@ -5,46 +5,38 @@ import { ShareModalStyled } from './putShareWorkSpaceModal.styled';
 // Components
 import ListUserDrawer from '../../drawers/listUserDrawer/listUserDrawer';
 import LoadingView from '../../../shared/loadingView/loadingView';
-import ErrorView from '../../../shared/errorView/errorView';
 // interfaces
 import { IUser } from 'slices/dashboard/interfaces';
 import { ISpace } from 'slices/space/interfaces';
-import { ICollaborator } from 'slices/collaborator/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from '../../../../apis/users/mutations';
-import { FIND_USERS_BY_SPACE_ID_QUERY } from '../../../../apis/spaces/queries';
-import { useMutation, useQuery } from '@apollo/client';
+import { PUT_INVITED_SPACES_MUTATION, FIND_USERS_BY_SPACE_ID_MUTATION } from '../../../../apis/spaces/mutations';
+import { useMutation } from '@apollo/client';
 // redux
 import { useDispatch } from 'react-redux';
 import { getUsers } from '../../../../slices/dashboard/slice';
+// helper
+import { openNotification } from 'global/helpers/notification';
+import { handleApolloError } from 'global/helpers/apolloError';
 
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
 	onBack(): void;
 	currentSpace: ISpace;
+	nameSpace: string;
 }
 
 const showText = (text: string) => {
 	return <span>{text}</span>;
 };
 
-const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, currentSpace }) => {
+const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, currentSpace, nameSpace }) => {
 	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
-	const {
-		data: dataInvitedUsers,
-		errorInvitedSpace,
-		loading: loadinginvitedUsers,
-	} = useQuery(FIND_USERS_BY_SPACE_ID_QUERY, {
-		variables:
-			{
-				findUsersBySpaceId:
-					{
-						_spaceId: currentSpace._id,
-					},
-			},
-	});
+	const [ onPutInvitedSpace, { loading: loadingPutInvitedSpaces } ] = useMutation(PUT_INVITED_SPACES_MUTATION);
+
+	const [ onFindUSersBySpace, { loading: loadinginvitedUsers } ] = useMutation(FIND_USERS_BY_SPACE_ID_MUTATION);
 
 	const dispatch = useDispatch();
 	const [ showListUserDrawer, setShowListUserDrawer ] = useState(false);
@@ -63,28 +55,65 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 
 	useEffect(
 		() => {
-			if (!loadinginvitedUsers) {
-				console.log();
-				
-				const users = dataInvitedUsers.findUsersBySpaceId.map(
-					(collaborator: ICollaborator) => collaborator._memberId,
-				);
+			const fetchUsers = async () => {
+				if (!loadinginvitedUsers) {
+					const { data } = await onFindUSersBySpace({
+						variables:
+							{
+								findUsersBySpaceId:
+									{
+										_spaceId: currentSpace._id,
+									},
+							},
+					});
 
-				setInviteUsers(users);
-			}
+					const users: IUser[] = data.findUsersBySpaceId.map((user: any) => user._memberId);
+
+					setInviteUsers(users);
+				}
+			};
+
+			fetchUsers();
 		},
-		[ dispatch, dataInvitedUsers, loadinginvitedUsers ],
+		[ dispatch, onFindUSersBySpace, loadinginvitedUsers, currentSpace ],
 	);
 
-	if (loadinginvitedUsers || loadingGetUsers) return <LoadingView />;
-	if (errorInvitedSpace) return <ErrorView error={errorInvitedSpace} />;
+	if (loadinginvitedUsers || loadingGetUsers || loadingPutInvitedSpaces) return <LoadingView />;
 
 	const handleSubmit = async () => {
-		// Create Space
-		console.log('submit');
+		try {
+			const _memberIds = inviteUsers.map(user => user._id);
 
-		// send email to comfirm
+			const { data } = await onPutInvitedSpace({
+				variables:
+					{
+						putInvitedSpaceInput:
+							{
+								_workSpaceId: currentSpace._id,
+								_memberIds,
+							},
+					},
+			});
+			console.log(data);
+			const showing = {
+				title: 'Susscess',
+				extensions: [ 'Edited Space user' ],
+			};
+			openNotification(showing);
+			// setHidden(false);
+		} catch (error) {
+			const showing = handleApolloError(error);
+			openNotification(showing, true);
+		}
 	};
+
+	const handleRemoveUser = (user: IUser) => {
+		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
+
+		setInviteUsers(newListUser);
+	};
+
+	console.log(inviteUsers);
 
 	return (
 		<React.Fragment>
@@ -93,7 +122,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 					<div className='share-modal__header__back' onClick={onBack}>
 						{'<'}
 					</div>
-					<div className='share-modal__header__title'>{'Share ' + currentSpace.name}</div>
+					<div className='share-modal__header__title'>{'Share ' + nameSpace}</div>
 					<div className='share-modal__header__close' onClick={() => setHidden(false)}>
 						{'X'}
 					</div>
@@ -111,7 +140,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 					<div className='share-modal__shared'>
 						<div className='share-modal__shared__text'>Share only with:</div>
 						<div className='share-modal__shared__img'>
-							<Tooltip placement='top' title={showText('pham duc huy')}>
+							<Tooltip placement='top' title={showText('me')}>
 								<div>
 									<img
 										src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
@@ -120,14 +149,19 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 								</div>
 							</Tooltip>
 							{inviteUsers.map(user => (
-								<Tooltip placement='top' title={showText(user.email)} key={user._id}>
-									<div>
+								<div key={user._id}>
+									<Tooltip placement='bottom' title={showText(user.email)}>
 										<img
 											src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
 											alt=''
 										/>
-									</div>
-								</Tooltip>
+									</Tooltip>
+									<Tooltip placement='top' title={showText('delete')}>
+										<span className='close' onClick={() => handleRemoveUser(user)}>
+											x
+										</span>
+									</Tooltip>
+								</div>
 							))}
 						</div>
 						<div className='share-modal__shared__add' onClick={() => setShowListUserDrawer(true)}>
@@ -135,7 +169,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 						</div>
 					</div>
 					<div className='share-modal__btn'>
-						<button onClick={handleSubmit}>Create Space</button>
+						<button onClick={handleSubmit}>Update Space</button>
 					</div>
 				</div>
 			</ShareModalStyled>
