@@ -2,6 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ISpace } from 'slices/space/interfaces';
 // Styled Components
 import { WorkSpaceModalStyled } from './putSpaceModal.styled';
+// grahql
+import { CHANGE_NAME_SPACE_SPACE_MUTATION } from '../../../../apis/spaces/mutations';
+import { useMutation } from '@apollo/client';
+// helpers
+import { handleApolloError } from 'global/helpers/apolloError';
+import { openNotification } from 'global/helpers/notification';
+// redux
+import { useDispatch } from 'react-redux';
+import { changeNameSpace } from '../../../../slices/space/slice';
 
 interface IProps {
 	hidden: boolean;
@@ -11,9 +20,12 @@ interface IProps {
 }
 
 const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, currentSpace }) => {
+	const [ onChangeNameSpace, { loading } ] = useMutation(CHANGE_NAME_SPACE_SPACE_MUTATION);
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	const dispatch = useDispatch();
 
 	useEffect(
 		() => {
@@ -24,14 +36,42 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 		[ currentSpace ],
 	);
 
-	const updateNewSpace = () => {
+	const showError = () => {
+		setMessageError('Please enter your space name');
+		setInValidName(false);
+	};
+
+	const updateNewSpace = async () => {
 		if (inputRef && inputRef.current) {
 			if (inputRef.current.value.length === 0) {
-				setMessageError('Please enter your spane name');
-				setInValidName(false);
+				showError();
 			}
 			else {
-				console.log('update name');
+				if (!loading) {
+					try {
+						const { data } = await onChangeNameSpace({
+							variables:
+								{
+									changeNameSpaceInput:
+										{
+											name: inputRef.current.value,
+											_id: currentSpace._id,
+										},
+								},
+						});
+
+						dispatch(changeNameSpace(data.changeNameSpace));
+
+						const showing = {
+							title: 'Susscess',
+							extensions: [ 'Change Name Space' ],
+						};
+						openNotification(showing);
+					} catch (error) {
+						const showing = handleApolloError(error);
+						openNotification(showing, true);
+					}
+				}
 			}
 		}
 	};
@@ -39,8 +79,7 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 	const handleOpenSpaceSubmit = () => {
 		if (inputRef && inputRef.current)
 			if (inputRef.current.value.length === 0) {
-				setMessageError('Please enter your spane name');
-				setInValidName(false);
+				showError();
 			}
 			else {
 				onSubmit(inputRef.current.value);
@@ -54,8 +93,7 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 				setInValidName(true);
 			}
 			else {
-				setMessageError('Please enter your spane name');
-				setInValidName(false);
+				showError();
 			}
 		}
 	};

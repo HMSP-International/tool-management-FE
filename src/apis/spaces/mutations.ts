@@ -56,3 +56,14 @@ export const FIND_USERS_BY_SPACE_ID_MUTATION = gql`
 		}
 	}
 `;
+
+export const CHANGE_NAME_SPACE_SPACE_MUTATION = gql`
+	mutation ChangeNameSpace($changeNameSpaceInput: ChangeNameSpaceInput!) {
+		changeNameSpace(changeNameSpaceInput: $changeNameSpaceInput) {
+			_id
+			name
+			owner
+			order
+		}
+	}
+`;
