@@ -23,8 +23,6 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject, onCreate
 	const [ isshowDetailTask, setIsShowDetailTask ] = useState(false);
 	const [ showCreateList, setShowCreateList ] = useState(false);
 
-	console.log(columns);
-
 	return (
 		<React.Fragment>
 			<WorkSpaceStyled className='workspace'>
@@ -86,7 +84,12 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject, onCreate
 													</div>
 												</div>
 											</div>
-											<List snapshot={snapshot} provided={provided} columnData={columnData} />
+											<List
+												snapshot={snapshot}
+												provided={provided}
+												columnData={columnData}
+												listId={columnId}
+											/>
 										</div>
 									);
 								}}

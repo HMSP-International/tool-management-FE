@@ -32,17 +32,14 @@ interface IProps {
 
 const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 	const projectRedux: IInitialStateProject = useSelector((state: RootState) => state.project);
-	const collaboratorRedux: IInitialStateCollaborator = useSelector(
-		(state: RootState) => state.collaborator,
-	);
+	const collaboratorRedux: IInitialStateCollaborator = useSelector((state: RootState) => state.collaborator);
 
 	const { data: dataInvitedSpace, errorInvitedSpace, loading: loadingGetInvitedSpace } = useQuery(
 		GET_INVITED_SPACES_QUERY,
 	);
-	const [
-		onGetProjectsByCollaborators,
-		{ loading: loadingGetProjectsByCollaborators },
-	] = useMutation(GET_PROJECTS_BY_COLLABORATORS_MUTATION);
+	const [ onGetProjectsByCollaborators, { loading: loadingGetProjectsByCollaborators } ] = useMutation(
+		GET_PROJECTS_BY_COLLABORATORS_MUTATION,
+	);
 
 	const dispatch = useDispatch();
 
@@ -65,8 +62,6 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 					const spaces: string[] = getInvitedSpaces.map(
 						(collaborator: ICollaborator) => collaborator._workSpaceId._id,
 					);
-
-					console.log(getInvitedSpaces);
 
 					const { data } = await onGetProjectsByCollaborators({
 						variables:
