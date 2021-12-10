@@ -1,11 +1,26 @@
-export interface ITaskLists {
-	_id?: string;
-	name?: string;
-	_workSpaceId?: string;
+import { DraggableId } from 'react-beautiful-dnd';
+
+// redux
+export interface IList {
+	_id: string;
+	name: string;
+	_projectId: string;
 }
 
-export interface IInitialState {
-	status: string;
-	error?: string | null;
-	taskLists: Array<ITaskLists> | null;
+// drag and drop
+export interface ITask {
+	_id: DraggableId;
+	name: string;
+}
+
+export interface ITaskList {
+	[key: string]: {
+		name: string;
+		items: Array<ITask>;
+	};
+}
+
+export interface IDataColumn {
+	name: string;
+	items: Array<ITask>;
 }

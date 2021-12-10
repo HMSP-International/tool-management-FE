@@ -1,7 +1,6 @@
 import STATUS from '../../global/constants/status';
-import { IInitialState } from './interfaces';
 
-const INITIAL_STATE: IInitialState = {
+const INITIAL_STATE = {
 	status: STATUS.IDLE,
 	error: null,
 

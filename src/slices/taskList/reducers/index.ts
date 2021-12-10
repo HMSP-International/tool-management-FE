@@ -1,6 +1,5 @@
 // reducers
-import { getTaskLists } from './get';
 
-const reducers = { getTaskLists };
+const reducers = {};
 
 export default reducers;

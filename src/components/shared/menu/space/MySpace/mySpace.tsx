@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppstoreOutlined } from '@ant-design/icons';
+import { AiOutlineProject, AiFillCalendar } from 'react-icons/ai';
 import TitleSubMenu from '../../titleSubmenu/titleSubMenu';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
@@ -34,11 +35,7 @@ const MySpace: React.FC<IProps> = ({ handleOpenModel }) => {
 	const spaceRedux: IInitialStateSpace = useSelector((state: RootState) => state.space);
 	const projectRedux: IInitialStateProject = useSelector((state: RootState) => state.project);
 
-	const {
-		data: dataSpace,
-		errorInvitedSpace: errorGetSpace,
-		loading: loadingGetSpace,
-	} = useQuery(GET_SPACES_QUERY);
+	const { data: dataSpace, errorInvitedSpace: errorGetSpace, loading: loadingGetSpace } = useQuery(GET_SPACES_QUERY);
 	const [ onGetProjects, { loading: loadingGetProjects } ] = useMutation(GET_PROJECTS_MUTATION);
 
 	useEffect(
@@ -85,50 +82,52 @@ const MySpace: React.FC<IProps> = ({ handleOpenModel }) => {
 	if (errorGetSpace) return <ErrorView error={errorGetSpace} />;
 
 	return (
-		<Menu mode='inline' inlineCollapsed={false} key={'menu'}>
-			<SubMenu
-				key='space'
-				icon={<AppstoreOutlined />}
-				title={
-					<TitleSubMenu
-						title={'Your Space'}
-						type={'space'}
-						onOpenModal={handleOpenModel}
-						isCreated={true}
-					/>
-				}
-			>
-				{spaceRedux.spaces.map(space => {
-					let keys = Object.keys(projectRedux.projects);
-					keys = keys.filter(key => key === space._id);
+		<React.Fragment>
+			<Menu mode='inline' inlineCollapsed={false} key={'menu'}>
+				<SubMenu
+					key='space'
+					icon={<AppstoreOutlined />}
+					title={
+						<TitleSubMenu
+							title={'Your Space'}
+							type={'space'}
+							onOpenModal={handleOpenModel}
+							isCreated={true}
+						/>
+					}
+				>
+					{spaceRedux.spaces.map(space => {
+						let keys = Object.keys(projectRedux.projects);
+						keys = keys.filter(key => key === space._id);
 
-					return (
-						<SubMenu
-							key={space._id}
-							icon={<AppstoreOutlined />}
-							title={
-								<TitleSubMenu
-									title={space.name}
-									_id={space._id}
-									type={'project'}
-									onOpenModal={handleOpenModel}
-									isCreated={true}
-									space={space}
-								/>
-							}
-						>
-							{keys.map(key =>
-								projectRedux.projects[key].map(project => (
-									<Menu.Item key={project._id} icon={<AppstoreOutlined />}>
-										<Link to={`/manage/${project._id}`}>{project.name}</Link>
-									</Menu.Item>
-								)),
-							)}
-						</SubMenu>
-					);
-				})}
-			</SubMenu>
-		</Menu>
+						return (
+							<SubMenu
+								key={space._id}
+								icon={<AiFillCalendar />}
+								title={
+									<TitleSubMenu
+										title={space.name}
+										_id={space._id}
+										type={'project'}
+										onOpenModal={handleOpenModel}
+										isCreated={true}
+										space={space}
+									/>
+								}
+							>
+								{keys.map(key =>
+									projectRedux.projects[key].map(project => (
+										<Menu.Item key={project._id} icon={<AiOutlineProject />}>
+											<Link to={`/manage/${project._id}`}>{project.name}</Link>
+										</Menu.Item>
+									)),
+								)}
+							</SubMenu>
+						);
+					})}
+				</SubMenu>
+			</Menu>
+		</React.Fragment>
 	);
 };
 

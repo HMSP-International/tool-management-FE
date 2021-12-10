@@ -1,12 +1,12 @@
 import * as React from 'react';
 // components
-import BoardTask from '../../components/features/boardTask/boardTask';
+import Manage from '../../components/features/manage/manage';
 import ContainerPage from '../../components/shared/containerPage/containerPage';
 
 const ManagePage: React.FC = () => {
 	return (
 		<ContainerPage>
-			<BoardTask />
+			<Manage />
 		</ContainerPage>
 	);
 };

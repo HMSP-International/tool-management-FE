@@ -6,7 +6,7 @@ import { ListModalStyled } from './createListModal.styled';
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(): void;
+	onSubmit(nameList: string): void;
 }
 
 const CreateListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
@@ -22,12 +22,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 			}
 			else {
 				// query Backend
-				if (true) {
-					onSubmit();
-				}
-				else {
-					// return error from DB
-				}
+				onSubmit(inputRef.current.value);
 			}
 		}
 	};
@@ -80,6 +75,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 						)}
 					</div>
 				</div>
+
 				<div className='list-modal__footer'>
 					<div className='list-modal__footer__button'>
 						<button onClick={handleSubmit}>Create List</button>

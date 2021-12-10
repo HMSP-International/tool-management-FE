@@ -80,6 +80,18 @@ export const WorkSpaceStyled = styled.section`
 					}
 				}
 			}
+
+			&__create-list {
+				flex-grow: 1;
+				display: flex;
+				justify-content: flex-end;
+
+				button {
+					cursor: pointer;
+					padding: 5px 10px;
+					border-radius: 5px;
+				}
+			}
 		}
 	}
 

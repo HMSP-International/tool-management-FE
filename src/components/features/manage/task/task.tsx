@@ -4,9 +4,9 @@ import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 // Styled Components
 import { TaskStyled } from './task.styled';
 import TaskDetail from '../taskDetail/taskDetail';
+import { ITask } from 'slices/taskList/interfaces';
 
 // interfaces
-import { ITask } from '../interfaces';
 interface IProps {
 	provided: DraggableProvided;
 	snapshot: DraggableStateSnapshot;
@@ -28,7 +28,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 				}}
 				onClick={() => setIsShowDetailTask(true)}
 			>
-				<div className='task-name'>{item.content}</div>
+				<div className='task-name'>{item.name}</div>
 				<div className='task-type'>CREATE UI/UX</div>
 				<div className='task-bottom'>
 					<div className='task-bottom__project'>MT-1</div>

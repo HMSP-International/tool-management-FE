@@ -7,7 +7,6 @@ import ShareWorkSpaceModal from '../../../../components/elements/modals/shareWor
 import PutShareWorkSpaceModal from '../../../../components/elements/modals/putShareWorkSpaceModal/putShareWorkSpaceModal';
 import PutWorkSpaceModal from '../../../elements/modals/putSpaceModal/putSpaceModal';
 // components
-import CreateListModal from '../../../../components/elements/modals/createListModal/createListModal';
 import MySpace from './MySpace/mySpace';
 import SpaceInvited from './spaceInvited/spaceInvited';
 // interfaces
@@ -17,7 +16,6 @@ const Space: React.FC = () => {
 	// state
 	const [ nameSpace, setNameSpace ] = useState('');
 	const [ showSpaceModal, setShowSpaceModal ] = useState(false);
-	const [ showListModal, setShowListModal ] = useState(false);
 	const [ spaceId, setSpaceId ] = useState('');
 	const [ showProjectModal, setShowProjectModal ] = useState(false);
 	const [ showShareModal, setShowShareModal ] = useState(false);
@@ -42,10 +40,6 @@ const Space: React.FC = () => {
 		setShowPutShareModal(false);
 	};
 
-	const handleSubmitListModal = () => {
-		setShowListModal(false);
-	};
-
 	const handlePutSpaceModal = async (nameSpace: string) => {
 		setShowPutSpaceModal(false);
 		setShowPutShareModal(true);
@@ -55,9 +49,6 @@ const Space: React.FC = () => {
 	const handleOpenModel = (type: string, _id?: string, space?: ISpace) => {
 		if (type === 'space') {
 			setShowSpaceModal(true);
-		}
-		else if (type === 'list') {
-			setShowListModal(true);
 		}
 		else if (type === 'project') {
 			setSpaceId(_id || '');
@@ -92,10 +83,6 @@ const Space: React.FC = () => {
 					onBack={handleBackShareModal}
 					nameSpace={nameSpace}
 				/>
-			)}
-
-			{showListModal && (
-				<CreateListModal hidden={showListModal} setHidden={setShowListModal} onSubmit={handleSubmitListModal} />
 			)}
 
 			{showProjectModal && (

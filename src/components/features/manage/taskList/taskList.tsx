@@ -6,7 +6,7 @@ import { DroppableStateSnapshot, DroppableProvided, Draggable } from 'react-beau
 import { TaskListStyled } from './taskList.styled';
 
 // interfaces
-import { IDataColumn } from '../interfaces';
+import { IDataColumn } from 'slices/taskList/interfaces';
 interface IProps {
 	provided: DroppableProvided;
 	snapshot: DroppableStateSnapshot;
@@ -24,7 +24,7 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData }) => {
 		>
 			{columnData.items.map((item, index) => {
 				return (
-					<Draggable key={item._listId} draggableId={item._listId} index={index}>
+					<Draggable key={item._id} draggableId={item._id} index={index}>
 						{(provided, snapshot) => {
 							return <Task provided={provided} snapshot={snapshot} item={item} />;
 						}}
