@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 const NotFound: React.FC = () => {
 	const { pathname } = useLocation();
@@ -14,7 +14,7 @@ const NotFound: React.FC = () => {
 		[ navigate, pathname ],
 	);
 
-	return <p>not found</p>;
+	return <Link to='/'>back to home page</Link>;
 };
 
 export default NotFound;

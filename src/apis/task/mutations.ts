@@ -19,3 +19,13 @@ export const GET_TASKS_BY_LISTID_MUTATION = gql`
 		}
 	}
 `;
+
+export const DELETE_TASKS_MUTATION = gql`
+	mutation DELETE_TASKS($deleteTaskInput: DeleteTaskInput!) {
+		deleteTasks(deleteTaskInput: $deleteTaskInput) {
+			_id
+			_listId
+			name
+		}
+	}
+`;

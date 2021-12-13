@@ -8,9 +8,9 @@ import LoadingView from '../../shared/loadingView/loadingView';
 // import ErrorView from '../../shared/errorView/errorView';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
-import { IList, ITaskList } from 'slices/taskList/interfaces';
+import { IInitialStateList, IList, ITaskList } from 'slices/taskList/interfaces';
 // graphql
-import { GET_LISTS_QUERY } from '../../../apis/taskList/queries';
+import { GET_LISTS_QUERY } from 'apis/taskList/queries';
 import { GET_PROJECT_QUERY } from 'apis/projects/queries';
 // helpers
 import { convertTaskList } from 'global/helpers/convertTaskList';
@@ -18,13 +18,20 @@ import { IProject } from 'slices/project/interfaces';
 import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
 import { openNotification } from 'global/helpers/notification';
 import { handleApolloError } from 'global/helpers/apolloError';
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+import { getListsFormatted, createNewList } from 'slices/taskList/slice';
+import { RootState } from 'global/redux/rootReducer';
 
 const Manage: React.FC = () => {
 	const params = useParams();
 	const navigate = useNavigate();
 
+	// redux
+	const dispatch = useDispatch();
+	const taskListRedux: IInitialStateList = useSelector((state: RootState) => state.taskList);
+
 	// use state
-	const [ columns, setColumns ] = useState<ITaskList>({});
 	const [ project, setProject ] = useState<IProject>({
 		name: '',
 		order: -1,
@@ -71,13 +78,16 @@ const Manage: React.FC = () => {
 
 			if (dataGetLists) {
 				const lists: IList[] = dataGetLists.getLists;
-				setColumns(convertTaskList(lists));
+
+				const formatted = convertTaskList(lists);
+
+				dispatch(getListsFormatted(formatted));
 			}
 			else {
 				navigate('notFound');
 			}
 		},
-		[ dataGetLists, loadingGetLists, navigate ],
+		[ dataGetLists, loadingGetLists, navigate, dispatch ],
 	);
 
 	useEffect(
@@ -122,7 +132,7 @@ const Manage: React.FC = () => {
 					},
 			};
 
-			setColumns(newColumns);
+			console.log(newColumns);
 		}
 		else {
 			const column = columns[source.droppableId];
@@ -139,7 +149,7 @@ const Manage: React.FC = () => {
 					},
 			};
 
-			setColumns(newColumns);
+			console.log(newColumns);
 		}
 	}, []);
 
@@ -158,7 +168,9 @@ const Manage: React.FC = () => {
 
 			const list: IList = data.createList;
 			const convertedList = convertTaskList([ list ]);
-			setColumns(preState => ({ ...preState, ...convertedList }));
+			console.log(convertedList);
+
+			dispatch(createNewList(convertedList));
 
 			const showing = {
 				title: 'Susscess',
@@ -181,7 +193,7 @@ const Manage: React.FC = () => {
 
 	return (
 		<WorkSpace
-			columns={columns}
+			columns={taskListRedux.lists}
 			onDragEnd={handleDragEnd}
 			nameProject={project.name}
 			onCreateList={handleCreateList}

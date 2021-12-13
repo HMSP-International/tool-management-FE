@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SpaceStyled } from './space.styled';
 // modals
-import CreateProjectModal from '../../../../components/elements/modals/createProjectModal/createProjectModal';
+import CreateProjectModal from '../../../elements/modals/createProjectModal/createProjectModal';
 import CreateWorkSpaceModal from '../../../../components/elements/modals/createWorkSpaceModal/createWorkSpaceModal';
 import ShareWorkSpaceModal from '../../../../components/elements/modals/shareWorkSpaceModal/shareWorkSpaceModal';
 import PutShareWorkSpaceModal from '../../../../components/elements/modals/putShareWorkSpaceModal/putShareWorkSpaceModal';

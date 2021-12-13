@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 // 3rd Components
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import List from '../taskList/taskList';
-import TaskDetail from '../taskDetail/taskDetail';
+import TaskDetail from '../../../elements/modals/taskDetailModal/taskDetailModal';
 import CreateListModal from '../../../elements/modals/createListModal/createListModal';
 
 // Styled Components
@@ -11,6 +11,7 @@ import { WorkSpaceStyled } from './workSpace.styled';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { ITaskList } from 'slices/taskList/interfaces';
+import { Tooltip } from 'antd';
 
 interface IProps {
 	columns: ITaskList;
@@ -20,8 +21,14 @@ interface IProps {
 }
 
 const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject, onCreateList }) => {
-	const [ isshowDetailTask, setIsShowDetailTask ] = useState(false);
+	const [ isShowCreateTask, setIsShowCreateTask ] = useState(false);
 	const [ showCreateList, setShowCreateList ] = useState(false);
+	const [ listId, setListId ] = useState('');
+
+	const handleClickShowTaskModal = (_listId: string) => {
+		setListId(_listId);
+		setIsShowCreateTask(true);
+	};
 
 	return (
 		<React.Fragment>
@@ -77,10 +84,15 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject, onCreate
 													<div className='wrap-list__title__left__number'>
 														{columnData.items.length}
 													</div>
+													<Tooltip placement='topRight' title={'Delete List'}>
+														<i onClick={() => handleClickShowTaskModal(columnId)}>-</i>
+													</Tooltip>
 												</div>
 												<div className='wrap-list__title__right'>
 													<div className='wrap-list__title__right__icon'>
-														<i onClick={() => setIsShowDetailTask(true)}>+</i>
+														<Tooltip placement='topRight' title={'Create task'}>
+															<i onClick={() => handleClickShowTaskModal(columnId)}>+</i>
+														</Tooltip>
 													</div>
 												</div>
 											</div>
@@ -99,7 +111,9 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject, onCreate
 				</section>
 			</WorkSpaceStyled>
 
-			{isshowDetailTask && <TaskDetail hidden={isshowDetailTask} setHidden={setIsShowDetailTask} />}
+			{isShowCreateTask && (
+				<TaskDetail hidden={isShowCreateTask} setHidden={setIsShowCreateTask} listId={listId} />
+			)}
 
 			{showCreateList && (
 				<CreateListModal hidden={showCreateList} setHidden={setShowCreateList} onSubmit={onCreateList} />

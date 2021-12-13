@@ -1,12 +1,12 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
-
+import INITIAL_STATE from './initialState';
 import reducers from './reducers';
 
 export const taskListSlice: Slice = createSlice({
 	name: 'taskList',
-	initialState: {},
+	initialState: INITIAL_STATE,
 	reducers,
 });
-const { reducer } = taskListSlice;
-// export const {} = actions;
+const { reducer, actions } = taskListSlice;
+export const { getListsFormatted, createTaskInList, deleteTasksInList, getTasksInList, createNewList } = actions;
 export default reducer;

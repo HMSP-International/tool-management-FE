@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Task from '../task/task';
 import { DroppableStateSnapshot, DroppableProvided, Draggable } from 'react-beautiful-dnd';
 
@@ -13,6 +13,10 @@ import { useMutation } from '@apollo/client';
 // interfaces
 import { IDataColumn, ITask } from 'slices/taskList/interfaces';
 
+// Redux
+import { useDispatch } from 'react-redux';
+import { getTasksInList } from 'slices/taskList/slice';
+
 interface IProps {
 	provided: DroppableProvided;
 	snapshot: DroppableStateSnapshot;
@@ -22,7 +26,7 @@ interface IProps {
 
 const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 	const [ onGetTasksByListId, { loading } ] = useMutation(GET_TASKS_BY_LISTID_MUTATION);
-	const [ columnDataAddedItems, setColumnDataAddedItems ] = useState(columnData);
+	const dispatch = useDispatch();
 
 	useEffect(
 		() => {
@@ -39,12 +43,12 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 
 				const tasks: ITask[] = data.getTasksByListId;
 
-				setColumnDataAddedItems(preState => ({ ...preState, items: tasks }));
+				dispatch(getTasksInList({ key: listId, items: tasks }));
 			};
 
 			fetchData();
 		},
-		[ listId, onGetTasksByListId ],
+		[ listId, onGetTasksByListId, dispatch ],
 	);
 
 	if (loading) return <LoadingView />;
@@ -57,11 +61,11 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 				backgroundColor: snapshot.isDraggingOver ? '#bcbec4' : '#f4f5f7',
 			}}
 		>
-			{columnDataAddedItems.items.map((item, index) => {
+			{columnData.items.map((item, index) => {
 				return (
 					<Draggable key={item._id} draggableId={item._id} index={index}>
 						{(provided, snapshot) => {
-							return <Task provided={provided} snapshot={snapshot} item={item} />;
+							return <Task provided={provided} snapshot={snapshot} item={item} listId={listId} />;
 						}}
 					</Draggable>
 				);

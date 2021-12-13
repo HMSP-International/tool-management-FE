@@ -3,7 +3,7 @@ import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
 // Styled Components
 import { TaskStyled } from './task.styled';
-import TaskDetail from '../taskDetail/taskDetail';
+import TaskDetail from '../../../elements/modals/taskDetailModal/taskDetailModal';
 import { ITask } from 'slices/taskList/interfaces';
 
 // interfaces
@@ -11,9 +11,10 @@ interface IProps {
 	provided: DraggableProvided;
 	snapshot: DraggableStateSnapshot;
 	item: ITask;
+	listId: string;
 }
 
-const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
+const Task: React.FC<IProps> = ({ provided, snapshot, item, listId }) => {
 	const [ isshowDetailTask, setIsShowDetailTask ] = useState(false);
 
 	return (
@@ -41,7 +42,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 				</div>
 			</TaskStyled>
 
-			<TaskDetail hidden={isshowDetailTask} setHidden={setIsShowDetailTask} />
+			<TaskDetail hidden={isshowDetailTask} setHidden={setIsShowDetailTask} task={item} listId={listId} />
 		</React.Fragment>
 	);
 };

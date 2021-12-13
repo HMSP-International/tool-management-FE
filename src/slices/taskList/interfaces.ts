@@ -7,10 +7,23 @@ export interface IList {
 	_projectId: string;
 }
 
+export interface ITaskOfList {
+	key: string;
+	items: Array<ITask>;
+}
+
+export interface IInitialStateList {
+	status: string;
+	error?: string | null;
+
+	lists: ITaskList;
+}
+
 // drag and drop
 export interface ITask {
 	_id: DraggableId;
 	name: string;
+	_listId: string;
 }
 
 export interface ITaskList {

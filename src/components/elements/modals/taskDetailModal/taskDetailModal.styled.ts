@@ -16,6 +16,8 @@ export const ModalStyled = styled(Modal)`
         .task-detail__assign{
             padding: 10px 20px;
             overflow-y: scroll;
+            display: flex;
+            flex-direction: column;
 
             &::-webkit-scrollbar {
                 height: 10px;
@@ -115,6 +117,21 @@ export const ModalStyled = styled(Modal)`
                     }
                 }
             }
+
+            &__btn {
+                flex-grow: 1;
+
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-end;
+
+                button {
+                    cursor: pointer;
+                    padding: 5px 10px;
+                    border-radius: 45% 46% 40% 48% / 28% 24% 64% 63%;
+                    background: linear-gradient(to right, #EECDA3, #F4E2D8);
+                }
+            }
         }
 
         .task-detail__description{
@@ -197,6 +214,24 @@ export const ModalStyled = styled(Modal)`
                 font-size: ${props => props.theme.fontSize.normal2};
                 font-weight: 600;
                 padding: 10px 0;
+
+                input{
+                    width: 70%;
+                    border: none;
+                    outline: none;
+                    padding: 10px 0 5px 0;
+                    font-size: ${props => props.theme.fontSize.nomal1};
+                    border-bottom: 1px solid lightgray;
+                }
+
+                button{
+                    margin-left: 20px;
+                    padding: 5px 10px;
+                    color: #172b4d;
+                    font-size: ${props => props.theme.fontSize.small2};
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
             }
 
             .des-task{
