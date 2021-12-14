@@ -7,6 +7,16 @@ export const taskListSlice: Slice = createSlice({
 	initialState: INITIAL_STATE,
 	reducers,
 });
+
 const { reducer, actions } = taskListSlice;
-export const { getListsFormatted, createTaskInList, deleteTasksInList, getTasksInList, createNewList } = actions;
+
+export const {
+	getListsFormatted,
+	createTaskInList,
+	deleteTaskList,
+	deleteTasksInList,
+	getTasksInList,
+	createNewList,
+} = actions;
+
 export default reducer;

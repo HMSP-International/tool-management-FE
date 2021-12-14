@@ -5,6 +5,7 @@ export interface IList {
 	_id: string;
 	name: string;
 	_projectId: string;
+	order: number;
 }
 
 export interface ITaskOfList {

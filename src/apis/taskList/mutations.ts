@@ -9,3 +9,14 @@ export const CREATE_LIST_MUTATION = gql`
 		}
 	}
 `;
+
+export const DELETE_LIST_MUTATION = gql`
+	mutation DELETE_LIST($deleteListInput: DeleteListInput!) {
+		deleteLists(deleteListInput: $deleteListInput) {
+			_id
+			_projectId
+			name
+			order
+		}
+	}
+`;
