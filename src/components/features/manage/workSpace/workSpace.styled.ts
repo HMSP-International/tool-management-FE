@@ -27,10 +27,39 @@ export const WorkSpaceStyled = styled.section`
 		margin: 0 5px;
 		height: 180px;
 
-		&__tree {
+		&__top {
 			padding: 10px 0;
 			color: #a993a4;
 			font-size: 15px;
+			display: flex;
+
+			&__btn {
+				flex-grow: 1;
+
+				display: flex;
+				justify-content: flex-end;
+
+				.create-list {
+					button {
+						min-width: 120px;
+						cursor: pointer;
+						padding: 5px 10px;
+						border-radius: 5px;
+					}
+				}
+
+				.delete-list {
+					button {
+						min-width: 120px;
+						cursor: pointer;
+						padding: 5px 10px;
+						border-radius: 5px;
+						background-color: red;
+						color: white;
+						margin-right: 20px;
+					}
+				}
+			}
 		}
 
 		&__title {
@@ -78,18 +107,6 @@ export const WorkSpaceStyled = styled.section`
 						width: 30px;
 						object-fit: cover;
 					}
-				}
-			}
-
-			&__create-list {
-				flex-grow: 1;
-				display: flex;
-				justify-content: flex-end;
-
-				button {
-					cursor: pointer;
-					padding: 5px 10px;
-					border-radius: 5px;
 				}
 			}
 		}

@@ -3,18 +3,18 @@ import { Tooltip } from 'antd';
 // Styled Components
 import { ShareModalStyled } from './putShareWorkSpaceModal.styled';
 // Components
-import ListUserDrawer from '../../drawers/listUserDrawer/listUserDrawer';
-import LoadingView from '../../../shared/loadingView/loadingView';
+import ListUserDrawer from '../../../drawers/listUserDrawer/listUserDrawer';
+import LoadingView from '../../../../shared/loadingView/loadingView';
 // interfaces
 import { IUser } from 'slices/dashboard/interfaces';
 import { ISpace } from 'slices/space/interfaces';
 // graphql
-import { GET_USERS_MUTATION } from '../../../../apis/users/mutations';
-import { PUT_INVITED_SPACES_MUTATION, FIND_USERS_BY_SPACE_ID_MUTATION } from '../../../../apis/spaces/mutations';
+import { GET_USERS_MUTATION } from '../../../../../apis/users/mutations';
+import { PUT_INVITED_SPACES_MUTATION, FIND_USERS_BY_SPACE_ID_MUTATION } from '../../../../../apis/spaces/mutations';
 import { useMutation } from '@apollo/client';
 // redux
 import { useDispatch } from 'react-redux';
-import { getUsers } from '../../../../slices/dashboard/slice';
+import { getUsers } from '../../../../../slices/dashboard/slice';
 // helper
 import { openNotification } from 'global/helpers/notification';
 import { handleApolloError } from 'global/helpers/apolloError';

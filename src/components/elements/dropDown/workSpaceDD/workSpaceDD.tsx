@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Dropdown, Button, Menu } from 'antd';
 // components
-import TaskDetail from '../../modals/taskDetailModal/taskDetailModal';
-import DeleteTaskListModal from '../../modals/deleteTaskListModal/deleteTaskListModal';
+import TaskDetail from '../../modals/get/taskDetailModal/taskDetailModal';
+import DeleteTaskListModal from '../../modals/delete/deleteTaskListModal/deleteTaskListModal';
 
 interface IProps {
 	listId: string;
@@ -25,7 +25,7 @@ const WorkSpaceDropDown: React.FC<IProps> = ({ listId }) => {
 
 	return (
 		<React.Fragment>
-			<Dropdown overlay={menu} placement='bottomRight'>
+			<Dropdown overlay={menu} placement='bottomRight' trigger={[ 'click' ]}>
 				<Button>...</Button>
 			</Dropdown>
 

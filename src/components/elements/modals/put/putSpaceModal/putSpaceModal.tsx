@@ -3,14 +3,14 @@ import { ISpace } from 'slices/space/interfaces';
 // Styled Components
 import { WorkSpaceModalStyled } from './putSpaceModal.styled';
 // grahql
-import { CHANGE_NAME_SPACE_SPACE_MUTATION } from '../../../../apis/spaces/mutations';
+import { CHANGE_NAME_SPACE_SPACE_MUTATION } from '../../../../../apis/spaces/mutations';
 import { useMutation } from '@apollo/client';
 // helpers
 import { handleApolloError } from 'global/helpers/apolloError';
 import { openNotification } from 'global/helpers/notification';
 // redux
 import { useDispatch } from 'react-redux';
-import { changeNameSpace } from '../../../../slices/space/slice';
+import { changeNameSpace } from '../../../../../slices/space/slice';
 
 interface IProps {
 	hidden: boolean;

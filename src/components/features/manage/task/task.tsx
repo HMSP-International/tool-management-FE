@@ -3,7 +3,7 @@ import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
 // Styled Components
 import { TaskStyled } from './task.styled';
-import TaskDetail from '../../../elements/modals/taskDetailModal/taskDetailModal';
+import TaskDetail from '../../../elements/modals/get/taskDetailModal/taskDetailModal';
 import { ITask } from 'slices/taskList/interfaces';
 
 // interfaces

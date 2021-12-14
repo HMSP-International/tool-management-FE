@@ -3,17 +3,17 @@ import { Tooltip } from 'antd';
 // Styled Components
 import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 // Components
-import ListUserDrawer from '../../drawers/listUserDrawer/listUserDrawer';
-import LoadingView from '../../../shared/loadingView/loadingView';
+import ListUserDrawer from '../../../drawers/listUserDrawer/listUserDrawer';
+import LoadingView from '../../../../shared/loadingView/loadingView';
 // interfaces
 import { IUser } from 'slices/dashboard/interfaces';
 // graphql
-import { GET_USERS_MUTATION } from '../../../../apis/users/mutations';
+import { GET_USERS_MUTATION } from '../../../../../apis/users/mutations';
 import { ApolloError, useMutation } from '@apollo/client';
 import { CREATE_SPACE_MUTATION, INVITE_SPACES_MUTATION } from 'apis/spaces/mutations';
 // redux
 import { useDispatch } from 'react-redux';
-import { getUsers } from '../../../../slices/dashboard/slice';
+import { getUsers } from '../../../../../slices/dashboard/slice';
 import { getSpaces } from 'slices/space/slice';
 // interfaces
 import { ISpace } from 'slices/space/interfaces';

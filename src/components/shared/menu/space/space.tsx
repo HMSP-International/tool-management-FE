@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { SpaceStyled } from './space.styled';
 // modals
-import CreateProjectModal from '../../../elements/modals/createProjectModal/createProjectModal';
-import CreateWorkSpaceModal from '../../../../components/elements/modals/createWorkSpaceModal/createWorkSpaceModal';
-import ShareWorkSpaceModal from '../../../../components/elements/modals/shareWorkSpaceModal/shareWorkSpaceModal';
-import PutShareWorkSpaceModal from '../../../../components/elements/modals/putShareWorkSpaceModal/putShareWorkSpaceModal';
-import PutWorkSpaceModal from '../../../elements/modals/putSpaceModal/putSpaceModal';
+import CreateProjectModal from '../../../elements/modals/create/createProjectModal/createProjectModal';
+import CreateWorkSpaceModal from '../../../elements/modals/create/createWorkSpaceModal/createWorkSpaceModal';
+import ShareWorkSpaceModal from '../../../elements/modals/get/shareWorkSpaceModal/shareWorkSpaceModal';
+import PutShareWorkSpaceModal from '../../../elements/modals/put/putShareWorkSpaceModal/putShareWorkSpaceModal';
+import PutWorkSpaceModal from '../../../elements/modals/put/putSpaceModal/putSpaceModal';
 // components
 import MySpace from './MySpace/mySpace';
 import SpaceInvited from './spaceInvited/spaceInvited';

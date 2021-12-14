@@ -2,7 +2,8 @@ import React, { memo, useState } from 'react';
 // 3rd Components
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import List from '../taskList/taskList';
-import CreateListModal from '../../../elements/modals/createListModal/createListModal';
+import CreateListModal from '../../../elements/modals/create/createListModal/createListModal';
+import DeleteProjectModal from '../../../elements/modals/delete/deleteProjectModal/deleteProjectModal';
 import WorkSpaceDropDown from '../../../elements/dropDown/workSpaceDD/workSpaceDD';
 
 // Styled Components
@@ -16,17 +17,27 @@ interface IProps {
 	columns: ITaskList;
 	onDragEnd: (result: DropResult, columns: ITaskList) => void;
 	nameProject: string;
-	onCreateList: (nameList: string) => void;
 }
 
-const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject, onCreateList }) => {
+const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 	const [ showCreateList, setShowCreateList ] = useState(false);
+	const [ showDeleteProject, setShowDeleteProject ] = useState(false);
 
 	return (
 		<React.Fragment>
 			<WorkSpaceStyled className='workspace'>
 				<section className='workspace__header'>
-					<div className='workspace__header__tree'>Projects / {nameProject}</div>
+					<div className='workspace__header__top'>
+						<div>Projects / {nameProject}</div>
+						<div className='workspace__header__top__btn'>
+							<div className='delete-list'>
+								<button onClick={() => setShowDeleteProject(true)}>Delete Project</button>
+							</div>
+							<div className='create-list'>
+								<button onClick={() => setShowCreateList(true)}>Create List</button>
+							</div>
+						</div>
+					</div>
 					<div className='workspace__header__title'>MT board</div>
 					<div className='workspace__header__assign'>
 						<div className='workspace__header__assign__input'>
@@ -52,10 +63,6 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject, onCreate
 									alt=''
 								/>
 							</div>
-						</div>
-
-						<div className='workspace__header__assign__create-list'>
-							<button onClick={() => setShowCreateList(true)}>Create New List</button>
 						</div>
 					</div>
 				</section>
@@ -98,9 +105,9 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject, onCreate
 				</section>
 			</WorkSpaceStyled>
 
-			{showCreateList && (
-				<CreateListModal hidden={showCreateList} setHidden={setShowCreateList} onSubmit={onCreateList} />
-			)}
+			{showCreateList && <CreateListModal hidden={showCreateList} setHidden={setShowCreateList} />}
+
+			{showDeleteProject && <DeleteProjectModal hidden={showDeleteProject} setHidden={setShowDeleteProject} />}
 		</React.Fragment>
 	);
 };

@@ -21,8 +21,6 @@ export const DeleteTaskListModalStyled = styled(Modal)`
                 text-transform: uppercase;
                 font-weight: 600;
                 color: red;
-
-
             }
 
             &name{

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Navigate, useParams, useNavigate } from 'react-router-dom';
 // component
 import WorkSpace from './workSpace/workSpace';
@@ -15,12 +15,9 @@ import { GET_PROJECT_QUERY } from 'apis/projects/queries';
 // helpers
 import { convertTaskList } from 'global/helpers/convertTaskList';
 import { IProject } from 'slices/project/interfaces';
-import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
-import { openNotification } from 'global/helpers/notification';
-import { handleApolloError } from 'global/helpers/apolloError';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getListsFormatted, createNewList } from 'slices/taskList/slice';
+import { getListsFormatted } from 'slices/taskList/slice';
 import { RootState } from 'global/redux/rootReducer';
 
 const Manage: React.FC = () => {
@@ -68,8 +65,6 @@ const Manage: React.FC = () => {
 					},
 			},
 	});
-
-	const [ onCreateList, { loading: loadingCreateList } ] = useMutation(CREATE_LIST_MUTATION);
 
 	// use effect
 	useEffect(
@@ -153,52 +148,15 @@ const Manage: React.FC = () => {
 		}
 	}, []);
 
-	const handleCreateList = async (name: string) => {
-		try {
-			const { data } = await onCreateList({
-				variables:
-					{
-						createListInput:
-							{
-								_projectId: project._id,
-								name,
-							},
-					},
-			});
-
-			const list: IList = data.createList;
-			const convertedList = convertTaskList([ list ]);
-			console.log(convertedList);
-
-			dispatch(createNewList(convertedList));
-
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'Created new list' ],
-			};
-			openNotification(showing);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
-		}
-	};
-
 	// render;
-	if (loadingGetLists || loadingGetProject || loadingCreateList) {
+	if (loadingGetLists || loadingGetProject) {
 		return <LoadingView />;
 	}
 	if (errorGetLists || errorGetProject) {
 		return <Navigate to='/notFound' />;
 	}
 
-	return (
-		<WorkSpace
-			columns={taskListRedux.lists}
-			onDragEnd={handleDragEnd}
-			nameProject={project.name}
-			onCreateList={handleCreateList}
-		/>
-	);
+	return <WorkSpace columns={taskListRedux.lists} onDragEnd={handleDragEnd} nameProject={project.name} />;
 };
 
 export default Manage;

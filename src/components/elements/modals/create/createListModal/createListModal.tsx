@@ -1,18 +1,36 @@
 import React, { useRef, useState } from 'react';
-
+// components
+import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
 import { ListModalStyled } from './createListModal.styled';
-
+// graphql
+import { useMutation } from '@apollo/client';
+import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
+// redux
+import { useDispatch } from 'react-redux';
+import { createNewList } from 'slices/taskList/slice';
+// helpers
+import { openNotification } from 'global/helpers/notification';
+import { handleApolloError } from 'global/helpers/apolloError';
+import { useParams } from 'react-router-dom';
+import { convertTaskList } from 'global/helpers/convertTaskList';
+// interfaces
+import { IList } from 'slices/taskList/interfaces';
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(nameList: string): void;
 }
 
-const CreateListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
+const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
+	const params = useParams();
+
+	// graphql
+	const [ onCreateList, { loading: loadingCreateList } ] = useMutation(CREATE_LIST_MUTATION);
+	// redux
+	const dispatch = useDispatch();
 
 	const handleSubmit = () => {
 		if (inputRef && inputRef.current) {
@@ -22,8 +40,38 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 			}
 			else {
 				// query Backend
-				onSubmit(inputRef.current.value);
+				handleCreateList(inputRef.current.value);
 			}
+		}
+	};
+
+	const handleCreateList = async (name: string) => {
+		try {
+			const { data } = await onCreateList({
+				variables:
+					{
+						createListInput:
+							{
+								_projectId: params._id,
+								name,
+							},
+					},
+			});
+
+			const list: IList = data.createList;
+			const convertedList = convertTaskList([ list ]);
+
+			dispatch(createNewList(convertedList));
+			setHidden(false);
+
+			const showing = {
+				title: 'Susscess',
+				extensions: [ 'Created new list' ],
+			};
+			openNotification(showing);
+		} catch (error) {
+			const showing = handleApolloError(error);
+			openNotification(showing, true);
 		}
 	};
 
@@ -39,6 +87,10 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 			}
 		}
 	};
+
+	if (loadingCreateList) {
+		return <LoadingView />;
+	}
 
 	return (
 		<ListModalStyled
