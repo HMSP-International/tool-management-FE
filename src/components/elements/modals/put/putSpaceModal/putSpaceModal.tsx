@@ -2,15 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ISpace } from 'slices/space/interfaces';
 // Styled Components
 import { WorkSpaceModalStyled } from './putSpaceModal.styled';
+import LoadingView from 'components/shared/loadingView/loadingView';
 // grahql
-import { CHANGE_NAME_SPACE_SPACE_MUTATION } from '../../../../../apis/spaces/mutations';
+import { CHANGE_NAME_SPACE_SPACE_MUTATION, DELETE_SPACE_MUTATION } from 'apis/spaces/mutations';
 import { useMutation } from '@apollo/client';
 // helpers
 import { handleApolloError } from 'global/helpers/apolloError';
 import { openNotification } from 'global/helpers/notification';
 // redux
 import { useDispatch } from 'react-redux';
-import { changeNameSpace } from '../../../../../slices/space/slice';
+import { changeNameSpace, deleteSpace } from 'slices/space/slice';
 
 interface IProps {
 	hidden: boolean;
@@ -20,7 +21,8 @@ interface IProps {
 }
 
 const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, currentSpace }) => {
-	const [ onChangeNameSpace, { loading } ] = useMutation(CHANGE_NAME_SPACE_SPACE_MUTATION);
+	const [ onChangeNameSpace, { loading: loadingChangeName } ] = useMutation(CHANGE_NAME_SPACE_SPACE_MUTATION);
+	const [ onDeleteSpace, { loading: loadingDeleteSpace } ] = useMutation(DELETE_SPACE_MUTATION);
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -41,13 +43,13 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 		setInValidName(false);
 	};
 
-	const updateNewSpace = async () => {
+	const handleUpdateNewSpace = async () => {
 		if (inputRef && inputRef.current) {
 			if (inputRef.current.value.length === 0) {
 				showError();
 			}
 			else {
-				if (!loading) {
+				if (!loadingChangeName) {
 					try {
 						const { data } = await onChangeNameSpace({
 							variables:
@@ -76,6 +78,31 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 		}
 	};
 
+	const handleDeleteSpace = async () => {
+		try {
+			const { data } = await onDeleteSpace({
+				variables:
+					{
+						deleteSpaceInput:
+							{
+								_spaceId: currentSpace._id,
+							},
+					},
+			});
+
+			dispatch(deleteSpace(data.deleteSpaceById));
+			setHidden(false);
+			const showing = {
+				title: 'Susscess',
+				extensions: [ 'Delete Space' ],
+			};
+			openNotification(showing);
+		} catch (error) {
+			const showing = handleApolloError(error);
+			openNotification(showing, true);
+		}
+	};
+
 	const handleOpenSpaceSubmit = () => {
 		if (inputRef && inputRef.current)
 			if (inputRef.current.value.length === 0) {
@@ -97,6 +124,8 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 			}
 		}
 	};
+
+	if (loadingChangeName || loadingDeleteSpace) return <LoadingView />;
 
 	return (
 		<React.Fragment>
@@ -135,7 +164,10 @@ const PutWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit, curr
 				</div>
 				<div className='modal__work-space-modal__btn-group'>
 					<div className='modal__work-space-modal__button'>
-						<button onClick={updateNewSpace}>Update NameSpace</button>
+						<button onClick={handleDeleteSpace}>Delete Space</button>
+					</div>
+					<div className='modal__work-space-modal__button'>
+						<button onClick={handleUpdateNewSpace}>Update NameSpace</button>
 					</div>
 					<div className='modal__work-space-modal__button'>
 						<button onClick={handleOpenSpaceSubmit}>Next</button>

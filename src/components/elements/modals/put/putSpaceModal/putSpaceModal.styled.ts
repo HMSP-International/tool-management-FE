@@ -7,8 +7,8 @@ export const WorkSpaceModalStyled = styled(Modal)`
 
     .modal__work-space-modal__btn-group{
         display: grid;
-        gap: 10%;
-        grid-template-columns: 1fr 1fr;
+        gap: 3%;
+        grid-template-columns: 1fr 1fr 1fr;
     }
 
     .modal__work-space-modal__button{
@@ -20,11 +20,11 @@ export const WorkSpaceModalStyled = styled(Modal)`
             height: 100%;
 
             cursor: pointer;
-            padding: 0 30px;
+            padding: 0 20px;
             
             line-height: 100%;
             font-weight: 500;
-            font-size: 18px;
+            font-size: 16px;
             color: #fff;
             
             border-radius: 3px;

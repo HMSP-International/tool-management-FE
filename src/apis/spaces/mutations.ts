@@ -67,3 +67,14 @@ export const CHANGE_NAME_SPACE_SPACE_MUTATION = gql`
 		}
 	}
 `;
+
+export const DELETE_SPACE_MUTATION = gql`
+	mutation DELETE_SPACE($deleteSpaceInput: DeleteSpaceInput!) {
+		deleteSpaceById(deleteSpaceInput: $deleteSpaceInput) {
+			_id
+			owner
+			name
+			order
+		}
+	}
+`;

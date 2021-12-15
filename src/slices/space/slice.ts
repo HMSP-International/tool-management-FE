@@ -9,5 +9,5 @@ export const spaceSlice: Slice = createSlice({
 	reducers,
 });
 const { reducer, actions } = spaceSlice;
-export const { changeNameSpace, getSpaces } = actions;
+export const { changeNameSpace, deleteSpace, getSpaces } = actions;
 export default reducer;

@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 // graphql
 import { ApolloError, useMutation } from '@apollo/client';
 import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
@@ -23,7 +22,6 @@ interface IProps {
 }
 
 const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) => {
-	const navigate = useNavigate();
 	// graphql
 	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(CREATE_PROJECT_MUTATION);
 	// state
@@ -70,8 +68,6 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 			dispatch(createProject(newProjects));
 
 			setHidden(false);
-
-			navigate('/manage/' + projects[projects.length - 1]._id);
 
 			openNotification({
 				title: 'Susscessfully',
