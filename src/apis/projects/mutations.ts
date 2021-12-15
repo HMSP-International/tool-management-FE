@@ -35,3 +35,15 @@ export const CREATE_PROJECT_MUTATION = gql`
 		}
 	}
 `;
+
+export const DELETE_PROJECT_MUTATION = gql`
+	mutation DELETE_PROJECT($deleteProjectInput: DeleteProjectInput!) {
+		deleteProject(deleteProjectInput: $deleteProjectInput) {
+			_id
+			_spaceId
+			owner
+			name
+			order
+		}
+	}
+`;

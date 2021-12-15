@@ -9,5 +9,5 @@ export const spaceSlice: Slice = createSlice({
 	reducers,
 });
 const { reducer, actions } = spaceSlice;
-export const { getProjects, createProject, getProjectsFromCollaborator } = actions;
+export const { getProjects, deleteProject, createProject, getProjectsFromCollaborator } = actions;
 export default reducer;

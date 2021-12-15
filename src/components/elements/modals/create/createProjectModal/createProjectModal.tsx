@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // graphql
 import { ApolloError, useMutation } from '@apollo/client';
 import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
@@ -22,10 +23,9 @@ interface IProps {
 }
 
 const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) => {
+	const navigate = useNavigate();
 	// graphql
-	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(
-		CREATE_PROJECT_MUTATION,
-	);
+	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(CREATE_PROJECT_MUTATION);
 	// state
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
@@ -71,6 +71,8 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 
 			setHidden(false);
 
+			navigate('/manage/' + projects[projects.length - 1]._id);
+
 			openNotification({
 				title: 'Susscessfully',
 				extensions: [ 'Created project' ],
@@ -100,19 +102,11 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 
 	return (
 		<React.Fragment>
-			<ProjectModalStyled
-				centered
-				visible={hidden}
-				footer={null}
-				className='modal__project-modal'
-			>
+			<ProjectModalStyled centered visible={hidden} footer={null} className='modal__project-modal'>
 				<div className='project-modal__container'>
 					<div className='project-modal__header'>
 						<div className='project-modal__header__title'>Create Project</div>
-						<div
-							className='project-modal__header__close'
-							onClick={() => setHidden(false)}
-						>
+						<div className='project-modal__header__close' onClick={() => setHidden(false)}>
 							X
 						</div>
 					</div>

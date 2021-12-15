@@ -1,12 +1,11 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 // graphql
 import { useMutation } from '@apollo/client';
-import { DELETE_LIST_MUTATION } from 'apis/taskList/mutations';
+import { DELETE_PROJECT_MUTATION } from 'apis/projects/mutations';
 // interfaces
-import { IList } from 'slices/taskList/interfaces';
 // redux
-import { deleteTaskList } from 'slices/taskList/slice';
+import { deleteProject } from 'slices/project/slice';
 import { useDispatch } from 'react-redux';
 // helpers
 import { openNotification } from 'global/helpers/notification';
@@ -21,11 +20,39 @@ interface IProps {
 }
 
 const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
-	// const [ onDeleteList, { loading } ] = useMutation(DELETE_LIST_MUTATION);
+	const [ onDeleteProject, { loading } ] = useMutation(DELETE_PROJECT_MUTATION);
 	const dispatch = useDispatch();
 	const params = useParams();
+	const navigate = useNavigate();
 
-	// if (loading) return <LoadingView />;
+	if (loading) return <LoadingView />;
+
+	const handleDeleteProject = async () => {
+		try {
+			const { data } = await onDeleteProject({
+				variables:
+					{
+						deleteProjectInput:
+							{
+								_projectId: params._id,
+							},
+					},
+			});
+
+			dispatch(deleteProject(data.deleteProject));
+			setHidden(false);
+			navigate('/');
+
+			const showing = {
+				title: 'Susscess',
+				extensions: [ 'deleted project' ],
+			};
+			openNotification(showing);
+		} catch (error) {
+			const showing = handleApolloError(error);
+			openNotification(showing, true);
+		}
+	};
 
 	return (
 		<DeleteTaskListModalStyled
@@ -41,7 +68,7 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 					All Task and List on this project will be deleted
 				</div>
 				<div className='delete-task-list-modal__btn'>
-					<button>Delete</button>
+					<button onClick={handleDeleteProject}>Delete</button>
 				</div>
 			</div>
 		</DeleteTaskListModalStyled>
