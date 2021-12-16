@@ -126,9 +126,7 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 							() => ({
 								validator (_, value) {
 									if (value.length < 6) {
-										return Promise.reject(
-											'password has to be a length greater than 6.',
-										);
+										return Promise.reject('password has to be a length greater than 6.');
 									}
 									return Promise.resolve();
 								},

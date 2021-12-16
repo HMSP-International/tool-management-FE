@@ -16,15 +16,14 @@ const PutAction: React.FC<IProps> = ({ user }) => {
 	const [ showUserDrawer, setShowUserDrawer ] = useState(false);
 
 	const handlePutUser = (putUser: IUser, type: string) => {
-		if (type === 'infomation') dispatch(updateInformationUser(putUser));
+		if (type === 'information') {
+			dispatch(updateInformationUser(putUser));
+		}
 	};
 
 	return (
 		<React.Fragment>
-			<Tag
-				onClick={() => setShowUserDrawer(true)}
-				style={{ cursor: 'pointer', backgroundColor: 'lightgreen' }}
-			>
+			<Tag onClick={() => setShowUserDrawer(true)} style={{ cursor: 'pointer', backgroundColor: 'lightgreen' }}>
 				Edit
 			</Tag>
 

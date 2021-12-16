@@ -29,7 +29,7 @@ const InviteSpace: React.FC<IProps> = ({ token }) => {
 				}
 				else {
 					try {
-						const { data } = await onVerify({
+						await onVerify({
 							variables:
 								{
 									verifyInviteSpaceInput:
@@ -39,7 +39,6 @@ const InviteSpace: React.FC<IProps> = ({ token }) => {
 								},
 						});
 
-						console.log(data);
 						navigate('/');
 						openNotification({ title: 'Confirm Email Successfully', extensions: [] });
 					} catch (error) {
