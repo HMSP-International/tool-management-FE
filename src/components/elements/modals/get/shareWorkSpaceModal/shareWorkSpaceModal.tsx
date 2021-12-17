@@ -18,7 +18,7 @@ import { getSpaces } from 'slices/space/slice';
 // interfaces
 import { ISpace } from 'slices/space/interfaces';
 // error
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;
@@ -74,7 +74,6 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 							name: nameSpace,
 						},
 				},
-			key: 'createSpace',
 			message: 'Created space',
 		});
 

@@ -61,7 +61,6 @@ interface IParameters {
 	fnFetchData: (
 		options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>> | undefined,
 	) => Promise<any>;
-	key?: string;
 	variables?: OperationVariables;
 	message?: string;
 }
@@ -73,7 +72,7 @@ interface IOutPut {
 
 export const fetchDataAndShowNotify = async (params: IParameters): Promise<IOutPut> => {
 	try {
-		const { fnFetchData, variables, key, message } = params;
+		const { fnFetchData, variables, message } = params;
 		const { data } = await fnFetchData({ variables });
 
 		if (message) {
@@ -84,11 +83,9 @@ export const fetchDataAndShowNotify = async (params: IParameters): Promise<IOutP
 			openNotification(showing);
 		}
 
-		if (key) {
-			return { isError: false, data: data[key] };
-		}
-
-		return { isError: false, data };
+		console.log(data);
+		const keys = Object.keys(data);
+		return { isError: false, data: data[keys[0]] };
 	} catch (error) {
 		const showing = handleApolloError(error);
 		openNotification(showing, true);

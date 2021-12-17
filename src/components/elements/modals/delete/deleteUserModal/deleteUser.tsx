@@ -5,7 +5,7 @@ import { DELETE_USER_MUTATION } from 'apis/users/mutations';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 // redux
 import { useDispatch } from 'react-redux';
 import { deleteUser } from 'slices/dashboard/slice';
@@ -32,7 +32,6 @@ const DeleteUserModal: React.FC<IProps> = ({ hidden, setHidden, user }) => {
 	const handleDeleteUser = async (_id: string) => {
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onDeleteUser,
-			key: 'deleteUser',
 			message: 'Deleted user',
 			variables:
 				{

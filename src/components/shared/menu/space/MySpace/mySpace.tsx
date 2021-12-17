@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AppstoreOutlined } from '@ant-design/icons';
 import { AiOutlineProject, AiFillCalendar } from 'react-icons/ai';
-import TitleSubMenu from '../../titleSubmenu/titleSubMenu';
+import TitleSpace from '../../titleSpace/titleSpace';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 // components
@@ -22,7 +22,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_SPACES_QUERY } from 'apis/spaces/queries';
 import { GET_PROJECTS_MUTATION } from 'apis/projects/mutations';
 // helpers
-import { convertProject } from 'global/helpers/convertProject';
+import { convertProject } from 'global/helpers/formatData/convertProject';
 
 const { SubMenu } = Menu;
 
@@ -88,7 +88,7 @@ const MySpace: React.FC<IProps> = ({ handleOpenModel }) => {
 					key='space'
 					icon={<AppstoreOutlined />}
 					title={
-						<TitleSubMenu
+						<TitleSpace
 							title={'Your Space'}
 							type={'space'}
 							onOpenModal={handleOpenModel}
@@ -105,7 +105,7 @@ const MySpace: React.FC<IProps> = ({ handleOpenModel }) => {
 								key={space._id}
 								icon={<AiFillCalendar />}
 								title={
-									<TitleSubMenu
+									<TitleSpace
 										title={space.name}
 										_id={space._id}
 										type={'project'}

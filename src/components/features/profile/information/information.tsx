@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CHANGE_INFORMATION_MUTAIION } from 'apis/profile/mutations';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 // Redux
 import { useSelector } from 'react-redux';
 import { RootState } from 'global/redux/rootReducer';

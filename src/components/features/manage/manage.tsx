@@ -13,7 +13,7 @@ import { IInitialStateList, IList, ITaskList } from 'slices/taskList/interfaces'
 import { GET_LISTS_QUERY } from 'apis/taskList/queries';
 import { GET_PROJECT_QUERY } from 'apis/projects/queries';
 // helpers
-import { convertTaskList } from 'global/helpers/convertTaskList';
+import { convertTaskList } from 'global/helpers/formatData/convertTaskList';
 import { IProject } from 'slices/project/interfaces';
 // redux
 import { useDispatch, useSelector } from 'react-redux';

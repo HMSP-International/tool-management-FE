@@ -11,7 +11,7 @@ import { useMutation } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 import { login } from 'slices/auth/slice';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 
 const NAME_INPUT = {
 	password: 'password',
@@ -84,7 +84,7 @@ const Login: React.FC = () => {
 			password = inputPasswordRef.current.value;
 		}
 
-		const { data: { jwt } } = await fetchDataAndShowNotify({
+		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onLogin,
 			variables:
 				{
@@ -94,12 +94,13 @@ const Login: React.FC = () => {
 							password,
 						},
 				},
-			message: 'logined',
-			key: 'signin',
+			message: 'Logined',
 		});
 
-		dispatch(login({ jwt }));
-		navigate('/', { replace: true });
+		if (!isError) {
+			dispatch(login(data));
+			navigate('/', { replace: true });
+		}
 	};
 
 	return (

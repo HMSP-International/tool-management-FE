@@ -6,7 +6,7 @@ import { DELETE_LIST_MUTATION } from 'apis/taskList/mutations';
 import { deleteTaskList } from 'slices/taskList/slice';
 import { useDispatch } from 'react-redux';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
@@ -32,7 +32,6 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) =>
 							_listId: listId,
 						},
 				},
-			key: 'deleteList',
 			message: 'Deleted List',
 		});
 

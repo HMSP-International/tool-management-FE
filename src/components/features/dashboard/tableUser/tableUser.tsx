@@ -1,11 +1,9 @@
 import React from 'react';
-
 // table
 import DataTable from 'react-data-table-component';
 import { TableColumn } from 'react-data-table-component';
-
 // cell
-// import { Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import DeleteAction from './action/delete';
 import PutAction from './action/put';
 // styled-component
@@ -15,6 +13,8 @@ import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/inte
 import { RootState } from '../../../../global/redux/rootReducer';
 // Redux
 import { useSelector } from 'react-redux';
+// helpers
+import { removeAfterSign } from 'global/helpers/string/removeAfter@';
 
 const columns: TableColumn<IUser>[] = [
 	{
@@ -34,6 +34,14 @@ const columns: TableColumn<IUser>[] = [
 		selector: row => row.email,
 		sortable: true,
 		center: true,
+		cell:
+			row => {
+				return (
+					<Tooltip placement='top' title={row.email}>
+						{removeAfterSign(row.email)}
+					</Tooltip>
+				);
+			},
 	},
 	{
 		name: 'Department',
@@ -73,6 +81,7 @@ const columns: TableColumn<IUser>[] = [
 const TableUser: React.FC = () => {
 	// redux
 	const dashboardRedux: IInitialStateDashboard = useSelector((state: RootState) => state.dashboard);
+	console.log(dashboardRedux);
 
 	return (
 		<TableUserStyled>

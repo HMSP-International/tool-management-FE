@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 // interface
 import { IUser } from 'slices/dashboard/interfaces';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;
@@ -30,7 +30,6 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onCreateUser,
 			variables: { createUserInput: values },
-			key: 'createUser',
 			message: 'Created new user',
 		});
 

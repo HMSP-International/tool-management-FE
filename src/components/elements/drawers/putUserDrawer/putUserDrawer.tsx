@@ -10,7 +10,7 @@ import { CHANGE_INFORMATION_BY_ADMIN_MUTAIION, CHANGE_PASSWORD_BY_ADMIN_MUTAIION
 // interface
 import { IUser } from 'slices/dashboard/interfaces';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;
@@ -43,7 +43,6 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangeInformation,
 			variables: { changeInformationInputByAdmin: values },
-			key: 'chageInformationByAdmin',
 			message: 'Edited user',
 		});
 
@@ -59,7 +58,6 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangePassword,
 			variables: { changePasswordInputByAdmin: { newPassword, _id: user._id } },
-			key: 'changePasswordInputByAdmin',
 			message: 'Changed password user',
 		});
 

@@ -16,7 +16,7 @@ import { useMutation } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 import { getUsers } from '../../../../../slices/dashboard/slice';
 // helper
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;

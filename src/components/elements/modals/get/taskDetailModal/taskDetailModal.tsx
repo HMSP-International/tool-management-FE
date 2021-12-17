@@ -11,8 +11,7 @@ import { useMutation } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 import { createTaskInList, deleteTasksInList } from 'slices/taskList/slice';
 // helpers
-import { openNotification } from 'global/helpers/notification';
-import { handleApolloError } from 'global/helpers/apolloError';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 // interfaces
 interface IProps {
 	hidden: boolean;
@@ -87,31 +86,23 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden, task, listId }) => {
 	const handleCreateTask = async () => {
 		if (task === undefined) {
 			if (nameTaskRef && nameTaskRef.current) {
-				try {
-					const { data } = await onCreateTask({
-						variables:
-							{
-								createTaskInput:
-									{
-										_listId: listId,
-										name: nameTaskRef.current.value,
-									},
-							},
-					});
+				const { data, isError } = await fetchDataAndShowNotify({
+					fnFetchData: onCreateTask,
+					variables:
+						{
+							createTaskInput:
+								{
+									_listId: listId,
+									name: nameTaskRef.current.value,
+								},
+						},
+					message: 'Created Task',
+				});
 
-					// CREATE TASKs
-
-					const resTask: ITask = data.createTask;
-					dispatch(createTaskInList(resTask));
-
-					const showing = {
-						title: 'Susscess',
-						extensions: [ 'Created Task' ],
-					};
-					openNotification(showing);
-				} catch (error) {
-					const showing = handleApolloError(error);
-					openNotification(showing, true);
+				// CREATE TASKs
+				if (!isError) {
+					dispatch(createTaskInList(data));
+					setHidden(false);
 				}
 			}
 		}
@@ -119,31 +110,22 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden, task, listId }) => {
 
 	const handleDeleteTask = async () => {
 		if (task) {
-			try {
-				const { data } = await onDeleteTasks({
-					variables:
-						{
-							deleteTaskInput:
-								{
-									_taskIds: [ task._id ],
-								},
-						},
-				});
+			const { data, isError } = await fetchDataAndShowNotify({
+				fnFetchData: onDeleteTasks,
+				variables:
+					{
+						deleteTaskInput:
+							{
+								_taskIds: [ task._id ],
+							},
+					},
+				message: 'Deleted Task',
+			});
 
-				// DELETE TASKs
-				const resTask: ITask[] = data.deleteTasks;
-				dispatch(deleteTasksInList(resTask));
-
+			// DELETE TASKs
+			if (!isError) {
+				dispatch(deleteTasksInList(data));
 				setHidden(false);
-
-				const showing = {
-					title: 'Susscess',
-					extensions: [ 'Deleted Task' ],
-				};
-				openNotification(showing);
-			} catch (error) {
-				const showing = handleApolloError(error);
-				openNotification(showing, true);
 			}
 		}
 	};
@@ -169,7 +151,6 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden, task, listId }) => {
 								ref={nameTaskRef}
 								name='taskName'
 							/>
-							<button onClick={handleCreateTask}>{task ? 'Edit' : 'Create Task'}</button>
 						</div>
 						<div className='des-task'>
 							<div className='des-task__content'>Description</div>
@@ -245,9 +226,13 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden, task, listId }) => {
 							<div className='updated'>Updated {currentTask.createAt}</div>
 						</div>
 
-						{task !== undefined && (
+						{task !== undefined ? (
 							<div className='task-detail__assign__btn'>
 								<button onClick={handleDeleteTask}>Delete Task</button>
+							</div>
+						) : (
+							<div className='task-detail__assign__btn'>
+								<button onClick={handleCreateTask}>Create Task</button>
 							</div>
 						)}
 					</div>

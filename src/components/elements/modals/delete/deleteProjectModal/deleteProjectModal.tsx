@@ -8,7 +8,7 @@ import { DELETE_PROJECT_MUTATION } from 'apis/projects/mutations';
 import { deleteProject } from 'slices/project/slice';
 import { useDispatch } from 'react-redux';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
@@ -30,7 +30,6 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onDeleteProject,
 			variables: { deleteProjectInput: { _projectId: params._id } },
-			key: 'deleteProject',
 			message: 'Deleted project',
 		});
 

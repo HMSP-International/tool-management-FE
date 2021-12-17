@@ -222,16 +222,7 @@ export const ModalStyled = styled(Modal)`
                     padding: 10px 0 5px 0;
                     font-size: ${props => props.theme.fontSize.nomal1};
                     border-bottom: 1px solid lightgray;
-                }
-
-                button{
-                    margin-left: 20px;
-                    padding: 5px 10px;
-                    color: #172b4d;
-                    font-size: ${props => props.theme.fontSize.small2};
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
+                } 
             }
 
             .des-task{

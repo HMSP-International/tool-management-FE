@@ -1,5 +1,5 @@
 import React from 'react';
-import { TitleSubMenuStyled } from './titleSubMenu.styled';
+import { TitleSpaceStyled } from './titleSpace.styled';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { ISpace } from 'slices/space/interfaces';
 
@@ -12,18 +12,16 @@ interface IProps {
 	space?: ISpace;
 }
 
-const TitleSubMenu: React.FC<IProps> = ({ title, onOpenModal, type, _id, isCreated, space }) => {
+const TitleSpace: React.FC<IProps> = ({ title, onOpenModal, type, _id, isCreated, space }) => {
 	return (
 		<React.Fragment>
-			<TitleSubMenuStyled className='submenu'>
+			<TitleSpaceStyled className='submenu'>
 				<div className='submenu__title'>{title}</div>
 				{isCreated && (
 					<div className='submenu__icons'>
 						{type === 'project' && (
 							<div className='submenu__icons__edit'>
-								<AiOutlineEdit
-									onClick={() => onOpenModal('editSpace', _id, space)}
-								/>
+								<AiOutlineEdit onClick={() => onOpenModal('editSpace', _id, space)} />
 							</div>
 						)}
 						<div className='submenu__icons__add' onClick={() => onOpenModal(type, _id)}>
@@ -31,9 +29,9 @@ const TitleSubMenu: React.FC<IProps> = ({ title, onOpenModal, type, _id, isCreat
 						</div>
 					</div>
 				)}
-			</TitleSubMenuStyled>
+			</TitleSpaceStyled>
 		</React.Fragment>
 	);
 };
 
-export default TitleSubMenu;
+export default TitleSpace;

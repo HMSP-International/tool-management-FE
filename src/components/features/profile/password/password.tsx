@@ -6,7 +6,7 @@ import { CHANGE_PASSWORD_MUTAIION } from 'apis/profile/mutations';
 import LoadingView from '../../../shared/loadingView/loadingView';
 import { PasswordStyled } from './password.styled';
 // helpers
-import { fetchDataAndShowNotify } from '../../../../global/helpers/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from '../../../../global/helpers/graphql/fetchDataAndShowNotify';
 
 const Password: React.FC = () => {
 	const [ onChangePassword, { loading } ] = useMutation(CHANGE_PASSWORD_MUTAIION);

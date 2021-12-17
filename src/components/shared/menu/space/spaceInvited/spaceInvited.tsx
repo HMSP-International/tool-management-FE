@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 // antd
 import { AppstoreOutlined } from '@ant-design/icons';
-import TitleSubMenu from '../../titleSubmenu/titleSubMenu';
+import TitleSpace from '../../titleSpace/titleSpace';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 // interfaces
@@ -17,7 +17,7 @@ import LoadingView from 'components/shared/loadingView/loadingView';
 import ErrorView from 'components/shared/errorView/errorView';
 // status
 import STATUS from 'global/constants/status';
-import { convertProject } from 'global/helpers/convertProject';
+import { convertProject } from 'global/helpers/formatData/convertProject';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjectsFromCollaborator } from 'slices/project/slice';
@@ -96,7 +96,7 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 				key='space'
 				icon={<AppstoreOutlined />}
 				title={
-					<TitleSubMenu
+					<TitleSpace
 						title={'Invited Space'}
 						type={'space'}
 						onOpenModal={handleOpenModel}
@@ -115,7 +115,7 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 							key={space._id}
 							icon={<AppstoreOutlined />}
 							title={
-								<TitleSubMenu
+								<TitleSpace
 									title={space.name}
 									_id={space._id}
 									type={'project'}

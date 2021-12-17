@@ -7,8 +7,8 @@ import { ProjectModalStyled } from './createProjectModal.styled';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
-import { convertProject } from 'global/helpers/convertProject';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { convertProject } from 'global/helpers/formatData/convertProject';
 // redux
 import { useDispatch } from 'react-redux';
 import { createProject } from 'slices/project/slice';
@@ -59,7 +59,6 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 							_spaceId: spaceId,
 						},
 				},
-			key: 'createProject',
 			message: 'Created project',
 		});
 

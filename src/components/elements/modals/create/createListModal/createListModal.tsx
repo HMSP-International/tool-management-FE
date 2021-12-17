@@ -11,8 +11,8 @@ import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
 import { useDispatch } from 'react-redux';
 import { createNewList } from 'slices/taskList/slice';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
-import { convertTaskList } from 'global/helpers/convertTaskList';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { convertTaskList } from 'global/helpers/formatData/convertTaskList';
 // interfaces
 interface IProps {
 	hidden: boolean;
@@ -54,7 +54,6 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 							name,
 						},
 				},
-			key: 'createList',
 			message: 'Created new list',
 		});
 
