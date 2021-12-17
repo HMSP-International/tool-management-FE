@@ -13,12 +13,12 @@ import LoadingView from '../../shared/loadingView/loadingView';
 import { IUser } from '../../../slices/dashboard/interfaces';
 
 // redux
-import { createUser, getUsers } from '../../../slices/dashboard/slice';
+import { createUser, getUsers } from 'slices/dashboard/slice';
 import { useDispatch } from 'react-redux';
 
 // graphql
 import { useMutation } from '@apollo/client';
-import { GET_USERS_MUTATION } from '../../../apis/users/mutations';
+import { GET_USERS_MUTATION } from 'apis/users/mutations';
 
 const Dashboard: React.FC = () => {
 	const dispatch = useDispatch();

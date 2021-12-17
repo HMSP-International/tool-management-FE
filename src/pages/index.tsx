@@ -2,7 +2,7 @@ import ContainerPage from '../components/shared/containerPage/containerPage';
 
 function HomePage () {
 	return (
-		<ContainerPage>
+		<ContainerPage title='HomePage'>
 			<main>
 				<h1>HOMEPAGE</h1>
 			</main>

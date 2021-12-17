@@ -17,6 +17,6 @@ export const LoadingStyled = styled.section`
 	transition: all 1s ease-in-out;
 
 	span {
-		color: red;
+		color: lightgray;
 	}
 `;

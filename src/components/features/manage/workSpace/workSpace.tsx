@@ -40,22 +40,13 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 
 						<div className='workspace__header__assign__group-avt'>
 							<div className='workspace__header__assign__group-avt__item'>
-								<img
-									src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-									alt=''
-								/>
+								<img src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg' alt='' />
 							</div>
 							<div className='workspace__header__assign__group-avt__item'>
-								<img
-									src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-									alt=''
-								/>
+								<img src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg' alt='' />
 							</div>
 							<div className='workspace__header__assign__group-avt__item'>
-								<img
-									src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-									alt=''
-								/>
+								<img src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg' alt='' />
 							</div>
 						</div>
 					</div>

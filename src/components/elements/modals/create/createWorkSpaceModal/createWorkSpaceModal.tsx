@@ -66,12 +66,7 @@ const CreateWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit })
 					<label htmlFor='' className={isValidName ? '' : 'text-error'}>
 						Space Name
 					</label>
-					<input
-						type='text'
-						placeholder='Enter Space Name'
-						ref={inputRef}
-						onChange={handleChangeInput}
-					/>
+					<input type='text' placeholder='Enter Space Name' ref={inputRef} onChange={handleChangeInput} />
 					{!isValidName && (
 						<label htmlFor='' className={isValidName ? '' : 'text-error'}>
 							{messageError}
@@ -82,8 +77,6 @@ const CreateWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit })
 					<button onClick={handleSubmit}>Next</button>
 				</div>
 			</WorkSpaceModalStyled>
-
-			
 		</React.Fragment>
 	);
 };

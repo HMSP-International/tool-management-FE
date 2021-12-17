@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
-import { AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineLogout, AiOutlineUser, AiFillDashboard } from 'react-icons/ai';
 // components
 import { MenuStyled } from './avatarDD.styled';
 // redux
@@ -21,6 +21,16 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 					</h4>
 				</button>
 			</Menu.Item>
+
+			<Menu.Item className='menu-item'>
+				<button className='menu__body__tabs-item'>
+					<AiFillDashboard style={{ color: 'white', fontSize: '20px' }} />
+					<h4>
+						<Link to='/dashboard'>Dashboard</Link>
+					</h4>
+				</button>
+			</Menu.Item>
+
 			<Menu.Item className='menu-item'>
 				<button onClick={() => dispatch(logout(''))}>
 					<AiOutlineLogout style={{ color: 'white', fontSize: '20px' }} />
@@ -32,7 +42,7 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 
 	return (
 		<React.Fragment>
-			<Dropdown overlay={menu} placement='bottomRight'>
+			<Dropdown overlay={menu} placement='bottomRight' trigger={[ 'click' ]}>
 				{children}
 			</Dropdown>
 		</React.Fragment>

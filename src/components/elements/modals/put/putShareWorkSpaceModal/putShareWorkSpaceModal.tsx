@@ -130,7 +130,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 							<Tooltip placement='top' title={showText('me')}>
 								<div>
 									<img
-										src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
+										src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg'
 										alt=''
 									/>
 								</div>
@@ -139,7 +139,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 								<div key={user._id}>
 									<Tooltip placement='bottom' title={showText(user.email)}>
 										<img
-											src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
+											src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg'
 											alt=''
 										/>
 									</Tooltip>

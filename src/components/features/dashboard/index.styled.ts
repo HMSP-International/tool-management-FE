@@ -12,10 +12,17 @@ export const DashboardStyled = styled.section`
 		display: flex;
 		justify-content: flex-end;
 		button {
-			padding: 5px 50px;
-			background-color: lightgray;
+			background-color: lightblue;
+			color: gray;
+			padding: 10px 40px;
 			cursor: pointer;
 			border-radius: 5px;
+			transition: all 0.3s ease-out;
+
+			&:hover {
+				background-color: #6db9d1;
+				color: white;
+			}
 		}
 	}
 `;

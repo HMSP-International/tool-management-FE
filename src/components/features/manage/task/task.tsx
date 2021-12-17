@@ -34,10 +34,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item, listId }) => {
 				<div className='task-bottom'>
 					<div className='task-bottom__project'>MT-1</div>
 					<div className='task-bottom__avt'>
-						<img
-							src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-							alt=''
-						/>
+						<img src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg' alt='' />
 					</div>
 				</div>
 			</TaskStyled>

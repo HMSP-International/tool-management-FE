@@ -85,7 +85,7 @@ const TableUser: React.FC = () => {
 
 	return (
 		<TableUserStyled>
-			<DataTable columns={columns} data={dashboardRedux.users} />
+			<DataTable columns={columns} data={dashboardRedux.users} className='123' />
 		</TableUserStyled>
 	);
 };

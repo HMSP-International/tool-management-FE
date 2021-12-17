@@ -5,7 +5,7 @@ import ContainerPage from '../../components/shared/containerPage/containerPage';
 
 const ManagePage: React.FC = () => {
 	return (
-		<ContainerPage>
+		<ContainerPage title='Manage'>
 			<Manage />
 		</ContainerPage>
 	);
