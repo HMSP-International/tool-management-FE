@@ -24,10 +24,10 @@ export const ShareModalStyled = styled(Modal)`
             color: #fff;
             
             border-radius: 3px;
-            background-color: #ff00fc;
+            background-color: lightblue;
 
             &:active{
-                background-color: #d600d4;
+                background-color: #6db9d1;
             }
         }
     }
@@ -49,8 +49,8 @@ export const ShareModalStyled = styled(Modal)`
             transition: all .2s cubic-bezier(.785,.135,.15,.86) 0s;
 
             &:hover{
-                border-bottom-color: #d600d4;
-                color: #d600d4;
+                border-bottom-color: #6db9d1;
+                color: #6db9d1;
             }
         }
 
@@ -107,7 +107,7 @@ export const ShareModalStyled = styled(Modal)`
 
             height: 100%;
             width: 265px;
-            border: 2px solid #ff00fc;
+            border: 2px solid #6db9d1;
             border-radius: 5px;
             
             img{

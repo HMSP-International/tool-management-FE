@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Tag } from 'antd';
 import DeleteUserModal from 'components/elements/modals/delete/deleteUserModal/deleteUser';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 interface IProps {
 	user: {
@@ -15,8 +16,11 @@ const DeleteAction: React.FC<IProps> = ({ user }) => {
 
 	return (
 		<React.Fragment>
-			<Tag style={{ cursor: 'pointer', backgroundColor: 'red' }} onClick={() => setShowDeleteUserModal(true)}>
-				Delete
+			<Tag
+				style={{ cursor: 'pointer', backgroundColor: 'red', borderRadius: '5px' }}
+				onClick={() => setShowDeleteUserModal(true)}
+			>
+				<AiOutlineDelete />
 			</Tag>
 
 			{showDeleteUserModal && (

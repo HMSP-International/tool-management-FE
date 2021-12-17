@@ -132,7 +132,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 					<div className='share-modal__shared'>
 						<div className='share-modal__shared__text'>Share only with:</div>
 						<div className='share-modal__shared__img'>
-							<Tooltip placement='top' title={showText('pham duc huy')}>
+							<Tooltip placement='top' title={showText('Me')}>
 								<div>
 									<img
 										src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'

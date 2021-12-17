@@ -12,7 +12,7 @@ export const ProjectModalStyled = styled(Modal)`
         &__button{
             button{
                 padding: 12px 24px;
-                background-color: #ff00fc;
+                background-color: lightblue;
                 border-radius: 5px;
                 cursor: pointer;
                 color: #fff;
@@ -22,7 +22,7 @@ export const ProjectModalStyled = styled(Modal)`
                 transition: all 0.3s ease-in-out;
 
                 &:hover{
-                    background-color: #d600d4;
+                    background-color: #6db9d1;
                 }
             }
         }

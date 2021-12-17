@@ -2,13 +2,12 @@ import React, { memo, useState } from 'react';
 // 3rd Components
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import List from '../taskList/taskList';
-import CreateListModal from '../../../elements/modals/create/createListModal/createListModal';
-import DeleteProjectModal from '../../../elements/modals/delete/deleteProjectModal/deleteProjectModal';
-import WorkSpaceDropDown from '../../../elements/dropDown/workSpaceDD/workSpaceDD';
-
+import CreateListModal from 'components/elements/modals/create/createListModal/createListModal';
+import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
+import TaskListDD from 'components/elements/dropDown/taskListDD/taskListDD';
+import ConfigProjectDD from 'components/elements/dropDown/configProjectDD/configProjectDD';
 // Styled Components
 import { WorkSpaceStyled } from './workSpace.styled';
-
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { ITaskList } from 'slices/taskList/interfaces';
@@ -30,12 +29,7 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 					<div className='workspace__header__top'>
 						<div>Projects / {nameProject}</div>
 						<div className='workspace__header__top__btn'>
-							<div className='delete-list'>
-								<button onClick={() => setShowDeleteProject(true)}>Delete Project</button>
-							</div>
-							<div className='create-list'>
-								<button onClick={() => setShowCreateList(true)}>Create List</button>
-							</div>
+							<ConfigProjectDD onCreateList={setShowCreateList} onDeleteProject={setShowDeleteProject} />
 						</div>
 					</div>
 					<div className='workspace__header__title'>MT board</div>
@@ -86,7 +80,7 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 												</div>
 												<div className='wrap-list__title__right'>
 													<div className='wrap-list__title__right__icon'>
-														<WorkSpaceDropDown listId={columnId} />
+														<TaskListDD listId={columnId} />
 													</div>
 												</div>
 											</div>

@@ -28,10 +28,10 @@ export const WorkSpaceModalStyled = styled(Modal)`
             color: #fff;
             
             border-radius: 3px;
-            background-color: #ff00fc;
+            background-color: lightblue;
 
             &:active{
-                background-color: #d600d4; 
+                background-color: #6db9d1; 
             }
         }
     }

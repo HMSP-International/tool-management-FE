@@ -4,7 +4,7 @@ export const DashboardStyled = styled.section`
 	display: flex;
 	flex-direction: column;
 	padding: 50px 0;
-	width: 90%;
+	width: 95%;
 	margin: 0 auto;
 
 	.dashboard__add-new-user {

@@ -153,7 +153,7 @@ export const WorkSpaceStyled = styled.section`
 			margin-bottom: 10px;
 			padding: 0 10px;
 			height: 50px;
-			border-top: 3px solid gray;
+			border-top: 3px solid #1cbac1;
 			box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px 0px;
 
 			font-size: ${props => props.theme.fontSize.submain};
