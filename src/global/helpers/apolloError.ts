@@ -25,3 +25,5 @@ export const handleApolloError = (error: unknown): { title: string; extensions: 
 		};
 	}
 };
+
+export const x = 1

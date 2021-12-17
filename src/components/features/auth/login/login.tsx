@@ -1,14 +1,17 @@
 import React, { useState, useRef } from 'react';
 import { BiMailSend } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
+// components
 import { LoginStyled } from './login.styled';
-import { LOGIN_MUTAIION } from '../../../../apis/auth/mutaions';
-import { useDispatch } from 'react-redux';
-import { useMutation } from '@apollo/client';
-import { login } from '../../../../slices/auth/slice';
 import LoadingView from '../../../shared/loadingView/loadingView';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
-import { openNotification } from '../../../../global/helpers/notification';
+// graphql
+import { LOGIN_MUTAIION } from 'apis/auth/mutaions';
+import { useMutation } from '@apollo/client';
+// redux
+import { useDispatch } from 'react-redux';
+import { login } from 'slices/auth/slice';
+// helpers
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 
 const NAME_INPUT = {
 	password: 'password',
@@ -73,39 +76,30 @@ const Login: React.FC = () => {
 	};
 
 	const handleSaveTokenToLocalStorage = async () => {
-		try {
-			let email = '';
-			let password = '';
+		let email = '';
+		let password = '';
 
-			if (inputEmailRef.current !== null && inputPasswordRef.current !== null) {
-				email = inputEmailRef.current.value;
-				password = inputPasswordRef.current.value;
-			}
-
-			const { data } = await onLogin({
-				variables:
-					{
-						signinInput:
-							{
-								email,
-								password,
-							},
-					},
-			});
-			const { jwt } = data.signin;
-			dispatch(login({ jwt }));
-
-			navigate('/', { replace: true });
-
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'logined' ],
-			};
-			openNotification(showing);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
+		if (inputEmailRef.current !== null && inputPasswordRef.current !== null) {
+			email = inputEmailRef.current.value;
+			password = inputPasswordRef.current.value;
 		}
+
+		const { data: { jwt } } = await fetchDataAndShowNotify({
+			fnFetchData: onLogin,
+			variables:
+				{
+					signinInput:
+						{
+							email,
+							password,
+						},
+				},
+			message: 'logined',
+			key: 'signin',
+		});
+
+		dispatch(login({ jwt }));
+		navigate('/', { replace: true });
 	};
 
 	return (

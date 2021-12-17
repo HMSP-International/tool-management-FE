@@ -1,13 +1,15 @@
-import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
+// graphql
+import { useMutation } from '@apollo/client';
+import { CHANGE_PASSWORD_MUTAIION } from 'apis/profile/mutations';
+// components
 import LoadingView from '../../../shared/loadingView/loadingView';
-import { CHANGE_PASSWORD_MUTAIION } from '../../../../apis/profile/mutations';
 import { PasswordStyled } from './password.styled';
-import { openNotification } from '../../../../global/helpers/notification';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
+// helpers
+import { fetchDataAndShowNotify } from '../../../../global/helpers/fetchDataAndShowNotify';
 
 const Password: React.FC = () => {
-	const [ onLogin, { loading } ] = useMutation(CHANGE_PASSWORD_MUTAIION);
+	const [ onChangePassword, { loading } ] = useMutation(CHANGE_PASSWORD_MUTAIION);
 	const [ isSubmit, setIsSubmit ] = useState(false);
 	const [ values, setValues ] = useState({
 		currentPassword: '',
@@ -25,36 +27,24 @@ const Password: React.FC = () => {
 
 	if (loading) return <LoadingView />;
 
-	const sendPasswordToServer = async () => {
-		try {
-			await onLogin({
-				variables:
-					{
-						changePasswordInput:
-							{
-								newPassword: values.newPassword,
-								currentPassword: values.currentPassword,
-							},
-					},
-			});
-
-			openNotification({
-				title: 'Susscessfully',
-				extensions: [ 'changed password' ],
-			});
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
-		}
-	};
-
 	const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
 		const { name, value } = e.currentTarget;
 		setValues({ ...values, [name]: value });
 	};
 
 	const handleSubmit = async () => {
-		sendPasswordToServer();
+		await fetchDataAndShowNotify({
+			fnFetchData: onChangePassword,
+			variables:
+				{
+					changePasswordInput:
+						{
+							newPassword: values.newPassword,
+							currentPassword: values.currentPassword,
+						},
+				},
+			message: 'Changed password',
+		});
 	};
 
 	return (

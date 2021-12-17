@@ -3,23 +3,22 @@ import { Tooltip } from 'antd';
 // Styled Components
 import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 // Components
-import ListUserDrawer from '../../../drawers/listUserDrawer/listUserDrawer';
-import LoadingView from '../../../../shared/loadingView/loadingView';
+import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
+import LoadingView from 'components/shared/loadingView/loadingView';
 // interfaces
 import { IUser } from 'slices/dashboard/interfaces';
 // graphql
-import { GET_USERS_MUTATION } from '../../../../../apis/users/mutations';
-import { ApolloError, useMutation } from '@apollo/client';
+import { GET_USERS_MUTATION } from 'apis/users/mutations';
+import { useMutation } from '@apollo/client';
 import { CREATE_SPACE_MUTATION, INVITE_SPACES_MUTATION } from 'apis/spaces/mutations';
 // redux
 import { useDispatch } from 'react-redux';
-import { getUsers } from '../../../../../slices/dashboard/slice';
+import { getUsers } from 'slices/dashboard/slice';
 import { getSpaces } from 'slices/space/slice';
 // interfaces
 import { ISpace } from 'slices/space/interfaces';
 // error
-import { openNotification } from 'global/helpers/notification';
-import { handleApolloError } from 'global/helpers/apolloError';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;
@@ -66,32 +65,25 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 	};
 
 	const handleSubmitShareModal = async (inviteUsers: IUser[]) => {
-		try {
-			const { data: { createSpace: spaces } } = await onCreateSpace({
-				variables:
-					{
-						createSpaceInput:
-							{
-								name: nameSpace,
-							},
-					},
-			});
+		const { data: spaces, isError } = await fetchDataAndShowNotify({
+			fnFetchData: onCreateSpace,
+			variables:
+				{
+					createSpaceInput:
+						{
+							name: nameSpace,
+						},
+				},
+			key: 'createSpace',
+			message: 'Created space',
+		});
 
+		if (!isError) {
 			dispatch(getSpaces(spaces));
 			setHidden(false);
 
-			openNotification({
-				title: 'Susscessfully',
-				extensions: [ 'Created space' ],
-			});
-
 			const newSpace = spaces.filter((space: ISpace) => space.name === nameSpace);
-			console.log(newSpace);
 			handleVerifyInviteSpace(inviteUsers, newSpace);
-		} catch (error) {
-			console.log(error);
-			const showing = handleApolloError(error as ApolloError);
-			openNotification(showing, true);
 		}
 	};
 
@@ -118,12 +110,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 
 	return (
 		<React.Fragment>
-			<ShareModalStyled
-				centered
-				visible={hidden}
-				footer={null}
-				className='modal__share-modal'
-			>
+			<ShareModalStyled centered visible={hidden} footer={null} className='modal__share-modal'>
 				<div className='share-modal__header'>
 					<div className='share-modal__header__back' onClick={onBack}>
 						{'<'}
@@ -155,11 +142,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 								</div>
 							</Tooltip>
 							{inviteUsers.map(user => (
-								<Tooltip
-									placement='top'
-									title={showText(user.email)}
-									key={user._id}
-								>
+								<Tooltip placement='top' title={showText(user.email)} key={user._id}>
 									<div>
 										<img
 											src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
@@ -169,10 +152,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 								</Tooltip>
 							))}
 						</div>
-						<div
-							className='share-modal__shared__add'
-							onClick={() => setShowListUserDrawer(true)}
-						>
+						<div className='share-modal__shared__add' onClick={() => setShowListUserDrawer(true)}>
 							Add people
 						</div>
 					</div>

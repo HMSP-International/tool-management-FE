@@ -8,8 +8,7 @@ import { DELETE_PROJECT_MUTATION } from 'apis/projects/mutations';
 import { deleteProject } from 'slices/project/slice';
 import { useDispatch } from 'react-redux';
 // helpers
-import { openNotification } from 'global/helpers/notification';
-import { handleApolloError } from 'global/helpers/apolloError';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
@@ -28,29 +27,17 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	if (loading) return <LoadingView />;
 
 	const handleDeleteProject = async () => {
-		try {
-			const { data } = await onDeleteProject({
-				variables:
-					{
-						deleteProjectInput:
-							{
-								_projectId: params._id,
-							},
-					},
-			});
+		const { data, isError } = await fetchDataAndShowNotify({
+			fnFetchData: onDeleteProject,
+			variables: { deleteProjectInput: { _projectId: params._id } },
+			key: 'deleteProject',
+			message: 'Deleted project',
+		});
 
-			dispatch(deleteProject(data.deleteProject));
+		if (!isError) {
+			dispatch(deleteProject(data));
 			setHidden(false);
 			navigate('/');
-
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'deleted project' ],
-			};
-			openNotification(showing);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
 		}
 	};
 

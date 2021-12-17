@@ -72,9 +72,7 @@ const columns: TableColumn<IUser>[] = [
 
 const TableUser: React.FC = () => {
 	// redux
-	const dashboardRedux: IInitialStateDashboard = useSelector(
-		(state: RootState) => state.dashboard,
-	);
+	const dashboardRedux: IInitialStateDashboard = useSelector((state: RootState) => state.dashboard);
 
 	return (
 		<TableUserStyled>

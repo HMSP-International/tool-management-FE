@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import LoadingView from '../../../../components/shared/loadingView/loadingView';
-import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import { openNotification } from '../../../../global/helpers/notification';
-import { VERIFY_INVITE_SPACE_MUTATION } from '../../../../apis/verify/mutations';
+import jwt_decode from 'jwt-decode';
+// components
+import LoadingView from 'components/shared/loadingView/loadingView';
+// helpers
+import { openNotification } from 'global/helpers/notification';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
+// graphql
+import { VERIFY_INVITE_SPACE_MUTATION } from 'apis/verify/mutations';
 import { useMutation } from '@apollo/client';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
 
 interface IProps {
 	token: string;
@@ -28,24 +31,13 @@ const InviteSpace: React.FC<IProps> = ({ token }) => {
 					openNotification({ title: 'Token Expired', extensions: [] }, true);
 				}
 				else {
-					try {
-						await onVerify({
-							variables:
-								{
-									verifyInviteSpaceInput:
-										{
-											jwt: token,
-										},
-								},
-						});
+					await fetchDataAndShowNotify({
+						fnFetchData: onVerify,
+						variables: { verifyInviteSpaceInput: { jwt: token } },
+						message: 'Confirm Email Successfully',
+					});
 
-						navigate('/');
-						openNotification({ title: 'Confirm Email Successfully', extensions: [] });
-					} catch (error) {
-						navigate('/');
-						const showing = handleApolloError(error);
-						openNotification(showing, true);
-					}
+					navigate('/');
 				}
 			};
 

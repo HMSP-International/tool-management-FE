@@ -2,18 +2,16 @@ import React from 'react';
 // graphql
 import { useMutation } from '@apollo/client';
 import { DELETE_LIST_MUTATION } from 'apis/taskList/mutations';
-// interfaces
-import { IList } from 'slices/taskList/interfaces';
 // redux
 import { deleteTaskList } from 'slices/taskList/slice';
 import { useDispatch } from 'react-redux';
 // helpers
-import { openNotification } from 'global/helpers/notification';
-import { handleApolloError } from 'global/helpers/apolloError';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
 import { DeleteTaskListModalStyled } from './deleteTaskListModal.styled';
+
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
@@ -25,28 +23,21 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) =>
 	const dispatch = useDispatch();
 
 	const hanldeDeleteListTask = async () => {
-		try {
-			const { data } = await onDeleteList({
-				variables:
-					{
-						deleteListInput:
-							{
-								_listId: listId,
-							},
-					},
-			});
+		const { data, isError } = await fetchDataAndShowNotify({
+			fnFetchData: onDeleteList,
+			variables:
+				{
+					deleteListInput:
+						{
+							_listId: listId,
+						},
+				},
+			key: 'deleteList',
+			message: 'Deleted List',
+		});
 
-			const listDeleted: IList = data.deleteLists;
-			dispatch(deleteTaskList(listDeleted._id));
-
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'Deleted List' ],
-			};
-			openNotification(showing);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
+		if (!isError) {
+			dispatch(deleteTaskList(data._id));
 		}
 	};
 

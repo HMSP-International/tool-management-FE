@@ -16,8 +16,7 @@ import { useMutation } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 import { getUsers } from '../../../../../slices/dashboard/slice';
 // helper
-import { openNotification } from 'global/helpers/notification';
-import { handleApolloError } from 'global/helpers/apolloError';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;
@@ -81,30 +80,20 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 	if (loadinginvitedUsers || loadingGetUsers || loadingPutInvitedSpaces) return <LoadingView />;
 
 	const handleSubmit = async () => {
-		try {
-			const _memberIds = inviteUsers.map(user => user._id);
+		const _memberIds = inviteUsers.map(user => user._id);
 
-			const { data } = await onPutInvitedSpace({
-				variables:
-					{
-						putInvitedSpaceInput:
-							{
-								_workSpaceId: currentSpace._id,
-								_memberIds,
-							},
-					},
-			});
-			console.log(data);
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'Edited Space user' ],
-			};
-			openNotification(showing);
-			// setHidden(false);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
-		}
+		await fetchDataAndShowNotify({
+			fnFetchData: onPutInvitedSpace,
+			variables:
+				{
+					putInvitedSpaceInput:
+						{
+							_workSpaceId: currentSpace._id,
+							_memberIds,
+						},
+				},
+			message: 'Edited Space user',
+		});
 	};
 
 	const handleRemoveUser = (user: IUser) => {
@@ -112,8 +101,6 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 
 		setInviteUsers(newListUser);
 	};
-
-	console.log(inviteUsers);
 
 	return (
 		<React.Fragment>

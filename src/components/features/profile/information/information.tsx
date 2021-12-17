@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { CHANGE_INFORMATION_MUTAIION } from '../../../../apis/profile/mutations';
+import { CHANGE_INFORMATION_MUTAIION } from 'apis/profile/mutations';
 // helpers
-import { openNotification } from '../../../../global/helpers/notification';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 // Redux
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../global/redux/rootReducer';
+import { RootState } from 'global/redux/rootReducer';
 // Interfaces
-import { IInitialStateUser } from '../../../../slices/user/interfaces';
+import { IInitialStateUser } from 'slices/user/interfaces';
 import { InformationStyled } from './information.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
 
 const Information: React.FC = () => {
 	const [ onChangeInformation, { loading } ] = useMutation(CHANGE_INFORMATION_MUTAIION);
@@ -45,32 +44,22 @@ const Information: React.FC = () => {
 		setValues({ ...values, [name]: value });
 	};
 
-	const sendInformationToServer = async () => {
-		try {
-			await onChangeInformation({
-				variables:
-					{
-						changeInformationInput:
-							{
-								displayName: values.displayName,
-							},
-					},
-			});
+	const handleSubmit = async () => {
+		const { isError } = await fetchDataAndShowNotify({
+			fnFetchData: onChangeInformation,
+			variables:
+				{
+					changeInformationInput:
+						{
+							displayName: values.displayName,
+						},
+				},
+			message: 'Changed information',
+		});
 
-			openNotification({
-				title: 'Susscessfully',
-				extensions: [ 'Changed information' ],
-			});
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
-
+		if (isError) {
 			setValues(userRedux.profile);
 		}
-	};
-
-	const handleSubmit = () => {
-		sendInformationToServer();
 	};
 
 	return (
@@ -101,7 +90,6 @@ const Information: React.FC = () => {
 							name='department'
 							className='information__profile__item__content'
 							value={values.department}
-							// onChange={handleOnChange}
 							readOnly
 						/>
 					</div>
@@ -121,7 +109,6 @@ const Information: React.FC = () => {
 							name='title'
 							className='information__profile__item__content'
 							value={values.title}
-							// onChange={handleOnChange}
 							readOnly
 						/>
 					</div>

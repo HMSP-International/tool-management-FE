@@ -4,13 +4,12 @@ import { Form, Input } from 'antd';
 import { CreateNewUserDrawerStyled } from './createUserDrawer.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
 // Graphql
-import { CREATE_USER_MUTATION } from '../../../../apis/users/mutations';
+import { CREATE_USER_MUTATION } from 'apis/users/mutations';
 import { useMutation } from '@apollo/client';
 // interface
-import { IUser } from '../../../../slices/dashboard/interfaces';
+import { IUser } from 'slices/dashboard/interfaces';
 // helpers
-import { openNotification } from '../../../../global/helpers/notification';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;
@@ -26,21 +25,18 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 	if (loading) return <LoadingView />;
 
 	const onFinish = async () => {
-		try {
-			const values = form.getFieldsValue();
-			const { data } = await onCreateUser({ variables: { createUserInput: values } });
+		const values = form.getFieldsValue();
 
-			onSubmit(data.createUser);
+		const { data, isError } = await fetchDataAndShowNotify({
+			fnFetchData: onCreateUser,
+			variables: { createUserInput: values },
+			key: 'createUser',
+			message: 'Created new user',
+		});
+
+		if (!isError) {
+			onSubmit(data);
 			setHidden(false);
-
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'Created new user' ],
-			};
-			openNotification(showing);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
 		}
 	};
 

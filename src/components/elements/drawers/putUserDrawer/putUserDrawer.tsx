@@ -6,15 +6,11 @@ import { PutUserDrawerStyled } from './putUserDrawer.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
 // Graphql
 import { useMutation } from '@apollo/client';
-import {
-	CHANGE_INFORMATION_BY_ADMIN_MUTAIION,
-	CHANGE_PASSWORD_BY_ADMIN_MUTAIION,
-} from '../../../../apis/users/mutations';
+import { CHANGE_INFORMATION_BY_ADMIN_MUTAIION, CHANGE_PASSWORD_BY_ADMIN_MUTAIION } from 'apis/users/mutations';
 // interface
-import { IUser } from '../../../../slices/dashboard/interfaces';
+import { IUser } from 'slices/dashboard/interfaces';
 // helpers
-import { openNotification } from '../../../../global/helpers/notification';
-import { handleApolloError } from '../../../../global/helpers/apolloError';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;
@@ -24,12 +20,8 @@ interface IProps {
 }
 
 const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) => {
-	const [ onChangeInformation, { loading: loadingI4 } ] = useMutation(
-		CHANGE_INFORMATION_BY_ADMIN_MUTAIION,
-	);
-	const [ onChangePassword, { loading: loadingPass } ] = useMutation(
-		CHANGE_PASSWORD_BY_ADMIN_MUTAIION,
-	);
+	const [ onChangeInformation, { loading: loadingI4 } ] = useMutation(CHANGE_INFORMATION_BY_ADMIN_MUTAIION);
+	const [ onChangePassword, { loading: loadingPass } ] = useMutation(CHANGE_PASSWORD_BY_ADMIN_MUTAIION);
 	const [ form ] = Form.useForm();
 	const btnI4Ref = useRef<HTMLButtonElement>(null);
 	const btnPasswordRef = useRef<HTMLButtonElement>(null);
@@ -44,30 +36,43 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 	if (loadingI4 || loadingPass) return <LoadingView />;
 
 	const onFinish = async () => {
-		try {
-			const values = form.getFieldsValue();
-			values._id = user._id;
-			delete values.password;
+		const values = form.getFieldsValue();
+		values._id = user._id;
+		delete values.password;
 
-			const { data } = await onChangeInformation({
-				variables: { changeInformationInputByAdmin: values },
-			});
+		const { isError, data } = await fetchDataAndShowNotify({
+			fnFetchData: onChangeInformation,
+			variables: { changeInformationInputByAdmin: values },
+			key: 'chageInformationByAdmin',
+			message: 'Edited user',
+		});
 
-			onSubmit(data.chageInformationByAdmin, 'information');
+		if (!isError) {
+			onSubmit(data, 'information');
 			setHidden(false);
-
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'Edited user' ],
-			};
-			openNotification(showing);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			form.setFieldsValue(user);
-			openNotification(showing, true);
 		}
 	};
 
+	const handleSubmitPassword = async () => {
+		const newPassword = form.getFieldValue('password');
+
+		const { isError, data } = await fetchDataAndShowNotify({
+			fnFetchData: onChangePassword,
+			variables: { changePasswordInputByAdmin: { newPassword, _id: user._id } },
+			key: 'changePasswordInputByAdmin',
+			message: 'Changed password user',
+		});
+
+		if (isError) {
+			form.setFieldsValue(user);
+		}
+		else {
+			onSubmit(data, 'password');
+			setHidden(false);
+		}
+	};
+
+	// event
 	const handleChangeInput = () => {
 		const newUser = form.getFieldsValue();
 		const currentUser = user;
@@ -102,36 +107,6 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 			if (btnPasswordRef.current) {
 				btnPasswordRef.current.className = 'canNotSubmit';
 			}
-		}
-	};
-
-	const handleSubmitPassword = async () => {
-		const newPassword = form.getFieldValue('password');
-
-		try {
-			const { data } = await onChangePassword({
-				variables:
-					{
-						changePasswordInputByAdmin:
-							{
-								newPassword,
-								_id: user._id,
-							},
-					},
-			});
-
-			onSubmit(data.changePasswordInputByAdmin, 'password');
-			setHidden(false);
-
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'Changed password user' ],
-			};
-			openNotification(showing);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			form.setFieldsValue(user);
-			openNotification(showing, true);
 		}
 	};
 
@@ -200,28 +175,18 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 							validator (_, value) {
 								if (!value) return Promise.resolve();
 								if (value.length < 6) {
-									return Promise.reject(
-										'password has to be a length greater than 6.',
-									);
+									return Promise.reject('password has to be a length greater than 6.');
 								}
 								return Promise.resolve();
 							},
 						}),
 					]}
 				>
-					<Input.Password
-						placeholder='password'
-						value=''
-						onChange={handleChangePassword}
-					/>
+					<Input.Password placeholder='password' value='' onChange={handleChangePassword} />
 				</Form.Item>
 
 				<div className='btn-submit'>
-					<span
-						ref={btnPasswordRef}
-						className='canNotSubmit'
-						onClick={handleSubmitPassword}
-					>
+					<span ref={btnPasswordRef} className='canNotSubmit' onClick={handleSubmitPassword}>
 						Change Password
 					</span>
 				</div>

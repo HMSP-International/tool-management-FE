@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
@@ -10,12 +11,9 @@ import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
 import { useDispatch } from 'react-redux';
 import { createNewList } from 'slices/taskList/slice';
 // helpers
-import { openNotification } from 'global/helpers/notification';
-import { handleApolloError } from 'global/helpers/apolloError';
-import { useParams } from 'react-router-dom';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 import { convertTaskList } from 'global/helpers/convertTaskList';
 // interfaces
-import { IList } from 'slices/taskList/interfaces';
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
@@ -46,32 +44,24 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	};
 
 	const handleCreateList = async (name: string) => {
-		try {
-			const { data } = await onCreateList({
-				variables:
-					{
-						createListInput:
-							{
-								_projectId: params._id,
-								name,
-							},
-					},
-			});
+		const { isError, data } = await fetchDataAndShowNotify({
+			fnFetchData: onCreateList,
+			variables:
+				{
+					createListInput:
+						{
+							_projectId: params._id,
+							name,
+						},
+				},
+			key: 'createList',
+			message: 'Created new list',
+		});
 
-			const list: IList = data.createList;
-			const convertedList = convertTaskList([ list ]);
-
-			dispatch(createNewList(convertedList));
+		if (!isError) {
+			const list = convertTaskList([ data ]);
+			dispatch(createNewList(list));
 			setHidden(false);
-
-			const showing = {
-				title: 'Susscess',
-				extensions: [ 'Created new list' ],
-			};
-			openNotification(showing);
-		} catch (error) {
-			const showing = handleApolloError(error);
-			openNotification(showing, true);
 		}
 	};
 

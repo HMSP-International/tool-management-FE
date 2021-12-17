@@ -1,19 +1,17 @@
 import React, { useRef, useState } from 'react';
 // graphql
-import { ApolloError, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
 // Styled Components
 import { ProjectModalStyled } from './createProjectModal.styled';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // helpers
-import { openNotification } from 'global/helpers/notification';
-import { handleApolloError } from 'global/helpers/apolloError';
+import { fetchDataAndShowNotify } from 'global/helpers/fetchDataAndShowNotify';
 import { convertProject } from 'global/helpers/convertProject';
 // redux
 import { useDispatch } from 'react-redux';
 import { createProject } from 'slices/project/slice';
-import { IProject } from 'slices/project/interfaces';
 
 interface IProps {
 	hidden: boolean;
@@ -51,31 +49,24 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 	};
 
 	const handleSubmitProjectModal = async (nameProject: string) => {
-		try {
-			const { data } = await onCreateProject({
-				variables:
-					{
-						createProjectInput:
-							{
-								name: nameProject,
-								_spaceId: spaceId,
-							},
-					},
-			});
+		const { data, isError } = await fetchDataAndShowNotify({
+			fnFetchData: onCreateProject,
+			variables:
+				{
+					createProjectInput:
+						{
+							name: nameProject,
+							_spaceId: spaceId,
+						},
+				},
+			key: 'createProject',
+			message: 'Created project',
+		});
 
-			const projects: IProject[] = data.createProject;
-			const newProjects = convertProject(projects);
+		if (!isError) {
+			const newProjects = convertProject(data);
 			dispatch(createProject(newProjects));
-
 			setHidden(false);
-
-			openNotification({
-				title: 'Susscessfully',
-				extensions: [ 'Created project' ],
-			});
-		} catch (error) {
-			const showing = handleApolloError(error as ApolloError);
-			openNotification(showing, true);
 		}
 	};
 
