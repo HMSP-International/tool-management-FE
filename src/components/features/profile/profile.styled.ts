@@ -4,6 +4,7 @@ export const ProfileStyled = styled.main`
 	display: flex;
 	justify-content: center;
 	width: 100%;
+	background-color: #fffff0;
 
 	.profile-page__body {
 		margin-top: 20px;

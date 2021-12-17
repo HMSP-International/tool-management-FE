@@ -69,7 +69,9 @@ export const InformationStyled = styled.article`
 
 	.information {
 		padding: 30px 0;
-		border: 1px solid gray;
 		height: auto;
+
+		box-shadow: 5px 5px 20px 20px #0000000A;
+		background-color: #fffffe;
 	}
 `;
