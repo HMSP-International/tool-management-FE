@@ -154,7 +154,7 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 						<Input placeholder='D2 - 510' value='' />
 					</Form.Item>
 
-					<Form.Item label='Role' name='role'>
+					<Form.Item label='Role' name='_roleId'>
 						<Input placeholder='Admin' value='' />
 					</Form.Item>
 				</div>

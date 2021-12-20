@@ -10,7 +10,7 @@ export const GET_PROFILE_QUERY = gql`
 			position
 			department
 			title
-			role
+			_roleId
 		}
 	}
 `;

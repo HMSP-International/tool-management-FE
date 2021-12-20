@@ -22,6 +22,7 @@ const Header: React.FC<IProps> = ({ onClose }) => {
 	const { loading, data, errorInvitedSpace: error } = useQuery(GET_PROFILE_QUERY);
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
+
 	// hook ----------------------------------------------------------------------
 	useEffect(
 		() => {

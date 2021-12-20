@@ -7,7 +7,7 @@ export const CREATE_USER_MUTATION = gql`
 			title
 			position
 			department
-			role
+			_roleId
 			displayName
 			password
 			email
@@ -57,7 +57,7 @@ export const GET_USERS_MUTATION = gql`
 			displayName
 			email
 			position
-			role
+			_roleId
 			title
 		}
 	}

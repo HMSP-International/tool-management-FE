@@ -63,6 +63,7 @@ interface IParameters {
 	) => Promise<any>;
 	variables?: OperationVariables;
 	message?: string;
+	isNotShowNotify?: boolean;
 }
 
 interface IOutPut {
@@ -71,8 +72,8 @@ interface IOutPut {
 }
 
 export const fetchDataAndShowNotify = async (params: IParameters): Promise<IOutPut> => {
+	const { fnFetchData, variables, message, isNotShowNotify } = params;
 	try {
-		const { fnFetchData, variables, message } = params;
 		const { data } = await fnFetchData({ variables });
 
 		if (message) {
@@ -80,15 +81,18 @@ export const fetchDataAndShowNotify = async (params: IParameters): Promise<IOutP
 				title: 'Susscess',
 				extensions: [ message ],
 			};
-			openNotification(showing);
+			if (!isNotShowNotify) {
+				openNotification(showing);
+			}
 		}
 
-		console.log(data);
 		const keys = Object.keys(data);
 		return { isError: false, data: data[keys[0]] };
 	} catch (error) {
-		const showing = handleApolloError(error);
-		openNotification(showing, true);
+		if (!isNotShowNotify) {
+			const showing = handleApolloError(error);
+			openNotification(showing, true);
+		}
 		return { isError: true, data: null };
 	}
 };

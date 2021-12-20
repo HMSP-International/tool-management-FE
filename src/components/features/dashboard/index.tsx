@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 // Modal
 import CreateNewUserDrawer from '../../elements/drawers/createUserDrawer/createUserDrawer';
 
@@ -19,8 +19,10 @@ import { useDispatch } from 'react-redux';
 // graphql
 import { useMutation } from '@apollo/client';
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 
 const Dashboard: React.FC = () => {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [ showCreateUserDrawer, setShowCreateUserDrawer ] = useState(false);
 
@@ -33,16 +35,22 @@ const Dashboard: React.FC = () => {
 	useEffect(
 		() => {
 			const fetchUsers = async () => {
-				const { data } = await onGetUsers();
+				const { data, isError } = await fetchDataAndShowNotify({
+					fnFetchData: onGetUsers,
+					isNotShowNotify: true,
+				});
 
-				const users: IUser[] = data.getUsers;
-
-				dispatch(getUsers(users));
+				if (!isError) {
+					dispatch(getUsers(data));
+				}
+				else {
+					navigate('/', { replace: true });
+				}
 			};
 
 			fetchUsers();
 		},
-		[ onGetUsers, dispatch ],
+		[ onGetUsers, dispatch, navigate ],
 	);
 
 	if (loading) return <LoadingView />;
