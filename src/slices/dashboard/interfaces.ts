@@ -7,7 +7,7 @@ export interface IInitialStateDashboard {
 
 export interface IUser {
 	_id: string;
-	avt: string;
+	avatar: string;
 	displayName: string;
 	email: string;
 	department: string;

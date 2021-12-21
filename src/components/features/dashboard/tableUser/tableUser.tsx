@@ -15,13 +15,31 @@ import { RootState } from '../../../../global/redux/rootReducer';
 import { useSelector } from 'react-redux';
 // helpers
 import { removeAfterSign } from 'global/helpers/string/removeAfter@';
+import { AdvancedImage } from '@cloudinary/react';
+import { Cloudinary } from '@cloudinary/url-gen';
+import { fill } from '@cloudinary/url-gen/actions/resize';
 
 const columns: TableColumn<IUser>[] = [
 	{
 		name: 'Avt',
-		selector: row => row.avt,
+		selector: row => row.avatar,
 		sortable: true,
 		center: true,
+		cell:
+			row => {
+				const cld = new Cloudinary({
+					cloud:
+						{
+							cloudName: 'hmsp-com',
+						},
+				});
+
+				const myImage = cld.image(row.avatar);
+
+				myImage.resize(fill().width(50).height(50));
+
+				return <AdvancedImage cldImg={myImage} />;
+			},
 	},
 	{
 		name: 'Name',

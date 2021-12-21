@@ -7,6 +7,7 @@ const INITIAL_STATE: IInitialStateUser = {
 
 	profile:
 		{
+			avatar: '',
 			_id: '',
 			displayName: '',
 			department: '',

@@ -30,22 +30,18 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 	const menu = (
 		<MenuStyled>
 			<Menu.Item className='menu-item' key={'1'}>
-				<button>
+				<Link to='/profile'>
 					<AiOutlineUser style={{ color: 'white', fontSize: '20px' }} />
-					<h4>
-						<Link to='/profile'>Profile</Link>
-					</h4>
-				</button>
+					<h4>Profile</h4>
+				</Link>
 			</Menu.Item>
 
 			{handleCheckAuth() && (
 				<Menu.Item className='menu-item' key={'2'}>
-					<button className='menu__body__tabs-item'>
+					<Link to='/dashboard' className='menu__body__tabs-item'>
 						<AiFillDashboard style={{ color: 'white', fontSize: '20px' }} />
-						<h4>
-							<Link to='/dashboard'>Dashboard</Link>
-						</h4>
-					</button>
+						<h4>Dashboard</h4>
+					</Link>
 				</Menu.Item>
 			)}
 
@@ -60,7 +56,7 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 
 	return (
 		<React.Fragment>
-			<Dropdown overlay={menu} placement='bottomRight' trigger={[ 'click' ]}>
+			<Dropdown overlay={menu} placement='bottomRight'>
 				{children}
 			</Dropdown>
 		</React.Fragment>

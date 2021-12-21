@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Form, Input } from 'antd';
 // Styled Components
 import { CreateNewUserDrawerStyled } from './createUserDrawer.styled';
-import LoadingView from '../../../shared/loadingView/loadingView';
+import LoadingView from 'components/shared/loadingView/loadingView';
 // Graphql
 import { CREATE_USER_MUTATION } from 'apis/users/mutations';
 import { useMutation } from '@apollo/client';
@@ -19,6 +19,7 @@ interface IProps {
 
 const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
 	const [ onCreateUser, { loading } ] = useMutation(CREATE_USER_MUTATION);
+	const [ avatar, setAvatar ] = useState<string | ArrayBuffer>('');
 	const [ form ] = Form.useForm();
 	const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -29,7 +30,7 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onCreateUser,
-			variables: { createUserInput: values },
+			variables: { createUserInput: { ...values, avatar } },
 			message: 'Created new user',
 		});
 
@@ -62,6 +63,19 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 		}
 	};
 
+	const handleChangeImage = (e: any) => {
+		let file = e.target.files[0];
+
+		let reader = new FileReader();
+		reader.readAsDataURL(file);
+
+		reader.onloadend = function () {
+			if (reader.result) {
+				setAvatar(reader.result);
+			}
+		};
+	};
+
 	return (
 		<CreateNewUserDrawerStyled
 			visible={hidden}
@@ -80,6 +94,8 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 				className='create-new-user__drawer-form'
 			>
 				<div className='create-new-user__container'>
+					<input placeholder='David Vu' type='file' onChange={handleChangeImage} name='avatar' />
+
 					<Form.Item label='Display Name' name='displayName'>
 						<Input placeholder='David Vu' value='' />
 					</Form.Item>

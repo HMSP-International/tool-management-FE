@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 // components/shared
 // import Header from '../header/header';
 // import Footer from '../footer/footer';
-import Menu from '../menu/menu';
+import Menu from '../../features/menu/menu';
 
 interface IProps {
 	title?: string;

@@ -38,11 +38,7 @@ const Manage: React.FC = () => {
 	});
 
 	// fetch data
-	const {
-		loading: loadingGetLists,
-		data: dataGetLists,
-		errorInvitedSpace: errorGetLists,
-	} = useQuery(GET_LISTS_QUERY, {
+	const { loading: loadingGetLists, data: dataGetLists, error: errorGetLists } = useQuery(GET_LISTS_QUERY, {
 		variables:
 			{
 				getListsInput:
@@ -52,11 +48,7 @@ const Manage: React.FC = () => {
 			},
 	});
 
-	const {
-		loading: loadingGetProject,
-		data: dataGetProject,
-		errorInvitedSpace: errorGetProject,
-	} = useQuery(GET_PROJECT_QUERY, {
+	const { loading: loadingGetProject, data: dataGetProject, error: errorGetProject } = useQuery(GET_PROJECT_QUERY, {
 		variables:
 			{
 				getProjectInput:

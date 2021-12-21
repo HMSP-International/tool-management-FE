@@ -34,7 +34,7 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 	const projectRedux: IInitialStateProject = useSelector((state: RootState) => state.project);
 	const collaboratorRedux: IInitialStateCollaborator = useSelector((state: RootState) => state.collaborator);
 
-	const { data: dataInvitedSpace, errorInvitedSpace, loading: loadingGetInvitedSpace } = useQuery(
+	const { data: dataInvitedSpace, error: errorInvitedSpace, loading: loadingGetInvitedSpace } = useQuery(
 		GET_INVITED_SPACES_QUERY,
 	);
 	const [ onGetProjectsByCollaborators, { loading: loadingGetProjectsByCollaborators } ] = useMutation(

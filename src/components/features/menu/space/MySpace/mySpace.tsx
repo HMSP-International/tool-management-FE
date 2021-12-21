@@ -5,7 +5,7 @@ import TitleSpace from '../../titleSpace/titleSpace';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 // components
-import ErrorView from '../../../errorView/errorView';
+import ErrorView from '../../../../shared/errorView/errorView';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // interfaces
 import { IInitialStateSpace, ISpace } from 'slices/space/interfaces';
@@ -35,7 +35,7 @@ const MySpace: React.FC<IProps> = ({ handleOpenModel }) => {
 	const spaceRedux: IInitialStateSpace = useSelector((state: RootState) => state.space);
 	const projectRedux: IInitialStateProject = useSelector((state: RootState) => state.project);
 
-	const { data: dataSpace, errorInvitedSpace: errorGetSpace, loading: loadingGetSpace } = useQuery(GET_SPACES_QUERY);
+	const { data: dataSpace, error: errorGetSpace, loading: loadingGetSpace } = useQuery(GET_SPACES_QUERY);
 	const [ onGetProjects, { loading: loadingGetProjects } ] = useMutation(GET_PROJECTS_MUTATION);
 
 	useEffect(

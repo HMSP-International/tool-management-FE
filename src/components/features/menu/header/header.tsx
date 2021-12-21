@@ -5,6 +5,7 @@ import { AiOutlineDoubleLeft } from 'react-icons/ai';
 // components
 import AvatarDD from 'components/elements/dropDown/avatarDD/avatarDD';
 import LoadingView from 'components/shared/loadingView/loadingView';
+import Image from 'components/shared/image/image';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'global/redux/rootReducer';
@@ -19,7 +20,7 @@ interface IProps {
 }
 
 const Header: React.FC<IProps> = ({ onClose }) => {
-	const { loading, data, errorInvitedSpace: error } = useQuery(GET_PROFILE_QUERY);
+	const { loading, data, error } = useQuery(GET_PROFILE_QUERY);
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 
@@ -34,6 +35,8 @@ const Header: React.FC<IProps> = ({ onClose }) => {
 		[ data, dispatch ],
 	);
 
+	console.log(userRedux.profile.avatar);
+
 	if (loading) {
 		return <LoadingView />;
 	}
@@ -43,14 +46,16 @@ const Header: React.FC<IProps> = ({ onClose }) => {
 		<HeaderStyled className='menu__header'>
 			<div className='menu__header__logo'>
 				<Link to='/'>
-					<img src='https://cdn.logo.com/hotlink-ok/logo-social.png' alt='hmsp' />
+					<AvatarDD>
+						<img src='https://cdn.logo.com/hotlink-ok/logo-social.png' alt='hmsp' />
+					</AvatarDD>
 				</Link>
 
 				<h5>{userRedux.profile.displayName}</h5>
 			</div>
 			<div className='menu__header__avt'>
 				<AvatarDD>
-					<img src='https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png' alt='hmsp' />
+					<Image w={40} h={40} public_id={userRedux.profile.avatar} />
 				</AvatarDD>
 				<AiOutlineDoubleLeft onClick={() => onClose(false)} />
 			</div>

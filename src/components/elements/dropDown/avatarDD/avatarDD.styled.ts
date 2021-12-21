@@ -13,7 +13,7 @@ export const MenuStyled = styled(Menu)`
         background-color: white;
         padding: 0;
 
-        button{
+        button, a{
             background-color: white;
             cursor: pointer;
             transition: all 0.3s ease-in-out;

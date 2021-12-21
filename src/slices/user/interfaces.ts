@@ -6,6 +6,7 @@ export interface IInitialStateUser {
 }
 
 export interface IInitialStateProfile {
+	avatar: string;
 	displayName: string;
 	department: string;
 	position: string;
