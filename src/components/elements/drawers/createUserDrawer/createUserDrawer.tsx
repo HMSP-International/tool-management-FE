@@ -147,7 +147,11 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden }) => {
 
 					<Form.Item label='Role' name='_roleId'>
 						<Select placeholder='Please select a role'>
-							{roles.map((role: IRole) => <Option value={role._id}>{role.name}</Option>)}
+							{roles.map((role: IRole) => (
+								<Option key={role._id} value={role._id}>
+									{role.name}
+								</Option>
+							))}
 						</Select>
 					</Form.Item>
 

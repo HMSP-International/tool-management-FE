@@ -106,8 +106,6 @@ const TableUser: React.FC = () => {
 	// redux
 	const dashboardRedux: IInitialStateDashboard = useSelector((state: RootState) => state.dashboard);
 
-	console.log(dashboardRedux.users);
-
 	return (
 		<TableUserStyled>
 			<DataTable columns={columns} data={dashboardRedux.users} className='123' />

@@ -32,7 +32,6 @@ const DeleteUserModal: React.FC<IProps> = ({ hidden, setHidden, user }) => {
 	const handleDeleteUser = async (_id: string) => {
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onDeleteUser,
-			message: 'Deleted user',
 			variables:
 				{
 					deleteUserInput:

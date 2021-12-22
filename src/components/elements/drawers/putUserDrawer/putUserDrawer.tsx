@@ -36,6 +36,8 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 	useEffect(
 		() => {
 			if (!loadingGetRoles) {
+				console.log(data.getRoles);
+
 				setRoles(data.getRoles);
 			}
 		},
@@ -44,7 +46,7 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 
 	useEffect(
 		() => {
-			form.setFieldsValue({ ...user, _roleId: user._roleId.name });
+			form.setFieldsValue({ ...user, _roleId: user._roleId._id });
 		},
 		[ form, user ],
 	);
@@ -173,7 +175,11 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 
 					<Form.Item label='Role' name='_roleId'>
 						<Select placeholder='Please select a role'>
-							{roles.map((role: IRole) => <Option value={role._id}>{role.name}</Option>)}
+							{roles.map((role: IRole) => (
+								<Option key={role._id} value={role._id}>
+									{role.name}
+								</Option>
+							))}
 						</Select>
 					</Form.Item>
 				</div>
