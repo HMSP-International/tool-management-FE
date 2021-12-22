@@ -17,6 +17,10 @@ export const CHANGE_INFORMATION_MUTAIION = gql`
 			department
 			email
 			position
+			_roleId {
+				name
+				_id
+			}
 		}
 	}
 `;

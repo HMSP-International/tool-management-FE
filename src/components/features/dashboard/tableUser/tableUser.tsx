@@ -80,6 +80,12 @@ const columns: TableColumn<IUser>[] = [
 		center: true,
 	},
 	{
+		name: 'Role',
+		selector: row => row._roleId.name,
+		sortable: true,
+		center: true,
+	},
+	{
 		name: 'Action',
 		selector: row => row.action,
 		sortable: true,

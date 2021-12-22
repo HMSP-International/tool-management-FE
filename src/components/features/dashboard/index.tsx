@@ -9,11 +9,8 @@ import TableUser from './tableUser/tableUser';
 import { DashboardStyled } from './index.styled';
 import LoadingView from '../../shared/loadingView/loadingView';
 
-// interfaces
-import { IUser } from '../../../slices/dashboard/interfaces';
-
 // redux
-import { createUser, getUsers } from 'slices/dashboard/slice';
+import { getUsers } from 'slices/dashboard/slice';
 import { useDispatch } from 'react-redux';
 
 // graphql
@@ -25,10 +22,6 @@ const Dashboard: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [ showCreateUserDrawer, setShowCreateUserDrawer ] = useState(false);
-
-	const handleCreateNewUser = (newUser: IUser) => {
-		dispatch(createUser(newUser));
-	};
 
 	const [ onGetUsers, { loading } ] = useMutation(GET_USERS_MUTATION);
 
@@ -67,11 +60,7 @@ const Dashboard: React.FC = () => {
 			</ContainerPage>
 
 			{showCreateUserDrawer && (
-				<CreateNewUserDrawer
-					hidden={showCreateUserDrawer}
-					setHidden={setShowCreateUserDrawer}
-					onSubmit={handleCreateNewUser}
-				/>
+				<CreateNewUserDrawer hidden={showCreateUserDrawer} setHidden={setShowCreateUserDrawer} />
 			)}
 		</React.Fragment>
 	);

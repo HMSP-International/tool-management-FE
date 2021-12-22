@@ -1,17 +1,21 @@
-import React, { useEffect, useRef } from 'react';
-import { Form, Input } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { Form, Input, Select } from 'antd';
 import equal from 'deep-equal';
 // Styled Components
 import { PutUserDrawerStyled } from './putUserDrawer.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
+import ErrorView from 'components/shared/errorView/errorView';
 // Graphql
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { CHANGE_INFORMATION_BY_ADMIN_MUTAIION, CHANGE_PASSWORD_BY_ADMIN_MUTAIION } from 'apis/users/mutations';
+import { GET_ROLES_QUERY } from 'apis/roles/queries';
 // interface
+import { IRole } from 'slices/role/interfaces';
 import { IUser } from 'slices/dashboard/interfaces';
 // helpers
 import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 
+const { Option } = Select;
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
@@ -22,18 +26,31 @@ interface IProps {
 const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) => {
 	const [ onChangeInformation, { loading: loadingI4 } ] = useMutation(CHANGE_INFORMATION_BY_ADMIN_MUTAIION);
 	const [ onChangePassword, { loading: loadingPass } ] = useMutation(CHANGE_PASSWORD_BY_ADMIN_MUTAIION);
+	const { data, loading: loadingGetRoles, error } = useQuery(GET_ROLES_QUERY);
 	const [ form ] = Form.useForm();
 	const btnI4Ref = useRef<HTMLButtonElement>(null);
 	const btnPasswordRef = useRef<HTMLButtonElement>(null);
+	// state
+	const [ roles, setRoles ] = useState<IRole[]>([]);
 
 	useEffect(
 		() => {
-			form.setFieldsValue(user);
+			if (!loadingGetRoles) {
+				setRoles(data.getRoles);
+			}
+		},
+		[ loadingGetRoles, data ],
+	);
+
+	useEffect(
+		() => {
+			form.setFieldsValue({ ...user, _roleId: user._roleId.name });
 		},
 		[ form, user ],
 	);
 
 	if (loadingI4 || loadingPass) return <LoadingView />;
+	if (error) return <ErrorView error={error} />;
 
 	const onFinish = async () => {
 		const values = form.getFieldsValue();
@@ -155,7 +172,9 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 					</Form.Item>
 
 					<Form.Item label='Role' name='_roleId'>
-						<Input placeholder='Admin' value='' />
+						<Select placeholder='Please select a role'>
+							{roles.map((role: IRole) => <Option value={role._id}>{role.name}</Option>)}
+						</Select>
 					</Form.Item>
 				</div>
 

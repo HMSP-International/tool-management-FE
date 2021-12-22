@@ -1,3 +1,5 @@
+import { IRole } from "slices/role/interfaces";
+
 export interface IInitialStateDashboard {
 	status: string;
 	error?: string | null;
@@ -15,4 +17,5 @@ export interface IUser {
 	title: string;
 	action: string;
 	__typename?: string;
+	_roleId: IRole;
 }

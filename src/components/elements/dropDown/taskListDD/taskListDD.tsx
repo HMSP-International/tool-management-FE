@@ -21,7 +21,7 @@ const WorkSpaceDropDown: React.FC<IProps> = ({ listId }) => {
 				<button onClick={() => setIsShowCreateTask(true)}>Create Task</button>
 			</Menu.Item>
 			<Menu.Item className='menu-item'>
-				<button onClick={() => setIsShowDeleteTaskList(true)}>Edit List</button>
+				<button>Edit List</button>
 			</Menu.Item>
 			<Menu.Item className='menu-item'>
 				<button onClick={() => setIsShowDeleteTaskList(true)}>Delete List</button>

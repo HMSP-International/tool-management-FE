@@ -1,3 +1,5 @@
+import { IRole } from "slices/role/interfaces";
+
 export interface IInitialStateUser {
 	status: string;
 	error?: string | null;
@@ -13,4 +15,5 @@ export interface IInitialStateProfile {
 	title: string;
 	email: string;
 	_id: string;
+	_roleId: IRole;
 }

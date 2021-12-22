@@ -7,10 +7,14 @@ export const CREATE_USER_MUTATION = gql`
 			title
 			position
 			department
-			_roleId
+			_roleId {
+				name
+				_id
+			}
 			displayName
 			password
 			email
+			avatar
 		}
 	}
 `;
@@ -19,10 +23,6 @@ export const DELETE_USER_MUTATION = gql`
 	mutation DeleteUser($deleteUserInput: DeleteUserInput!) {
 		deleteUser(deleteUserInput: $deleteUserInput) {
 			_id
-			displayName
-			department
-			position
-			title
 		}
 	}
 `;
@@ -36,7 +36,11 @@ export const CHANGE_INFORMATION_BY_ADMIN_MUTAIION = gql`
 			department
 			email
 			position
-			role
+			avatar
+			_roleId {
+				name
+				_id
+			}
 		}
 	}
 `;
@@ -58,7 +62,10 @@ export const GET_USERS_MUTATION = gql`
 			displayName
 			email
 			position
-			_roleId
+			_roleId {
+				name
+				_id
+			}
 			title
 		}
 	}

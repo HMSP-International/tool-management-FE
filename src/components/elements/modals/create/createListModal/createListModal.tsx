@@ -54,7 +54,6 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 							name,
 						},
 				},
-			message: 'Created new list',
 		});
 
 		if (!isError) {

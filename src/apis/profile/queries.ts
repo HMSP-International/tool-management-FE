@@ -11,7 +11,10 @@ export const GET_PROFILE_QUERY = gql`
 			position
 			department
 			title
-			_roleId
+			_roleId {
+				name
+				_id
+			}
 		}
 	}
 `;

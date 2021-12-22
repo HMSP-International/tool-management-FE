@@ -1,29 +1,49 @@
-import React, { useRef, useState } from 'react';
-import { Form, Input } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { Form, Input, Select } from 'antd';
 // Styled Components
 import { CreateNewUserDrawerStyled } from './createUserDrawer.styled';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Graphql
 import { CREATE_USER_MUTATION } from 'apis/users/mutations';
-import { useMutation } from '@apollo/client';
-// interface
-import { IUser } from 'slices/dashboard/interfaces';
+import { GET_ROLES_QUERY } from 'apis/roles/queries';
+import { useMutation, useQuery } from '@apollo/client';
+// interfaces
+import { IRole } from 'slices/role/interfaces';
+// redux
+import { createUser } from 'slices/dashboard/slice';
+import { useDispatch } from 'react-redux';
 // helpers
 import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import ErrorView from 'components/shared/errorView/errorView';
+const { Option } = Select;
 
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(newUser: IUser): void;
 }
 
-const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => {
-	const [ onCreateUser, { loading } ] = useMutation(CREATE_USER_MUTATION);
-	const [ avatar, setAvatar ] = useState<string | ArrayBuffer>('');
+const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden }) => {
+	const dispatch = useDispatch();
 	const [ form ] = Form.useForm();
+	const [ onCreateUser, { loading: loadingCreateUser } ] = useMutation(CREATE_USER_MUTATION);
+	const { data, loading: loadingGetRoles, error } = useQuery(GET_ROLES_QUERY);
+	// state
+	const [ avatar, setAvatar ] = useState<string | ArrayBuffer>('');
+	const [ roles, setRoles ] = useState<IRole[]>([]);
+	// ref
 	const btnRef = useRef<HTMLButtonElement>(null);
 
-	if (loading) return <LoadingView />;
+	useEffect(
+		() => {
+			if (!loadingGetRoles) {
+				setRoles(data.getRoles);
+			}
+		},
+		[ loadingGetRoles, data ],
+	);
+
+	if (loadingGetRoles || loadingCreateUser) return <LoadingView />;
+	if (error) return <ErrorView error={error} />;
 
 	const onFinish = async () => {
 		const values = form.getFieldsValue();
@@ -35,13 +55,15 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 		});
 
 		if (!isError) {
-			onSubmit(data);
+			dispatch(createUser(data));
 			setHidden(false);
 		}
 	};
 
 	const handleChangeInput = () => {
 		const values: Array<string | undefined> = Object.values(form.getFieldsValue());
+		console.log(values);
+
 		let canSubmit = true;
 
 		for (let value of values) {
@@ -124,7 +146,9 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit }) => 
 					</Form.Item>
 
 					<Form.Item label='Role' name='_roleId'>
-						<Input placeholder='Admin' value='' />
+						<Select placeholder='Please select a role'>
+							{roles.map((role: IRole) => <Option value={role._id}>{role.name}</Option>)}
+						</Select>
 					</Form.Item>
 
 					<Form.Item

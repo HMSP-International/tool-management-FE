@@ -96,7 +96,6 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden, task, listId }) => {
 									name: nameTaskRef.current.value,
 								},
 						},
-					message: 'Created Task',
 				});
 
 				// CREATE TASKs

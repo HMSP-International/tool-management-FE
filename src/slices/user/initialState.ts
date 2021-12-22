@@ -14,6 +14,11 @@ const INITIAL_STATE: IInitialStateUser = {
 			position: '',
 			title: '',
 			email: '',
+			_roleId:
+				{
+					name: '',
+					_id: '',
+				},
 		},
 };
 
