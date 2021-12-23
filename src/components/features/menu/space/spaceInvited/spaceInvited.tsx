@@ -89,6 +89,7 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 		return <LoadingView />;
 	}
 	if (errorInvitedSpace) return <ErrorView error={errorInvitedSpace} />;
+	if (collaboratorRedux.collaborators.length <= 0) return null;
 
 	return (
 		<Menu mode='inline' inlineCollapsed={false} key={'menu2'}>

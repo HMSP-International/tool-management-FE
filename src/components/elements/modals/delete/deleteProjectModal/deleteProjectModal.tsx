@@ -30,7 +30,6 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onDeleteProject,
 			variables: { deleteProjectInput: { _projectId: params._id } },
-			message: 'Deleted project',
 		});
 
 		if (!isError) {

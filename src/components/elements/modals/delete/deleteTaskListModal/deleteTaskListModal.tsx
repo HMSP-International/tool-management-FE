@@ -32,7 +32,6 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) =>
 							_listId: listId,
 						},
 				},
-			message: 'Deleted List',
 		});
 
 		if (!isError) {

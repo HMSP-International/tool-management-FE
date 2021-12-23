@@ -118,7 +118,6 @@ const TaskDetail: React.FC<IProps> = ({ hidden, setHidden, task, listId }) => {
 								_taskIds: [ task._id ],
 							},
 					},
-				message: 'Deleted Task',
 			});
 
 			// DELETE TASKs
