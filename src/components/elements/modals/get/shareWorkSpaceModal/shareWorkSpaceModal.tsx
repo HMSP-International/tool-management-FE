@@ -107,6 +107,10 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		}
 	};
 
+	const handleClickEmail = (user: IUser) => {
+		setInviteUsers([ ...inviteUsers, user ]);
+	};
+
 	return (
 		<React.Fragment>
 			<ShareModalStyled centered visible={hidden} footer={null} className='modal__share-modal'>
@@ -114,7 +118,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 					<div className='share-modal__header__back' onClick={onBack}>
 						{'<'}
 					</div>
-					<div className='share-modal__header__title'>{'Share ' + nameSpace}</div>
+					<div className='share-modal__header__title'>{'Share Space ' + nameSpace}</div>
 					<div className='share-modal__header__close' onClick={() => setHidden(false)}>
 						{'X'}
 					</div>
@@ -132,14 +136,14 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 					<div className='share-modal__shared'>
 						<div className='share-modal__shared__text'>Share only with:</div>
 						<div className='share-modal__shared__img'>
-							<Tooltip placement='top' title={showText('Me')}>
+							{/* <Tooltip placement='top' title={showText('Me')}>
 								<div>
 									<img
 										src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
 										alt=''
 									/>
 								</div>
-							</Tooltip>
+							</Tooltip> */}
 							{inviteUsers.map(user => (
 								<Tooltip placement='top' title={showText(user.email)} key={user._id}>
 									<div>
@@ -166,7 +170,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 					hidden={showListUserDrawer}
 					setHidden={setShowListUserDrawer}
 					inviteUsers={inviteUsers}
-					setInviteUsers={setInviteUsers}
+					onClickUser={handleClickEmail}
 				/>
 			)}
 		</React.Fragment>

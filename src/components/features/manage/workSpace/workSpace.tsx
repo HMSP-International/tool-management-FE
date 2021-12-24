@@ -3,6 +3,7 @@ import React, { memo, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import List from '../taskList/taskList';
 import CreateListModal from 'components/elements/modals/create/createListModal/createListModal';
+import InviteProjectModal from 'components/elements/modals/put/inviteProjectModal/inviteProjectModal';
 import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
 import TaskListDD from 'components/elements/dropDown/taskListDD/taskListDD';
 import ConfigProjectDD from 'components/elements/dropDown/configProjectDD/configProjectDD';
@@ -21,6 +22,7 @@ interface IProps {
 const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 	const [ showCreateList, setShowCreateList ] = useState(false);
 	const [ showDeleteProject, setShowDeleteProject ] = useState(false);
+	const [ showInviteProject, setShowInviteProject ] = useState(false);
 
 	return (
 		<React.Fragment>
@@ -29,7 +31,11 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 					<div className='workspace__header__top'>
 						<div>Projects / {nameProject}</div>
 						<div className='workspace__header__top__btn'>
-							<ConfigProjectDD onCreateList={setShowCreateList} onDeleteProject={setShowDeleteProject} />
+							<ConfigProjectDD
+								onCreateList={setShowCreateList}
+								onDeleteProject={setShowDeleteProject}
+								onInviteProject={setShowInviteProject}
+							/>
 						</div>
 					</div>
 					<div className='workspace__header__title'>MT board</div>
@@ -93,6 +99,14 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 			{showCreateList && <CreateListModal hidden={showCreateList} setHidden={setShowCreateList} />}
 
 			{showDeleteProject && <DeleteProjectModal hidden={showDeleteProject} setHidden={setShowDeleteProject} />}
+
+			{showInviteProject && (
+				<InviteProjectModal
+					hidden={showInviteProject}
+					setHidden={setShowInviteProject}
+					nameProject={nameProject}
+				/>
+			)}
 		</React.Fragment>
 	);
 };

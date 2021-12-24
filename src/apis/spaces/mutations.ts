@@ -52,6 +52,7 @@ export const FIND_USERS_BY_SPACE_ID_MUTATION = gql`
 				department
 				position
 				title
+				avatar
 			}
 		}
 	}

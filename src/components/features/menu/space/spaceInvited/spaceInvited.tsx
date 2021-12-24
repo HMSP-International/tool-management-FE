@@ -11,7 +11,7 @@ import { ISpace } from 'slices/space/interfaces';
 // graphql
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_INVITED_SPACES_QUERY } from 'apis/spaces/queries';
-import { GET_PROJECTS_BY_COLLABORATORS_MUTATION } from 'apis/projects/mutations';
+import { GET_PROJECTS_BY_SPACES_AND_MEMBER_MUTATION } from 'apis/projects/mutations';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 import ErrorView from 'components/shared/errorView/errorView';
@@ -23,6 +23,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProjectsFromCollaborator } from 'slices/project/slice';
 import { RootState } from 'global/redux/rootReducer';
 import { getCollaborators } from 'slices/collaborator/slice';
+// helpers
+import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 
 const { SubMenu } = Menu;
 
@@ -37,8 +39,8 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 	const { data: dataInvitedSpace, error: errorInvitedSpace, loading: loadingGetInvitedSpace } = useQuery(
 		GET_INVITED_SPACES_QUERY,
 	);
-	const [ onGetProjectsByCollaborators, { loading: loadingGetProjectsByCollaborators } ] = useMutation(
-		GET_PROJECTS_BY_COLLABORATORS_MUTATION,
+	const [ onGetProjectsBySpacesAndMember, { loading: loadingGetProjectsByPacesAndMember } ] = useMutation(
+		GET_PROJECTS_BY_SPACES_AND_MEMBER_MUTATION,
 	);
 
 	const dispatch = useDispatch();
@@ -63,29 +65,32 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 						(collaborator: ICollaborator) => collaborator._workSpaceId._id,
 					);
 
-					const { data } = await onGetProjectsByCollaborators({
+					const { data, isError } = await fetchDataAndShowNotify({
+						fnFetchData: onGetProjectsBySpacesAndMember,
 						variables:
 							{
-								getProjectsInput:
+								projectsBySpacesAndMemberInput:
 									{
-										_spacesId: spaces,
+										_spaceIds: spaces,
 									},
 							},
 					});
 
-					const projects: IProject[] = data.getProjectsByCollaborator;
-					const newProjects = convertProject(projects);
+					if (!isError) {
+						const projects: IProject[] = data;
+						const newProjects = convertProject(projects);
 
-					dispatch(getProjectsFromCollaborator(newProjects));
+						dispatch(getProjectsFromCollaborator(newProjects));
+					}
 				};
 
 				getProjectByCollaborators();
 			}
 		},
-		[ dataInvitedSpace, collaboratorRedux, onGetProjectsByCollaborators, dispatch ],
+		[ dataInvitedSpace, collaboratorRedux, onGetProjectsBySpacesAndMember, dispatch ],
 	);
 
-	if (loadingGetInvitedSpace || loadingGetProjectsByCollaborators) {
+	if (loadingGetInvitedSpace || loadingGetProjectsByPacesAndMember) {
 		return <LoadingView />;
 	}
 	if (errorInvitedSpace) return <ErrorView error={errorInvitedSpace} />;

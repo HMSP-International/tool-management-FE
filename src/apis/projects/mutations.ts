@@ -12,9 +12,9 @@ export const GET_PROJECTS_MUTATION = gql`
 	}
 `;
 
-export const GET_PROJECTS_BY_COLLABORATORS_MUTATION = gql`
-	mutation Project($getProjectsInput: GetProjectsInput!) {
-		getProjectsByCollaborator(getProjectsInput: $getProjectsInput) {
+export const GET_PROJECTS_BY_SPACES_AND_MEMBER_MUTATION = gql`
+	mutation getProjectsBySpacesAndMember($projectsBySpacesAndMemberInput: ProjectsBySpacesAndMemberInput!) {
+		getProjectsBySpacesAndMember(projectsBySpacesAndMemberInput: $projectsBySpacesAndMemberInput) {
 			_id
 			_spaceId
 			name

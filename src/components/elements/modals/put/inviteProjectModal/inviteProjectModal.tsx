@@ -1,118 +1,137 @@
 import React, { useState, useEffect } from 'react';
 import { Tooltip } from 'antd';
 // Styled Components
-import { ShareModalStyled } from './putShareWorkSpaceModal.styled';
+import { ShareModalStyled } from './inviteProjectModal.styled';
 // Components
 import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
 import LoadingView from 'components/shared/loadingView/loadingView';
 import Image from 'components/shared/image/image';
 // interfaces
 import { IUser } from 'slices/dashboard/interfaces';
-import { ISpace } from 'slices/space/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
-import { PUT_INVITED_SPACES_MUTATION, FIND_USERS_BY_SPACE_ID_MUTATION } from 'apis/spaces/mutations';
+import {
+	GET_USERS_BELONG_PROJECT_MUTAIION,
+	DELETE_PATICIPANT_MUTAIION,
+	CREATE_PATICIPANT_MUTAIION,
+} from 'apis/paticipants/mutations';
 import { useMutation } from '@apollo/client';
 // redux
 import { useDispatch } from 'react-redux';
 import { getUsers } from 'slices/dashboard/slice';
 // helper
 import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { useParams } from 'react-router-dom';
 
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onBack(): void;
-	currentSpace: ISpace;
-	nameSpace: string;
+	nameProject: string;
 }
 
 const showText = (text: string) => {
 	return <span>{text}</span>;
 };
 
-const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, currentSpace, nameSpace }) => {
+const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject }) => {
+	const { _id: _projectId } = useParams();
 	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
-	const [ onPutInvitedSpace, { loading: loadingPutInvitedSpaces } ] = useMutation(PUT_INVITED_SPACES_MUTATION);
-
-	const [ onFindUSersBySpace, { loading: loadinginvitedUsers } ] = useMutation(FIND_USERS_BY_SPACE_ID_MUTATION);
-
+	const [ onDeletePaticipant, { loading: loadingDeletePaticipant } ] = useMutation(DELETE_PATICIPANT_MUTAIION);
+	const [ onCreatePaticiant, { loading: loadingCreatePaticipant } ] = useMutation(CREATE_PATICIPANT_MUTAIION);
+	const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(
+		GET_USERS_BELONG_PROJECT_MUTAIION,
+	);
 	const dispatch = useDispatch();
 	const [ showListUserDrawer, setShowListUserDrawer ] = useState(false);
 
 	useEffect(
 		() => {
-			const fetchUsers = async () => {
-				const { data } = await onGetUsers();
-				dispatch(getUsers(data.getUsers));
+			const fetchData = async () => {
+				const { data, isError } = await fetchDataAndShowNotify({ fnFetchData: onGetUsers });
+
+				if (!isError) {
+					dispatch(getUsers(data));
+				}
 			};
 
-			fetchUsers();
+			fetchData();
 		},
 		[ onGetUsers, dispatch ],
 	);
 
 	useEffect(
 		() => {
-			const fetchUsers = async () => {
-				if (!loadinginvitedUsers) {
-					const { data } = await onFindUSersBySpace({
-						variables:
-							{
-								findUsersBySpaceId:
-									{
-										_spaceId: currentSpace._id,
-									},
-							},
+			const fetchData = async () => {
+				if (!loadingGetUserBelongProject) {
+					const { data, isError } = await fetchDataAndShowNotify({
+						fnFetchData: onGetUserBeLongProject,
+						variables: { getUsersBelongProjectInput: { _projectId } },
 					});
 
-					const users: IUser[] = data.findUsersBySpaceId.map((user: any) => user._memberId);
+					if (!isError) {
+						const users: IUser[] = data.map((user: any) => user._collaboratorId._memberId);
 
-					setInviteUsers(users);
+						setInviteUsers(users);
+					}
 				}
 			};
 
-			fetchUsers();
+			fetchData();
 		},
-		[ dispatch, onFindUSersBySpace, loadinginvitedUsers, currentSpace ],
+		[ dispatch, onGetUserBeLongProject, loadingGetUserBelongProject, _projectId ],
 	);
 
-	if (loadinginvitedUsers || loadingGetUsers || loadingPutInvitedSpaces) return <LoadingView />;
+	if (loadingGetUserBelongProject || loadingGetUsers || loadingDeletePaticipant || loadingCreatePaticipant)
+		return <LoadingView />;
 
-	const handleSubmit = async () => {
-		const _memberIds = inviteUsers.map(user => user._id);
+	const handleRemoveUser = async (user: IUser) => {
+		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
+		setInviteUsers(newListUser);
 
-		await fetchDataAndShowNotify({
-			fnFetchData: onPutInvitedSpace,
+		const { isError } = await fetchDataAndShowNotify({
+			fnFetchData: onDeletePaticipant,
 			variables:
 				{
-					putInvitedSpaceInput:
+					deletePaticipantInput:
 						{
-							_workSpaceId: currentSpace._id,
-							_memberIds,
+							_memberId: user._id,
+							_projectId,
 						},
 				},
 		});
+
+		if (isError) {
+			setInviteUsers(inviteUsers);
+		}
 	};
 
-	const handleRemoveUser = (user: IUser) => {
-		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
-		setInviteUsers(newListUser);
-	};
-
-	const handleClickEmail = (user: IUser) => {
+	const handleClickEmail = async (user: IUser) => {
 		setInviteUsers([ ...inviteUsers, user ]);
+
+		const { isError } = await fetchDataAndShowNotify({
+			fnFetchData: onCreatePaticiant,
+			variables:
+				{
+					createPaticipantInput:
+						{
+							_projectId,
+							role: 'member',
+							_memberId: user._id,
+						},
+				},
+		});
+
+		if (isError) {
+			setInviteUsers(inviteUsers);
+		}
 	};
 
 	return (
 		<React.Fragment>
 			<ShareModalStyled centered visible={hidden} footer={null} className='modal__share-modal'>
 				<div className='share-modal__header'>
-					<div className='share-modal__header__back' onClick={onBack}>
-						{'<'}
-					</div>
-					<div className='share-modal__header__title'>{'Share Space ' + nameSpace}</div>
+					<div className='share-modal__header__title'>{'Share Project' + nameProject}</div>
 					<div className='share-modal__header__close' onClick={() => setHidden(false)}>
 						{'X'}
 					</div>
@@ -161,7 +180,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 						</div>
 					</div>
 					<div className='share-modal__btn'>
-						<button onClick={handleSubmit}>Update Space</button>
+						<button onClick={() => setHidden(false)}>Invite</button>
 					</div>
 				</div>
 			</ShareModalStyled>

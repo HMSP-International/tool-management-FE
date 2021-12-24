@@ -13,17 +13,17 @@ interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
 	inviteUsers: IUser[];
-	setInviteUsers(users: IUser[]): void;
+	onClickUser(user: IUser): void;
 }
 
 interface IJWTDecode {
 	_id: string;
 }
 
-const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden, setInviteUsers, inviteUsers }) => {
+const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden, inviteUsers, onClickUser }) => {
 	const authRedux: IInitialStateAuth = useSelector((state: RootState) => state.auth);
 	const dashboardRedux: IInitialStateDashboard = useSelector((state: RootState) => state.dashboard);
-	const [ listUser, setListUSer ] = useState<IUser[]>([]);
+	const [ listUser, setListUser ] = useState<IUser[]>([]);
 
 	useEffect(
 		() => {
@@ -40,7 +40,7 @@ const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden, setInviteUsers, i
 				return flag;
 			});
 
-			setListUSer(newListUser);
+			setListUser(newListUser);
 		},
 		[ inviteUsers, dashboardRedux ],
 	);
@@ -50,13 +50,6 @@ const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden, setInviteUsers, i
 		const decoded = jwt_decode<IJWTDecode>(authRedux.jwt);
 
 		return listUser.filter(user => user._id !== decoded._id);
-	};
-
-	const handleClickEmail = (user: IUser) => {
-		const newListUser = listUser.filter(item => item._id !== user._id);
-
-		setListUSer(newListUser);
-		setInviteUsers([ ...inviteUsers, user ]);
 	};
 
 	return (
@@ -75,7 +68,7 @@ const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden, setInviteUsers, i
 					{handleDeleteOwer(listUser, authRedux).map(user => {
 						return (
 							<div key={user._id}>
-								<p onClick={() => handleClickEmail(user)}>{user.email}</p>
+								<p onClick={() => onClickUser(user)}>{user.email}</p>
 							</div>
 						);
 					})}

@@ -8,9 +8,10 @@ interface IProps {
 	w: number;
 	h: number;
 	public_id: string;
+	styles?: object;
 }
 
-const Image: React.FC<IProps> = ({ w, h, public_id }) => {
+const Image: React.FC<IProps> = ({ w, h, public_id, styles = {} }) => {
 	const cld = new Cloudinary({
 		cloud:
 			{
@@ -22,7 +23,7 @@ const Image: React.FC<IProps> = ({ w, h, public_id }) => {
 
 	myImage.resize(fill().width(w).height(h));
 
-	return <AdvancedImage cldImg={myImage} />;
+	return <AdvancedImage cldImg={myImage} style={styles} />;
 };
 
 export default Image;
