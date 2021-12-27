@@ -7,7 +7,7 @@ import LoadingView from 'components/shared/loadingView/loadingView';
 import { openNotification } from 'global/helpers/toastify/notification';
 import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 // graphql
-import { VERIFY_INVITE_SPACE_MUTATION } from 'apis/verify/mutations';
+import { VERIFY_INVITE_SPACE_MUTATION } from 'apis/collaborators/mutations';
 import { useMutation } from '@apollo/client';
 
 interface IProps {

@@ -61,6 +61,8 @@ export const ShareModalStyled = styled(Modal)`
 
             div {
                 margin-right: 5px;
+                position: relative;
+                
                 img {
                     width: 40px;
                     height: 40px;

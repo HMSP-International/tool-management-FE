@@ -10,7 +10,7 @@ import { ICollaborator, IInitialStateCollaborator } from 'slices/collaborator/in
 import { ISpace } from 'slices/space/interfaces';
 // graphql
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_INVITED_SPACES_QUERY } from 'apis/spaces/queries';
+import { GET_INVITED_SPACES_QUERY } from 'apis/collaborators/queries';
 import { GET_PROJECTS_BY_SPACES_AND_MEMBER_MUTATION } from 'apis/projects/mutations';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';

@@ -11,7 +11,11 @@ import { IUser } from 'slices/dashboard/interfaces';
 import { ISpace } from 'slices/space/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
-import { PUT_INVITED_SPACES_MUTATION, FIND_USERS_BY_SPACE_ID_MUTATION } from 'apis/spaces/mutations';
+import {
+	FIND_USERS_BY_SPACE_ID_MUTATION,
+	INVITE_SPACES_MUTATION,
+	DELETE_BY_USER_AND_SPACE_MUTAIION,
+} from 'apis/collaborators/mutations';
 import { useMutation } from '@apollo/client';
 // redux
 import { useDispatch } from 'react-redux';
@@ -34,8 +38,10 @@ const showText = (text: string) => {
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, currentSpace, nameSpace }) => {
 	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
-	const [ onPutInvitedSpace, { loading: loadingPutInvitedSpaces } ] = useMutation(PUT_INVITED_SPACES_MUTATION);
-
+	const [ onDeleteCollaboratorByUserAndSpace, { loading: loadingDeleteCollaboratorByUserAndSpace } ] = useMutation(
+		DELETE_BY_USER_AND_SPACE_MUTAIION,
+	);
+	const [ onInviteSpace, { loading: loadingInviteSpace } ] = useMutation(INVITE_SPACES_MUTATION);
 	const [ onFindUSersBySpace, { loading: loadinginvitedUsers } ] = useMutation(FIND_USERS_BY_SPACE_ID_MUTATION);
 
 	const dispatch = useDispatch();
@@ -78,31 +84,49 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 		[ dispatch, onFindUSersBySpace, loadinginvitedUsers, currentSpace ],
 	);
 
-	if (loadinginvitedUsers || loadingGetUsers || loadingPutInvitedSpaces) return <LoadingView />;
+	if (loadinginvitedUsers || loadingGetUsers || loadingDeleteCollaboratorByUserAndSpace || loadingInviteSpace)
+		return <LoadingView />;
 
-	const handleSubmit = async () => {
-		const _memberIds = inviteUsers.map(user => user._id);
+	const handleRemoveUser = async (user: IUser) => {
+		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
+		setInviteUsers(newListUser);
 
-		await fetchDataAndShowNotify({
-			fnFetchData: onPutInvitedSpace,
+		const { isError } = await fetchDataAndShowNotify({
+			fnFetchData: onDeleteCollaboratorByUserAndSpace,
 			variables:
 				{
-					putInvitedSpaceInput:
+					deleteByUserAndSpaceInput:
 						{
 							_workSpaceId: currentSpace._id,
-							_memberIds,
+							_memberId: user._id,
 						},
 				},
 		});
+
+		if (isError) {
+			setInviteUsers(inviteUsers);
+		}
 	};
 
-	const handleRemoveUser = (user: IUser) => {
-		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
-		setInviteUsers(newListUser);
-	};
-
-	const handleClickEmail = (user: IUser) => {
+	const handleClickEmail = async (user: IUser) => {
 		setInviteUsers([ ...inviteUsers, user ]);
+
+		const { isError } = await fetchDataAndShowNotify({
+			fnFetchData: onInviteSpace,
+			variables:
+				{
+					inviteSpaceInput:
+						{
+							_workSpaceId: currentSpace._id,
+							role: 'member',
+							_memberId: user._id,
+						},
+				},
+		});
+
+		if (isError) {
+			setInviteUsers(inviteUsers);
+		}
 	};
 
 	return (
@@ -140,15 +164,9 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 							</Tooltip> */}
 							{inviteUsers.map(user => (
 								<div key={user._id}>
-									<Tooltip placement='bottom' title={showText(user.email)}>
-										<Image
-											public_id={user.avatar}
-											w={40}
-											h={40}
-											styles={{ borderRadius: '100rem' }}
-										/>
-									</Tooltip>
-									<Tooltip placement='top' title={showText('delete')}>
+									<Image public_id={user.avatar} w={40} h={40} styles={{ borderRadius: '100rem' }} />
+
+									<Tooltip placement='top' title={showText('delete ' + user.email)}>
 										<span className='close' onClick={() => handleRemoveUser(user)}>
 											x
 										</span>
@@ -161,7 +179,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 						</div>
 					</div>
 					<div className='share-modal__btn'>
-						<button onClick={handleSubmit}>Update Space</button>
+						<button onClick={() => setHidden(false)}>Update Space</button>
 					</div>
 				</div>
 			</ShareModalStyled>

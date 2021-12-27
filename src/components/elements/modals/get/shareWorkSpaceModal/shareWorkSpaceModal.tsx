@@ -5,12 +5,14 @@ import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 // Components
 import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
 import LoadingView from 'components/shared/loadingView/loadingView';
+import Image from 'components/shared/image/image';
 // interfaces
 import { IUser } from 'slices/dashboard/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import { useMutation } from '@apollo/client';
-import { CREATE_SPACE_MUTATION, INVITE_SPACES_MUTATION } from 'apis/spaces/mutations';
+import { INVITE_SPACES_MUTATION } from 'apis/collaborators/mutations';
+import { CREATE_SPACE_MUTATION } from 'apis/spaces/mutations';
 // redux
 import { useDispatch } from 'react-redux';
 import { getUsers } from 'slices/dashboard/slice';
@@ -111,6 +113,11 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		setInviteUsers([ ...inviteUsers, user ]);
 	};
 
+	const handleRemoveUser = (user: IUser) => {
+		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
+		setInviteUsers(newListUser);
+	};
+
 	return (
 		<React.Fragment>
 			<ShareModalStyled centered visible={hidden} footer={null} className='modal__share-modal'>
@@ -145,14 +152,15 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 								</div>
 							</Tooltip> */}
 							{inviteUsers.map(user => (
-								<Tooltip placement='top' title={showText(user.email)} key={user._id}>
-									<div>
-										<img
-											src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-											alt=''
-										/>
-									</div>
-								</Tooltip>
+								<div key={user._id}>
+									<Image public_id={user.avatar} w={40} h={40} styles={{ borderRadius: '100rem' }} />
+
+									<Tooltip placement='top' title={showText('delete ' + user.email)}>
+										<span className='close' onClick={() => handleRemoveUser(user)}>
+											x
+										</span>
+									</Tooltip>
+								</div>
 							))}
 						</div>
 						<div className='share-modal__shared__add' onClick={() => setShowListUserDrawer(true)}>

@@ -159,15 +159,9 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 							</Tooltip> */}
 							{inviteUsers.map(user => (
 								<div key={user._id}>
-									<Tooltip placement='bottom' title={showText(user.email)}>
-										<Image
-											public_id={user.avatar}
-											w={40}
-											h={40}
-											styles={{ borderRadius: '100rem' }}
-										/>
-									</Tooltip>
-									<Tooltip placement='top' title={showText('delete')}>
+									<Image public_id={user.avatar} w={40} h={40} styles={{ borderRadius: '100rem' }} />
+
+									<Tooltip placement='top' title={showText('delete ' + user.email)}>
 										<span className='close' onClick={() => handleRemoveUser(user)}>
 											x
 										</span>
