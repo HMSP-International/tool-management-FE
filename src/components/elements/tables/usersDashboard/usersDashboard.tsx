@@ -7,7 +7,7 @@ import { Tooltip } from 'antd';
 import DeleteAction from './action/delete';
 import PutAction from './action/put';
 // styled-component
-import { TableUserStyled } from './tableUser.styled';
+import { TableUserStyled } from './usersDashboard.styled';
 // interfaces
 import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
 import { RootState } from '../../../../global/redux/rootReducer';
@@ -102,7 +102,7 @@ const columns: TableColumn<IUser>[] = [
 	},
 ];
 
-const TableUser: React.FC = () => {
+const UsersDashboard: React.FC = () => {
 	// redux
 	const dashboardRedux: IInitialStateDashboard = useSelector((state: RootState) => state.dashboard);
 
@@ -113,4 +113,4 @@ const TableUser: React.FC = () => {
 	);
 };
 
-export default TableUser;
+export default UsersDashboard;

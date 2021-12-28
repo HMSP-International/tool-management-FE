@@ -9,9 +9,10 @@ export interface IInitialStateCollaborator {
 }
 
 export interface ICollaborator {
-	_id: number;
+	_id: string;
 	_memberId: IUser;
 	_adminId: string;
 	_workSpaceId: ISpace;
 	confirmEmail: boolean;
+	role: string;
 }

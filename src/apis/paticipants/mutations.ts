@@ -1,19 +1,28 @@
 import { gql } from '@apollo/client';
 
 export const GET_USERS_BELONG_PROJECT_MUTAIION = gql`
-	mutation GET_USERS_BELONG_PROJECT($getUsersBelongProjectInput: GetUsersBelongProjectInput!) {
+	mutation getUsersBelongProject($getUsersBelongProjectInput: GetUsersBelongProjectInput!) {
 		getUsersBelongProject(getUsersBelongProjectInput: $getUsersBelongProjectInput) {
+			_id
 			_collaboratorId {
+				_id
 				_memberId {
 					_id
+					_roleId {
+						_id
+					}
+					avatar
 					displayName
 					email
-					department
 					position
 					title
-					avatar
 				}
+				_adminId
 			}
+			_projectId {
+				_id
+			}
+			role
 		}
 	}
 `;
@@ -36,6 +45,32 @@ export const CREATE_PATICIPANT_MUTAIION = gql`
 			position
 			title
 			avatar
+		}
+	}
+`;
+
+export const CHANGE_ROLE_OF_MEMBER_ON_PATICIPANT = gql`
+	mutation changeRoleOfMemberOnPaticipant($changeRoleOfMemberInput: ChangeRoleOfMemberInput!) {
+		changeRoleOfMemberOnPaticipant(changeRoleOfMemberInput: $changeRoleOfMemberInput) {
+			_id
+			_collaboratorId {
+				_id
+				_memberId {
+					_id
+					_roleId {
+						_id
+					}
+					avatar
+					displayName
+					email
+					position
+					title
+				}
+			}
+			_projectId {
+				_id
+			}
+			role
 		}
 	}
 `;

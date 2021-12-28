@@ -8,6 +8,15 @@ const INITIAL_STATE: IInitialStateProject = {
 	projects: {},
 
 	projectsFromCollaborator: {},
+
+	currentProject:
+		{
+			name: '',
+			order: -1,
+			owner: '',
+			_id: '',
+			_spaceId: '',
+		},
 };
 
 export default INITIAL_STATE;

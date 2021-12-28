@@ -5,7 +5,7 @@ import CreateNewUserDrawer from '../../elements/drawers/createUserDrawer/createU
 
 // components
 import ContainerPage from '../../shared/containerPage/containerPage';
-import TableUser from './tableUser/tableUser';
+import UsersDashboard from '../../elements/tables/usersDashboard/usersDashboard';
 import { DashboardStyled } from './index.styled';
 import LoadingView from '../../shared/loadingView/loadingView';
 
@@ -55,7 +55,7 @@ const Dashboard: React.FC = () => {
 					<div className='dashboard__add-new-user'>
 						<button onClick={() => setShowCreateUserDrawer(true)}>Add new user</button>
 					</div>
-					<TableUser />
+					<UsersDashboard />
 				</DashboardStyled>
 			</ContainerPage>
 

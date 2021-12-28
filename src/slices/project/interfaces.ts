@@ -5,6 +5,8 @@ export interface IInitialStateProject {
 	projects: IElementProject;
 
 	projectsFromCollaborator: IElementProject;
+
+	currentProject: IProject;
 }
 
 export interface IElementProject {

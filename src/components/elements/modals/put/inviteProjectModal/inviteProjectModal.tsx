@@ -17,11 +17,14 @@ import {
 } from 'apis/paticipants/mutations';
 import { useMutation } from '@apollo/client';
 // redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from 'slices/dashboard/slice';
+import { RootState } from 'global/redux/rootReducer';
+import { getUserBeLongProject, getCollaboratorBeLongProject } from 'slices/paticipant/slice';
 // helper
 import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
 import { useParams } from 'react-router-dom';
+import { IInitialStatePaticipant } from 'slices/paticipant/interfaces';
 
 interface IProps {
 	hidden: boolean;
@@ -35,7 +38,6 @@ const showText = (text: string) => {
 
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject }) => {
 	const { _id: _projectId } = useParams();
-	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
 	const [ onDeletePaticipant, { loading: loadingDeletePaticipant } ] = useMutation(DELETE_PATICIPANT_MUTAIION);
 	const [ onCreatePaticiant, { loading: loadingCreatePaticipant } ] = useMutation(CREATE_PATICIPANT_MUTAIION);
@@ -43,6 +45,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 		GET_USERS_BELONG_PROJECT_MUTAIION,
 	);
 	const dispatch = useDispatch();
+	const { userBeLongProject }: IInitialStatePaticipant = useSelector((state: RootState) => state.paticipant);
 	const [ showListUserDrawer, setShowListUserDrawer ] = useState(false);
 
 	useEffect(
@@ -72,22 +75,24 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 					if (!isError) {
 						const users: IUser[] = data.map((user: any) => user._collaboratorId._memberId);
 
-						setInviteUsers(users);
+						// setInviteUsers(users);
+						dispatch(getUserBeLongProject(users));
 					}
 				}
 			};
 
 			fetchData();
 		},
-		[ dispatch, onGetUserBeLongProject, loadingGetUserBelongProject, _projectId ],
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ onGetUserBeLongProject, _projectId, getUserBeLongProject, dispatch ],
 	);
 
 	if (loadingGetUserBelongProject || loadingGetUsers || loadingDeletePaticipant || loadingCreatePaticipant)
 		return <LoadingView />;
 
 	const handleRemoveUser = async (user: IUser) => {
-		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
-		setInviteUsers(newListUser);
+		const newListUser = userBeLongProject.filter(inviteUser => inviteUser._id !== user._id);
+		dispatch(getUserBeLongProject(newListUser));
 
 		const { isError } = await fetchDataAndShowNotify({
 			fnFetchData: onDeletePaticipant,
@@ -102,12 +107,12 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 		});
 
 		if (isError) {
-			setInviteUsers(inviteUsers);
+			dispatch(getUserBeLongProject(userBeLongProject));
 		}
 	};
 
 	const handleClickEmail = async (user: IUser) => {
-		setInviteUsers([ ...inviteUsers, user ]);
+		dispatch(getUserBeLongProject([ ...userBeLongProject, user ]));
 
 		const { isError } = await fetchDataAndShowNotify({
 			fnFetchData: onCreatePaticiant,
@@ -123,15 +128,27 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 		});
 
 		if (isError) {
-			setInviteUsers(inviteUsers);
+			dispatch(getUserBeLongProject(userBeLongProject));
 		}
+	};
+
+	const handleSubmit = async () => {
+		const { data, isError } = await fetchDataAndShowNotify({
+			fnFetchData: onGetUserBeLongProject,
+			variables: { getUsersBelongProjectInput: { _projectId } },
+		});
+
+		if (!isError) {
+			dispatch(getCollaboratorBeLongProject(data));
+		}
+		setHidden(false);
 	};
 
 	return (
 		<React.Fragment>
 			<ShareModalStyled centered visible={hidden} footer={null} className='modal__share-modal'>
 				<div className='share-modal__header'>
-					<div className='share-modal__header__title'>{'Share Project' + nameProject}</div>
+					<div className='share-modal__header__title'>{'Share Project ' + nameProject}</div>
 					<div className='share-modal__header__close' onClick={() => setHidden(false)}>
 						{'X'}
 					</div>
@@ -157,7 +174,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 									/>
 								</div>
 							</Tooltip> */}
-							{inviteUsers.map(user => (
+							{userBeLongProject.map(user => (
 								<div key={user._id}>
 									<Image public_id={user.avatar} w={40} h={40} styles={{ borderRadius: '100rem' }} />
 
@@ -174,7 +191,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 						</div>
 					</div>
 					<div className='share-modal__btn'>
-						<button onClick={() => setHidden(false)}>Invite</button>
+						<button onClick={handleSubmit}>Invite</button>
 					</div>
 				</div>
 			</ShareModalStyled>
@@ -183,7 +200,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 				<ListUserDrawer
 					hidden={showListUserDrawer}
 					setHidden={setShowListUserDrawer}
-					inviteUsers={inviteUsers}
+					inviteUsers={userBeLongProject}
 					onClickUser={handleClickEmail}
 				/>
 			)}

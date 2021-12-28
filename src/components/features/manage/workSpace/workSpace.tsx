@@ -6,58 +6,31 @@ import CreateListModal from 'components/elements/modals/create/createListModal/c
 import InviteProjectModal from 'components/elements/modals/put/inviteProjectModal/inviteProjectModal';
 import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
 import TaskListDD from 'components/elements/dropDown/taskListDD/taskListDD';
-import ConfigProjectDD from 'components/elements/dropDown/configProjectDD/configProjectDD';
 // Styled Components
-import { WorkSpaceStyled } from './workSpace.styled';
+import Container from '../container/container';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { ITaskList } from 'slices/taskList/interfaces';
+import { IInitialStateProject } from 'slices/project/interfaces';
+// redux
+import { useSelector } from 'react-redux';
+import { RootState } from 'global/redux/rootReducer';
 
 interface IProps {
 	columns: ITaskList;
 	onDragEnd: (result: DropResult, columns: ITaskList) => void;
-	nameProject: string;
 }
 
-const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
+const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd }) => {
 	const [ showCreateList, setShowCreateList ] = useState(false);
 	const [ showDeleteProject, setShowDeleteProject ] = useState(false);
 	const [ showInviteProject, setShowInviteProject ] = useState(false);
 
+	const { currentProject }: IInitialStateProject = useSelector((state: RootState) => state.project);
+
 	return (
 		<React.Fragment>
-			<WorkSpaceStyled className='workspace'>
-				<section className='workspace__header'>
-					<div className='workspace__header__top'>
-						<div>Projects / {nameProject}</div>
-						<div className='workspace__header__top__btn'>
-							<ConfigProjectDD
-								onCreateList={setShowCreateList}
-								onDeleteProject={setShowDeleteProject}
-								onInviteProject={setShowInviteProject}
-							/>
-						</div>
-					</div>
-					<div className='workspace__header__title'>MT board</div>
-					<div className='workspace__header__assign'>
-						<div className='workspace__header__assign__input'>
-							<input type='text' />
-						</div>
-
-						<div className='workspace__header__assign__group-avt'>
-							<div className='workspace__header__assign__group-avt__item'>
-								<img src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg' alt='' />
-							</div>
-							<div className='workspace__header__assign__group-avt__item'>
-								<img src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg' alt='' />
-							</div>
-							<div className='workspace__header__assign__group-avt__item'>
-								<img src='https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg' alt='' />
-							</div>
-						</div>
-					</div>
-				</section>
-
+			<Container>
 				<section className='workspace__body'>
 					<DragDropContext onDragEnd={result => onDragEnd(result, columns)}>
 						{Object.entries(columns).map(([ columnId, columnData ]) => (
@@ -94,7 +67,7 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 						))}
 					</DragDropContext>
 				</section>
-			</WorkSpaceStyled>
+			</Container>
 
 			{showCreateList && <CreateListModal hidden={showCreateList} setHidden={setShowCreateList} />}
 
@@ -104,7 +77,7 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd, nameProject }) => {
 				<InviteProjectModal
 					hidden={showInviteProject}
 					setHidden={setShowInviteProject}
-					nameProject={nameProject}
+					nameProject={currentProject.name}
 				/>
 			)}
 		</React.Fragment>

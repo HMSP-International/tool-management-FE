@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useQuery } from '@apollo/client';
 import { Navigate, useParams, useNavigate } from 'react-router-dom';
 // component
@@ -11,10 +11,8 @@ import { DropResult } from 'react-beautiful-dnd';
 import { IInitialStateList, IList, ITaskList } from 'slices/taskList/interfaces';
 // graphql
 import { GET_LISTS_QUERY } from 'apis/taskList/queries';
-import { GET_PROJECT_QUERY } from 'apis/projects/queries';
 // helpers
 import { convertTaskList } from 'global/helpers/formatData/convertTaskList';
-import { IProject } from 'slices/project/interfaces';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getListsFormatted } from 'slices/taskList/slice';
@@ -28,30 +26,11 @@ const Manage: React.FC = () => {
 	const dispatch = useDispatch();
 	const taskListRedux: IInitialStateList = useSelector((state: RootState) => state.taskList);
 
-	// use state
-	const [ project, setProject ] = useState<IProject>({
-		name: '',
-		order: -1,
-		owner: '',
-		_id: '',
-		_spaceId: '',
-	});
-
 	// fetch data
 	const { loading: loadingGetLists, data: dataGetLists, error: errorGetLists } = useQuery(GET_LISTS_QUERY, {
 		variables:
 			{
 				getListsInput:
-					{
-						_projectId: params._id,
-					},
-			},
-	});
-
-	const { loading: loadingGetProject, data: dataGetProject, error: errorGetProject } = useQuery(GET_PROJECT_QUERY, {
-		variables:
-			{
-				getProjectInput:
 					{
 						_projectId: params._id,
 					},
@@ -75,21 +54,6 @@ const Manage: React.FC = () => {
 			}
 		},
 		[ dataGetLists, loadingGetLists, navigate, dispatch ],
-	);
-
-	useEffect(
-		() => {
-			if (loadingGetProject) return;
-
-			if (dataGetProject) {
-				const project: IProject = dataGetProject.getProject;
-				setProject(project);
-			}
-			else {
-				navigate('notFound');
-			}
-		},
-		[ dataGetProject, loadingGetProject, navigate ],
 	);
 
 	// handle event
@@ -141,14 +105,14 @@ const Manage: React.FC = () => {
 	}, []);
 
 	// render;
-	if (loadingGetLists || loadingGetProject) {
+	if (loadingGetLists) {
 		return <LoadingView />;
 	}
-	if (errorGetLists || errorGetProject) {
+	if (errorGetLists) {
 		return <Navigate to='/notFound' />;
 	}
 
-	return <WorkSpace columns={taskListRedux.lists} onDragEnd={handleDragEnd} nameProject={project.name} />;
+	return <WorkSpace columns={taskListRedux.lists} onDragEnd={handleDragEnd} />;
 };
 
 export default Manage;

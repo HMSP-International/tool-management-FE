@@ -5,11 +5,12 @@ import HomePage from './pages';
 import AuthPage from './pages/auth';
 import DashboardPage from './pages/dashboard';
 import ManagePage from './pages/manage';
+
 import NotFound from './pages/notFound';
 import ProfilePage from './pages/profile';
 import VerifyPage from './pages/verify';
 
-import PrivateRoute from './components/shared/privateRoute/privateRoute';
+import PrivateRouteLogined from 'components/shared/privateRoute/privateRouteLogined/privateRouteLogined';
 
 function App () {
 	return (
@@ -20,9 +21,9 @@ function App () {
 				<Route
 					path='/'
 					element={
-						<PrivateRoute>
+						<PrivateRouteLogined>
 							<HomePage />
-						</PrivateRoute>
+						</PrivateRouteLogined>
 					}
 				/>
 
@@ -31,18 +32,18 @@ function App () {
 				<Route
 					path='/dashboard'
 					element={
-						<PrivateRoute>
+						<PrivateRouteLogined>
 							<DashboardPage />
-						</PrivateRoute>
+						</PrivateRouteLogined>
 					}
 				/>
 
 				<Route
-					path='/manage/:_id'
+					path='/manage/:_id/*'
 					element={
-						<PrivateRoute>
+						<PrivateRouteLogined>
 							<ManagePage />
-						</PrivateRoute>
+						</PrivateRouteLogined>
 					}
 				/>
 
@@ -51,18 +52,18 @@ function App () {
 				<Route
 					path='/profile/*'
 					element={
-						<PrivateRoute>
+						<PrivateRouteLogined>
 							<ProfilePage />
-						</PrivateRoute>
+						</PrivateRouteLogined>
 					}
 				/>
 
 				<Route
 					path='/verify/:name'
 					element={
-						<PrivateRoute>
+						<PrivateRouteLogined>
 							<VerifyPage />
-						</PrivateRoute>
+						</PrivateRouteLogined>
 					}
 				/>
 

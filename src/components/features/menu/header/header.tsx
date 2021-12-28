@@ -35,8 +35,6 @@ const Header: React.FC<IProps> = ({ onClose }) => {
 		[ data, dispatch ],
 	);
 
-	console.log(userRedux.profile.avatar);
-
 	if (loading) {
 		return <LoadingView />;
 	}
