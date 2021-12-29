@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 // 3rd Components
-import CreateListModal from 'components/elements/modals/create/createListModal/createListModal';
-import InviteProjectModal from 'components/elements/modals/put/inviteProjectModal/inviteProjectModal';
-import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
 import ConfigProjectDD from 'components/elements/dropDown/configProjectDD/configProjectDD';
 // Styled Components
 import { WorkSpaceStyled } from './container.styled';
@@ -16,9 +13,6 @@ import { IInitialStateProject } from 'slices/project/interfaces';
 import { IInitialStateUser } from 'slices/user/interfaces';
 
 const Container: React.FC = ({ children }) => {
-	const [ showCreateList, setShowCreateList ] = useState(false);
-	const [ showDeleteProject, setShowDeleteProject ] = useState(false);
-	const [ showInviteProject, setShowInviteProject ] = useState(false);
 	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 
@@ -30,12 +24,7 @@ const Container: React.FC = ({ children }) => {
 						<div>Projects / {project.name}</div>
 						{project.owner === userRedux.profile._id && (
 							<div className='workspace__header__top__btn'>
-								<ConfigProjectDD
-									onCreateList={setShowCreateList}
-									onDeleteProject={setShowDeleteProject}
-									onInviteProject={setShowInviteProject}
-									_projectId={project._id}
-								/>
+								<ConfigProjectDD />
 							</div>
 						)}
 					</div>
@@ -61,18 +50,6 @@ const Container: React.FC = ({ children }) => {
 
 				{children}
 			</WorkSpaceStyled>
-
-			{showCreateList && <CreateListModal hidden={showCreateList} setHidden={setShowCreateList} />}
-
-			{showDeleteProject && <DeleteProjectModal hidden={showDeleteProject} setHidden={setShowDeleteProject} />}
-
-			{showInviteProject && (
-				<InviteProjectModal
-					hidden={showInviteProject}
-					setHidden={setShowInviteProject}
-					nameProject={project.name}
-				/>
-			)}
 		</React.Fragment>
 	);
 };

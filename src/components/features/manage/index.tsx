@@ -8,15 +8,14 @@ import LoadingView from '../../shared/loadingView/loadingView';
 // import ErrorView from '../../shared/errorView/errorView';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
-import { IInitialStateList, IList, ITaskList } from 'slices/taskList/interfaces';
+import { IList, ITaskList } from 'slices/taskList/interfaces';
 // graphql
 import { GET_LISTS_QUERY } from 'apis/taskList/queries';
 // helpers
 import { convertTaskList } from 'global/helpers/formatData/convertTaskList';
 // redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getListsFormatted } from 'slices/taskList/slice';
-import { RootState } from 'global/redux/rootReducer';
 
 const Manage: React.FC = () => {
 	const params = useParams();
@@ -24,7 +23,6 @@ const Manage: React.FC = () => {
 
 	// redux
 	const dispatch = useDispatch();
-	const taskListRedux: IInitialStateList = useSelector((state: RootState) => state.taskList);
 
 	// fetch data
 	const { loading: loadingGetLists, data: dataGetLists, error: errorGetLists } = useQuery(GET_LISTS_QUERY, {
@@ -112,7 +110,7 @@ const Manage: React.FC = () => {
 		return <Navigate to='/notFound' />;
 	}
 
-	return <WorkSpace columns={taskListRedux.lists} onDragEnd={handleDragEnd} />;
+	return <WorkSpace onDragEnd={handleDragEnd} />;
 };
 
 export default Manage;

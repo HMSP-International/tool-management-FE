@@ -47,3 +47,15 @@ export const DELETE_PROJECT_MUTATION = gql`
 		}
 	}
 `;
+
+export const CHANGE_NAME_PROJECT_MUTATION = gql`
+	mutation CHANGE_NAME_PROJECT($changeNameProjectInput: ChangeNameProjectInput!) {
+		changeNameProject(changeNameProjectInput: $changeNameProjectInput) {
+			_id
+			_spaceId
+			name
+			order
+			owner
+		}
+	}
+`;

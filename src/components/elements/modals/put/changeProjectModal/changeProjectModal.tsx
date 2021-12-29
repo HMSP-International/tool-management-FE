@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 // graphql
 import { useMutation } from '@apollo/client';
-import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
+import { CHANGE_NAME_PROJECT_MUTATION } from 'apis/projects/mutations';
 // Styled Components
-import { ProjectModalStyled } from './createProjectModal.styled';
+import { ProjectModalStyled } from './changeProjectModal.styled';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // helpers
@@ -11,17 +11,17 @@ import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowN
 import { convertProject } from 'global/helpers/formatData/convertProject';
 // redux
 import { useDispatch } from 'react-redux';
-import { createProject } from 'slices/project/slice';
+import { changeProject } from 'slices/project/slice';
 
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	spaceId: string;
+	projectId: string;
 }
 
-const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) => {
+const ChangeProjectModal: React.FC<IProps> = ({ hidden, setHidden, projectId }) => {
 	// graphql
-	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(CREATE_PROJECT_MUTATION);
+	const [ onChangeNameProject, { loading: loadingChangeNameProject } ] = useMutation(CHANGE_NAME_PROJECT_MUTATION);
 	// state
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
@@ -37,36 +37,21 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 				setInValidName(false);
 			}
 			else {
-				// query Backend
-				if (true) {
-					handleSubmitProjectModal(inputRef.current.value);
-				}
-				else {
-					// return error from DB
-				}
+				handleSubmitProjectModal(inputRef.current.value);
 			}
 		}
 	};
 
-	const handleSubmitProjectModal = async (nameProject: string) => {
+	const handleSubmitProjectModal = async (name: string) => {
 		const { data, isError } = await fetchDataAndShowNotify({
-			fnFetchData: onCreateProject,
-			variables:
-				{
-					createProjectInput:
-						{
-							name: nameProject,
-							_spaceId: spaceId,
-						},
-				},
-			message: 'Created project',
+			fnFetchData: onChangeNameProject,
+			variables: { changeNameProjectInput: { _projectId: projectId, name } },
 		});
 
 		if (!isError) {
 			const newProjects = convertProject([ data ]);
-			dispatch(createProject(newProjects));
+			dispatch(changeProject(newProjects));
 			setHidden(false);
-			window.location.reload();
 		}
 	};
 
@@ -83,7 +68,7 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 		}
 	};
 
-	if (loadingCreateProject) {
+	if (loadingChangeNameProject) {
 		return <LoadingView />;
 	}
 
@@ -92,7 +77,7 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 			<ProjectModalStyled centered visible={hidden} footer={null} className='modal__project-modal'>
 				<div className='project-modal__container'>
 					<div className='project-modal__header'>
-						<div className='project-modal__header__title'>Create Project</div>
+						<div className='project-modal__header__title'>Change Project</div>
 						<div className='project-modal__header__close' onClick={() => setHidden(false)}>
 							X
 						</div>
@@ -127,4 +112,4 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 	);
 };
 
-export default CreateProjectModal;
+export default ChangeProjectModal;

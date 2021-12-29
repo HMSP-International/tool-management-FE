@@ -1,32 +1,23 @@
-import React, { memo, useState } from 'react';
+import React from 'react';
 // 3rd Components
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import List from '../taskList/taskList';
-import CreateListModal from 'components/elements/modals/create/createListModal/createListModal';
-import InviteProjectModal from 'components/elements/modals/put/inviteProjectModal/inviteProjectModal';
-import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
 import TaskListDD from 'components/elements/dropDown/taskListDD/taskListDD';
 // Styled Components
 import Container from '../container/container';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
-import { ITaskList } from 'slices/taskList/interfaces';
-import { IInitialStateProject } from 'slices/project/interfaces';
+import { IInitialStateList, ITaskList } from 'slices/taskList/interfaces';
 // redux
 import { useSelector } from 'react-redux';
 import { RootState } from 'global/redux/rootReducer';
 
 interface IProps {
-	columns: ITaskList;
 	onDragEnd: (result: DropResult, columns: ITaskList) => void;
 }
 
-const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd }) => {
-	const [ showCreateList, setShowCreateList ] = useState(false);
-	const [ showDeleteProject, setShowDeleteProject ] = useState(false);
-	const [ showInviteProject, setShowInviteProject ] = useState(false);
-
-	const { currentProject }: IInitialStateProject = useSelector((state: RootState) => state.project);
+const WorkSpace: React.FC<IProps> = ({ onDragEnd }) => {
+	const { lists: columns }: IInitialStateList = useSelector((state: RootState) => state.taskList);
 
 	return (
 		<React.Fragment>
@@ -68,20 +59,8 @@ const WorkSpace: React.FC<IProps> = ({ columns, onDragEnd }) => {
 					</DragDropContext>
 				</section>
 			</Container>
-
-			{showCreateList && <CreateListModal hidden={showCreateList} setHidden={setShowCreateList} />}
-
-			{showDeleteProject && <DeleteProjectModal hidden={showDeleteProject} setHidden={setShowDeleteProject} />}
-
-			{showInviteProject && (
-				<InviteProjectModal
-					hidden={showInviteProject}
-					setHidden={setShowInviteProject}
-					nameProject={currentProject.name}
-				/>
-			)}
 		</React.Fragment>
 	);
 };
 
-export default memo(WorkSpace);
+export default WorkSpace;

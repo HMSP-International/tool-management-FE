@@ -20,3 +20,14 @@ export const DELETE_LIST_MUTATION = gql`
 		}
 	}
 `;
+
+export const CHANGE_NAME_LIST_MUTATION = gql`
+	mutation CHANGE_NAME_LIST($changeNameListInput: ChangeNameListInput!) {
+		changeNameList(changeNameListInput: $changeNameListInput) {
+			_id
+			_projectId
+			name
+			order
+		}
+	}
+`;

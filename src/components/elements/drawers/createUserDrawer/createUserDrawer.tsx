@@ -116,7 +116,10 @@ const CreateUserDrawer: React.FC<IProps> = ({ hidden, setHidden }) => {
 				className='create-new-user__drawer-form'
 			>
 				<div className='create-new-user__container'>
-					<input placeholder='David Vu' type='file' onChange={handleChangeImage} name='avatar' />
+					<div className='custom-file-upload'>
+						<label htmlFor='avatar'>Avatar</label>
+						<input placeholder='David Vu' type='file' onChange={handleChangeImage} name='avatar' />
+					</div>
 
 					<Form.Item label='Display Name' name='displayName'>
 						<Input placeholder='David Vu' value='' />

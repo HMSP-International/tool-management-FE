@@ -1,47 +1,55 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'antd';
 import { AiOutlineSetting } from 'react-icons/ai';
 // components
+import CreateListModal from 'components/elements/modals/create/createListModal/createListModal';
+import InviteProjectModal from 'components/elements/modals/put/inviteProjectModal/inviteProjectModal';
+import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
+import ChangeProjectModal from 'components/elements/modals/put/changeProjectModal/changeProjectModal';
+// redux
+import { useSelector } from 'react-redux';
+import { RootState } from 'global/redux/rootReducer';
+// interface
 import { DropDownStyled, MenuStyled } from './configProjectDD.styled';
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { IInitialStateProject } from 'slices/project/interfaces';
-import { useSelector } from 'react-redux';
-import { RootState } from 'global/redux/rootReducer';
 
-interface IProps {
-	onCreateList: (T: boolean) => void;
-	onDeleteProject: (T: boolean) => void;
-	onInviteProject: (T: boolean) => void;
-	_projectId: string;
-}
+interface IProps {}
 
-const WorkSpaceDropDown: React.FC<IProps> = ({ onCreateList, onDeleteProject, onInviteProject, _projectId }) => {
+const WorkSpaceDropDown: React.FC<IProps> = () => {
+	// router
 	const navigate = useNavigate();
-	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
+	// state
+	const [ showCreateList, setShowCreateList ] = useState(false);
+	const [ showChangeProject, setShowChangeProject ] = useState(false);
+	const [ showDeleteProject, setShowDeleteProject ] = useState(false);
+	const [ showInviteProject, setShowInviteProject ] = useState(false);
+	// redux
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
+	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
 
 	const menu = (
 		<MenuStyled>
 			{project.owner === userRedux.profile._id && (
 				<React.Fragment>
-					<Menu.Item className='menu-item'>
-						<button onClick={() => navigate(`/manage/${_projectId}`)}>Tasks</button>
+					<Menu.Item className='menu-item' key='1'>
+						<button onClick={() => navigate(`/manage/${project._id}`)}>Tasks</button>
 					</Menu.Item>
-					<Menu.Item className='menu-item'>
-						<button onClick={() => onCreateList(true)}>Create List</button>
+					<Menu.Item className='menu-item' key='2'>
+						<button onClick={() => setShowCreateList(true)}>Create List</button>
 					</Menu.Item>
-					<Menu.Item className='menu-item'>
-						<button>Edit Project</button>
+					<Menu.Item className='menu-item' key='3'>
+						<button onClick={() => setShowChangeProject(true)}>Edit Project</button>
 					</Menu.Item>
-					<Menu.Item className='menu-item'>
-						<button onClick={() => onInviteProject(true)}>Invite</button>
+					<Menu.Item className='menu-item' key='4'>
+						<button onClick={() => setShowInviteProject(true)}>Invite</button>
 					</Menu.Item>
-					<Menu.Item className='menu-item'>
-						<button onClick={() => navigate(`/manage/${_projectId}/roles`)}>Roles</button>
+					<Menu.Item className='menu-item' key='5'>
+						<button onClick={() => navigate(`/manage/${project._id}/roles`)}>Roles</button>
 					</Menu.Item>
-					<Menu.Item className='menu-item'>
-						<button onClick={() => onDeleteProject(true)}>Delete Project</button>
+					<Menu.Item className='menu-item' key='6'>
+						<button onClick={() => setShowDeleteProject(true)}>Delete Project</button>
 					</Menu.Item>
 				</React.Fragment>
 			)}
@@ -55,6 +63,26 @@ const WorkSpaceDropDown: React.FC<IProps> = ({ onCreateList, onDeleteProject, on
 					<AiOutlineSetting />
 				</button>
 			</DropDownStyled>
+
+			{showCreateList && <CreateListModal hidden={showCreateList} setHidden={setShowCreateList} />}
+
+			{showChangeProject && (
+				<ChangeProjectModal
+					hidden={showChangeProject}
+					setHidden={setShowChangeProject}
+					projectId={project._id}
+				/>
+			)}
+
+			{showDeleteProject && <DeleteProjectModal hidden={showDeleteProject} setHidden={setShowDeleteProject} />}
+
+			{showInviteProject && (
+				<InviteProjectModal
+					hidden={showInviteProject}
+					setHidden={setShowInviteProject}
+					nameProject={project.name}
+				/>
+			)}
 		</React.Fragment>
 	);
 };

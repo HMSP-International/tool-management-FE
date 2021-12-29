@@ -3,6 +3,17 @@ import { Drawer } from 'antd';
 
 export const CreateNewUserDrawerStyled = styled(Drawer)`
     .create-new-user__container{
+        
+        .custom-file-upload {
+            cursor: pointer;
+            padding-bottom: 20px;
+
+            input[type=file] {
+                width: 100%;
+                height: 35px;
+                margin-top: 5px;
+            }
+        }
     }
 
     .btn-submit{

@@ -42,7 +42,6 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 				});
 
 				const tasks: ITask[] = data.getTasksByListId;
-
 				dispatch(getTasksInList({ key: listId, items: tasks }));
 			};
 
