@@ -7,6 +7,8 @@ const INITIAL_STATE: IInitialStatePaticipant = {
 
 	userBeLongProject: [],
 	paticipants: [],
+
+	currentPaticipant: null,
 };
 
 export default INITIAL_STATE;

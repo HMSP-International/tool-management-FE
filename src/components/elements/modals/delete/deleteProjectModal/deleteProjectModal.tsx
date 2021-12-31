@@ -8,7 +8,7 @@ import { DELETE_PROJECT_MUTATION } from 'apis/projects/mutations';
 import { deleteProject } from 'slices/project/slice';
 import { useDispatch } from 'react-redux';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components

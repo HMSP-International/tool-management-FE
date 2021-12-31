@@ -5,7 +5,7 @@ import { DELETE_USER_MUTATION } from 'apis/users/mutations';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // redux
 import { useDispatch } from 'react-redux';
 import { deleteUser } from 'slices/dashboard/slice';

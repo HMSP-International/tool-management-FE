@@ -14,7 +14,7 @@ import { RootState } from '../../../../global/redux/rootReducer';
 // Redux
 import { useSelector } from 'react-redux';
 // helpers
-import { removeAfterSign } from 'global/helpers/string/removeAfter@';
+import { removeAfterSign } from 'helpers/string/removeAfter@';
 import { AdvancedImage } from '@cloudinary/react';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { fill } from '@cloudinary/url-gen/actions/resize';

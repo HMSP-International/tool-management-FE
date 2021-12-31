@@ -8,7 +8,7 @@ import { useMutation } from '@apollo/client';
 import { CHANGE_NAME_LIST_MUTATION } from 'apis/taskList/mutations';
 // redux
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // interfaces
 interface IProps {
 	hidden: boolean;

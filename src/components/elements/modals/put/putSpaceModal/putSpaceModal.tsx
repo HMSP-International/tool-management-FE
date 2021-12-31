@@ -7,7 +7,7 @@ import LoadingView from 'components/shared/loadingView/loadingView';
 import { CHANGE_NAME_SPACE_SPACE_MUTATION, DELETE_SPACE_MUTATION } from 'apis/spaces/mutations';
 import { useMutation } from '@apollo/client';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // redux
 import { useDispatch } from 'react-redux';
 import { changeNameSpace, deleteSpace } from 'slices/space/slice';

@@ -6,7 +6,7 @@ import { DELETE_LIST_MUTATION } from 'apis/taskList/mutations';
 import { deleteTaskList } from 'slices/taskList/slice';
 import { useDispatch } from 'react-redux';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components

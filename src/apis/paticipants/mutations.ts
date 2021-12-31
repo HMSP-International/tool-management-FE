@@ -6,23 +6,23 @@ export const GET_USERS_BELONG_PROJECT_MUTAIION = gql`
 			_id
 			_collaboratorId {
 				_id
-				_memberId {
-					_id
-					_roleId {
-						_id
-					}
-					avatar
-					displayName
-					email
-					position
-					title
-				}
 				_adminId
 			}
 			_projectId {
 				_id
 			}
 			role
+			_memberId {
+				_id
+				_roleId {
+					_id
+				}
+				avatar
+				displayName
+				email
+				position
+				title
+			}
 		}
 	}
 `;
@@ -55,22 +55,42 @@ export const CHANGE_ROLE_OF_MEMBER_ON_PATICIPANT = gql`
 			_id
 			_collaboratorId {
 				_id
-				_memberId {
-					_id
-					_roleId {
-						_id
-					}
-					avatar
-					displayName
-					email
-					position
-					title
-				}
 			}
 			_projectId {
 				_id
 			}
 			role
+			_memberId {
+				_id
+				_roleId {
+					_id
+				}
+				avatar
+				displayName
+				email
+				position
+				title
+			}
+		}
+	}
+`;
+
+export const FIND_PATICIPANT_BY_PROJECT_AND_MEMBER_MUTATION = gql`
+	mutation findPaticipantByProjectAndMember(
+		$getPaticipantByProjectAndMemberInput: GetPaticipantByProjectAndMemberInput!
+	) {
+		findPaticipantByProjectAndMember(getPaticipantByProjectAndMemberInput: $getPaticipantByProjectAndMemberInput) {
+			_id
+			_memberId {
+				_id
+			}
+			role
+			_collaboratorId {
+				_adminId
+			}
+			_projectId {
+				_id
+			}
 		}
 	}
 `;

@@ -11,7 +11,7 @@ import Container from '../container/container';
 // helpers
 // redux
 import { GET_USERS_BELONG_PROJECT_MUTAIION } from 'apis/paticipants/mutations';
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { useDispatch } from 'react-redux';
 import { getCollaboratorBeLongProject } from 'slices/paticipant/slice';
 
@@ -33,6 +33,7 @@ const Manage: React.FC = () => {
 					});
 
 					if (!isError) {
+						console.log(data);
 						dispatch(getCollaboratorBeLongProject(data));
 					}
 				}

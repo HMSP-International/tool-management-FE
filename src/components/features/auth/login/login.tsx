@@ -11,7 +11,7 @@ import { useMutation } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 import { login } from 'slices/auth/slice';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 const NAME_INPUT = {
 	password: 'password',

@@ -17,14 +17,14 @@ import LoadingView from 'components/shared/loadingView/loadingView';
 import ErrorView from 'components/shared/errorView/errorView';
 // status
 import STATUS from 'global/constants/status';
-import { convertProject } from 'global/helpers/formatData/convertProject';
+import { convertProject } from 'helpers/formatData/convertProject';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjectsFromCollaborator } from 'slices/project/slice';
 import { RootState } from 'global/redux/rootReducer';
 import { getCollaborators } from 'slices/collaborator/slice';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 const { SubMenu } = Menu;
 

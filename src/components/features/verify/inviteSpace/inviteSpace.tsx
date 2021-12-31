@@ -4,8 +4,8 @@ import jwt_decode from 'jwt-decode';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
 // helpers
-import { openNotification } from 'global/helpers/toastify/notification';
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { openNotification } from 'helpers/toastify/notification';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // graphql
 import { VERIFY_INVITE_SPACE_MUTATION } from 'apis/collaborators/mutations';
 import { useMutation } from '@apollo/client';

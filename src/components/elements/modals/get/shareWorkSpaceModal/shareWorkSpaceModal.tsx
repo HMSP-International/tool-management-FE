@@ -20,7 +20,7 @@ import { getSpaces } from 'slices/space/slice';
 // interfaces
 import { ISpace } from 'slices/space/interfaces';
 // error
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;

@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { updatePaticipant } from 'slices/paticipant/slice';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 interface IProps {
 	currentRole: string;
 	_projectId: string;

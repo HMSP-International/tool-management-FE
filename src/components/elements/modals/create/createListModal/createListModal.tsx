@@ -11,8 +11,8 @@ import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
 import { useDispatch } from 'react-redux';
 import { createNewList } from 'slices/taskList/slice';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
-import { convertTaskList } from 'global/helpers/formatData/convertTaskList';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { convertTaskList } from 'helpers/formatData/convertTaskList';
 // interfaces
 interface IProps {
 	hidden: boolean;

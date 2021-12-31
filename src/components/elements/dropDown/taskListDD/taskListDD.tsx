@@ -7,6 +7,11 @@ import { DropDownStyled, MenuStyled } from './taskListDD.styled';
 import TaskDetail from '../../modals/get/taskDetailModal/taskDetailModal';
 import DeleteTaskListModal from '../../modals/delete/deleteTaskListModal/deleteTaskListModal';
 import ChangeNameList from '../../modals/put/changeListModal/changeListModal';
+// redux
+import { useSelector } from 'react-redux';
+// interfaces
+import { RootState } from 'global/redux/rootReducer';
+import { IInitialStatePaticipant } from 'slices/paticipant/interfaces';
 
 interface IProps {
 	listId: string;
@@ -17,27 +22,61 @@ const WorkSpaceDropDown: React.FC<IProps> = ({ listId }) => {
 	const [ isShowChangeList, setIsShowChangeList ] = React.useState(false);
 	const [ isShowDeleteTaskList, setIsShowDeleteTaskList ] = React.useState(false);
 
-	const menu = (
-		<MenuStyled>
-			<Menu.Item className='menu-item' key={1}>
-				<button onClick={() => setIsShowCreateTask(true)}>Create Task</button>
-			</Menu.Item>
-			<Menu.Item className='menu-item' key={2}>
-				<button onClick={() => setIsShowChangeList(true)}>Edit List</button>
-			</Menu.Item>
-			<Menu.Item className='menu-item' key={3}>
-				<button onClick={() => setIsShowDeleteTaskList(true)}>Delete List</button>
-			</Menu.Item>
-		</MenuStyled>
-	);
+	const { currentPaticipant }: IInitialStatePaticipant = useSelector((state: RootState) => state.paticipant);
+
+	// const menu = (
+	// 	<MenuStyled>
+	// 		<Menu.Item className='menu-item' key={1}>
+	// 			<button onClick={() => setIsShowCreateTask(true)}>Create Task</button>
+	// 		</Menu.Item>
+	// 		<Menu.Item className='menu-item' key={2}>
+	// 			<button onClick={() => setIsShowChangeList(true)}>Edit List</button>
+	// 		</Menu.Item>
+	// 		<Menu.Item className='menu-item' key={3}>
+	// 			<button onClick={() => setIsShowDeleteTaskList(true)}>Delete List</button>
+	// 		</Menu.Item>
+	// 	</MenuStyled>
+	// );
+
+	const menu =
+		currentPaticipant === null ? (
+			<MenuStyled>
+				<Menu.Item className='menu-item' key={1}>
+					<button onClick={() => setIsShowCreateTask(true)}>Create Task</button>
+				</Menu.Item>
+				<Menu.Item className='menu-item' key={2}>
+					<button onClick={() => setIsShowChangeList(true)}>Edit List</button>
+				</Menu.Item>
+				<Menu.Item className='menu-item' key={3}>
+					<button onClick={() => setIsShowDeleteTaskList(true)}>Delete List</button>
+				</Menu.Item>
+			</MenuStyled>
+		) : (
+			<MenuStyled>
+				<Menu.Item className='menu-item' key={1}>
+					<button onClick={() => setIsShowCreateTask(true)}>Create Task</button>
+				</Menu.Item>
+			</MenuStyled>
+		);
 
 	return (
 		<React.Fragment>
-			<DropDownStyled overlay={menu} placement='bottomRight' trigger={[ 'click' ]}>
-				<button className='container-icon'>
-					<AiFillSetting />
-				</button>
-			</DropDownStyled>
+			{currentPaticipant !== null &&
+			currentPaticipant.role !== 'member' && (
+				<DropDownStyled overlay={menu} placement='bottomRight' trigger={[ 'click' ]}>
+					<button className='container-icon'>
+						<AiFillSetting />
+					</button>
+				</DropDownStyled>
+			)}
+
+			{currentPaticipant === null && (
+				<DropDownStyled overlay={menu} placement='bottomRight' trigger={[ 'click' ]}>
+					<button className='container-icon'>
+						<AiFillSetting />
+					</button>
+				</DropDownStyled>
+			)}
 
 			{isShowCreateTask && (
 				<TaskDetail hidden={isShowCreateTask} setHidden={setIsShowCreateTask} listId={listId} />

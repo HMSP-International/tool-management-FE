@@ -4,7 +4,7 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { IInitialStatePaticipant } from 'slices/paticipant/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { getCollaboratorBeLongProject, getUserBeLongProject } from 'slices/paticipant/slice';
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { IUser } from 'slices/dashboard/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingView from 'components/shared/loadingView/loadingView';

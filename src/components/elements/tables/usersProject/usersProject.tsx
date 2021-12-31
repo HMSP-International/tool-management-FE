@@ -11,7 +11,7 @@ import RoleProjectDD from 'components/elements/dropDown/roleProjectDD/roleProjec
 // interfaces
 import { IInitialStatePaticipant, IPaticipant } from 'slices/paticipant/interfaces';
 // helpers
-import { removeAfterSign } from 'global/helpers/string/removeAfter@';
+import { removeAfterSign } from 'helpers/string/removeAfter@';
 import { AdvancedImage } from '@cloudinary/react';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { fill } from '@cloudinary/url-gen/actions/resize';
@@ -24,7 +24,7 @@ interface IProps {}
 const columns: TableColumn<IPaticipant>[] = [
 	{
 		name: 'Avt',
-		selector: row => row._collaboratorId._memberId.avatar,
+		selector: row => row._memberId.avatar,
 		sortable: true,
 		center: true,
 		cell:
@@ -36,7 +36,7 @@ const columns: TableColumn<IPaticipant>[] = [
 						},
 				});
 
-				const myImage = cld.image(row._collaboratorId._memberId.avatar);
+				const myImage = cld.image(row._memberId.avatar);
 
 				myImage.resize(fill().width(50).height(50));
 
@@ -45,33 +45,33 @@ const columns: TableColumn<IPaticipant>[] = [
 	},
 	{
 		name: 'Name',
-		selector: row => row._collaboratorId._memberId.displayName,
+		selector: row => row._memberId.displayName,
 		sortable: true,
 		center: true,
 	},
 	{
 		name: 'Email',
-		selector: row => row._collaboratorId._memberId.email,
+		selector: row => row._memberId.email,
 		sortable: true,
 		center: true,
 		cell:
 			row => {
 				return (
-					<Tooltip placement='top' title={row._collaboratorId._memberId.email}>
-						{removeAfterSign(row._collaboratorId._memberId.email)}
+					<Tooltip placement='top' title={row._memberId.email}>
+						{removeAfterSign(row._memberId.email)}
 					</Tooltip>
 				);
 			},
 	},
 	{
 		name: 'Position',
-		selector: row => row._collaboratorId._memberId.position,
+		selector: row => row._memberId.position,
 		sortable: true,
 		center: true,
 	},
 	{
 		name: 'Title',
-		selector: row => row._collaboratorId._memberId.title,
+		selector: row => row._memberId.title,
 		sortable: true,
 		center: true,
 	},
@@ -110,8 +110,6 @@ const columns: TableColumn<IPaticipant>[] = [
 const UsersProject: React.FC<IProps> = () => {
 	// redux
 	const paticipantRedux: IInitialStatePaticipant = useSelector((state: RootState) => state.paticipant);
-
-	console.log(123);
 
 	return (
 		<TableUserStyled>

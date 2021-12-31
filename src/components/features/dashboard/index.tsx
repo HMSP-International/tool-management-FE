@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 // graphql
 import { useMutation } from '@apollo/client';
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 const Dashboard: React.FC = () => {
 	const navigate = useNavigate();

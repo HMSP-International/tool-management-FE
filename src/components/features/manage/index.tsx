@@ -12,7 +12,7 @@ import { IList, ITaskList } from 'slices/taskList/interfaces';
 // graphql
 import { GET_LISTS_QUERY } from 'apis/taskList/queries';
 // helpers
-import { convertTaskList } from 'global/helpers/formatData/convertTaskList';
+import { convertTaskList } from 'helpers/formatData/convertTaskList';
 // redux
 import { useDispatch } from 'react-redux';
 import { getListsFormatted } from 'slices/taskList/slice';

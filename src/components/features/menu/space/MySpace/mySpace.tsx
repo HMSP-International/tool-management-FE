@@ -22,7 +22,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_SPACES_QUERY } from 'apis/spaces/queries';
 import { GET_PROJECTS_MUTATION } from 'apis/projects/mutations';
 // helpers
-import { convertProject } from 'global/helpers/formatData/convertProject';
+import { convertProject } from 'helpers/formatData/convertProject';
 
 const { SubMenu } = Menu;
 

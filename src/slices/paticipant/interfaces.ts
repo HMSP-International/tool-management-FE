@@ -8,6 +8,7 @@ export interface IInitialStatePaticipant {
 
 	userBeLongProject: IUser[];
 	paticipants: IPaticipant[];
+	currentPaticipant: IPaticipant | null;
 }
 
 export interface IPaticipant {
@@ -15,4 +16,5 @@ export interface IPaticipant {
 	_collaboratorId: ICollaborator;
 	_projectId: IProject;
 	role: string;
+	_memberId: IUser;
 }

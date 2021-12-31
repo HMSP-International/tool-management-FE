@@ -13,7 +13,7 @@ import { GET_ROLES_QUERY } from 'apis/roles/queries';
 import { IRole } from 'slices/role/interfaces';
 import { IUser } from 'slices/dashboard/interfaces';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 const { Option } = Select;
 interface IProps {

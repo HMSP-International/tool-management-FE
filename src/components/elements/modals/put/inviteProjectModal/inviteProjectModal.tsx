@@ -22,7 +22,7 @@ import { getUsers } from 'slices/dashboard/slice';
 import { RootState } from 'global/redux/rootReducer';
 import { getUserBeLongProject, getCollaboratorBeLongProject } from 'slices/paticipant/slice';
 // helper
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { useParams } from 'react-router-dom';
 import { IInitialStatePaticipant } from 'slices/paticipant/interfaces';
 
@@ -73,9 +73,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 					});
 
 					if (!isError) {
-						const users: IUser[] = data.map((user: any) => user._collaboratorId._memberId);
-
-						// setInviteUsers(users);
+						const users: IUser[] = data.map((user: any) => user._memberId);
 						dispatch(getUserBeLongProject(users));
 					}
 				}
@@ -143,6 +141,8 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 		}
 		setHidden(false);
 	};
+
+	console.log(userBeLongProject);
 
 	return (
 		<React.Fragment>

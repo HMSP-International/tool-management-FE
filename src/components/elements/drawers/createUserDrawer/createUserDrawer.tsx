@@ -13,7 +13,7 @@ import { IRole } from 'slices/role/interfaces';
 import { createUser } from 'slices/dashboard/slice';
 import { useDispatch } from 'react-redux';
 // helpers
-import { fetchDataAndShowNotify } from 'global/helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import ErrorView from 'components/shared/errorView/errorView';
 const { Option } = Select;
 
