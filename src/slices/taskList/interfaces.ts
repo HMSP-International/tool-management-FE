@@ -1,4 +1,4 @@
-import { DraggableId } from 'react-beautiful-dnd';
+import { ITask } from "slices/task/interfaces";
 
 // redux
 export interface IList {
@@ -18,13 +18,6 @@ export interface IInitialStateList {
 	error?: string | null;
 
 	lists: ITaskList;
-}
-
-// drag and drop
-export interface ITask {
-	_id: DraggableId;
-	name: string;
-	_listId: string;
 }
 
 export interface ITaskList {

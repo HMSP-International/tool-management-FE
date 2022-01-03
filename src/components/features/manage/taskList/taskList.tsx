@@ -11,7 +11,8 @@ import { GET_TASKS_BY_LISTID_MUTATION } from 'apis/task/mutations';
 import { useMutation } from '@apollo/client';
 
 // interfaces
-import { IDataColumn, ITask } from 'slices/taskList/interfaces';
+import { IDataColumn } from 'slices/taskList/interfaces';
+import { ITask } from 'slices/task/interfaces';
 
 // Redux
 import { useDispatch } from 'react-redux';

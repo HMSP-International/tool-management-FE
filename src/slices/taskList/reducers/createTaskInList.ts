@@ -1,5 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { ITask, IInitialStateList } from '../interfaces';
+import { ITask } from 'slices/task/interfaces';
+import { IInitialStateList } from '../interfaces';
 
 export const createTaskInList = (state: IInitialStateList, action: PayloadAction<ITask>) => {
 	const { _listId } = action.payload;

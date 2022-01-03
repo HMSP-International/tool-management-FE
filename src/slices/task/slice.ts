@@ -3,22 +3,13 @@ import INITIAL_STATE from './initialState';
 import reducers from './reducers';
 
 export const taskListSlice: Slice = createSlice({
-	name: 'taskList',
+	name: 'task',
 	initialState: INITIAL_STATE,
 	reducers,
 });
 
 const { reducer, actions } = taskListSlice;
 
-export const {
-	changeAssignee,
-	changeList,
-	getListsFormatted,
-	createTaskInList,
-	deleteTaskList,
-	deleteTasksInList,
-	getTasksInList,
-	createNewList,
-} = actions;
+export const {} = actions;
 
 export default reducer;

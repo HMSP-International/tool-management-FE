@@ -20,7 +20,7 @@ export const TaskStyled = styled.div`
 
 	.task-type {
 		display: inline-block;
-		background-color: #eae6ff;
+		background-color: transparent//#eae6ff;
 		font-size: 11px;
 		font-weight: 700;
 		padding: 2px 4px;

@@ -39,8 +39,10 @@ const showText = (text: string) => {
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject }) => {
 	const { _id: _projectId } = useParams();
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
-	const [ onDeletePaticipant, { loading: loadingDeletePaticipant } ] = useMutation(DELETE_PATICIPANT_MUTAIION);
-	const [ onCreatePaticiant, { loading: loadingCreatePaticipant } ] = useMutation(CREATE_PATICIPANT_MUTAIION);
+	// const [ onDeletePaticipant, { loading: loadingDeletePaticipant } ] = useMutation(DELETE_PATICIPANT_MUTAIION);
+	// const [ onCreatePaticiant, { loading: loadingCreatePaticipant } ] = useMutation(CREATE_PATICIPANT_MUTAIION);
+	const [ onDeletePaticipant ] = useMutation(DELETE_PATICIPANT_MUTAIION);
+	const [ onCreatePaticiant ] = useMutation(CREATE_PATICIPANT_MUTAIION);
 	const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(
 		GET_USERS_BELONG_PROJECT_MUTAIION,
 	);
@@ -85,8 +87,10 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 		[ onGetUserBeLongProject, _projectId, getUserBeLongProject, dispatch ],
 	);
 
-	if (loadingGetUserBelongProject || loadingGetUsers || loadingDeletePaticipant || loadingCreatePaticipant)
-		return <LoadingView />;
+	// if (loadingGetUserBelongProject || loadingGetUsers || loadingDeletePaticipant || loadingCreatePaticipant)
+	// 	return <LoadingView />;
+
+	if (loadingGetUserBelongProject || loadingGetUsers) return <LoadingView />;
 
 	const handleRemoveUser = async (user: IUser) => {
 		const newListUser = userBeLongProject.filter(inviteUser => inviteUser._id !== user._id);
@@ -141,8 +145,6 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 		}
 		setHidden(false);
 	};
-
-	console.log(userBeLongProject);
 
 	return (
 		<React.Fragment>

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { BiMailSend } from 'react-icons/bi';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // components
 import { LoginStyled } from './login.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
@@ -36,7 +36,6 @@ const Login: React.FC = () => {
 	const inputPasswordRef = useRef<HTMLInputElement>(null);
 	const [ onLogin, { loading } ] = useMutation(LOGIN_MUTAIION);
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	if (loading) return <LoadingView />;
 
@@ -94,12 +93,12 @@ const Login: React.FC = () => {
 							password,
 						},
 				},
-			message: 'Logined',
 		});
 
 		if (!isError) {
 			dispatch(login(data));
-			navigate('/', { replace: true });
+			// navigate('/', { replace: true });
+			window.location.replace('/');
 		}
 	};
 
