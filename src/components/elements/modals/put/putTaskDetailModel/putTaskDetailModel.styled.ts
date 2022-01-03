@@ -48,6 +48,11 @@ export const ModalStyled = styled(Modal)`
                 }
             }
 
+            .task-detail__group-btn{
+                display: flex;
+                flex: 1;
+            }
+
             &__detail{
                 .table{
                     margin-top: 20px;
@@ -130,6 +135,21 @@ export const ModalStyled = styled(Modal)`
                     padding: 5px 10px;
                     border-radius: 45% 46% 40% 48% / 28% 24% 64% 63%;
                     background: linear-gradient(to right, #EECDA3, #F4E2D8);
+                }
+            }
+
+            &__btn-delete {
+                flex-grow: 1;
+
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-end;
+
+                button {
+                    cursor: pointer;
+                    padding: 5px 10px;
+                    border-radius: 45% 46% 40% 48% / 28% 24% 64% 63%;
+                    background: linear-gradient(to right, red, red);
                 }
             }
         }

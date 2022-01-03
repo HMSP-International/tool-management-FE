@@ -38,10 +38,8 @@ const showText = (text: string) => {
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, currentSpace, nameSpace }) => {
 	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
-	const [ onDeleteCollaboratorByUserAndSpace, { loading: loadingDeleteCollaboratorByUserAndSpace } ] = useMutation(
-		DELETE_BY_USER_AND_SPACE_MUTAIION,
-	);
-	const [ onInviteSpace, { loading: loadingInviteSpace } ] = useMutation(INVITE_SPACES_MUTATION);
+	const [ onDeleteCollaboratorByUserAndSpace ] = useMutation(DELETE_BY_USER_AND_SPACE_MUTAIION);
+	const [ onInviteSpace ] = useMutation(INVITE_SPACES_MUTATION);
 	const [ onFindUSersBySpace, { loading: loadinginvitedUsers } ] = useMutation(FIND_USERS_BY_SPACE_ID_MUTATION);
 
 	const dispatch = useDispatch();
@@ -84,8 +82,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 		[ dispatch, onFindUSersBySpace, loadinginvitedUsers, currentSpace ],
 	);
 
-	if (loadinginvitedUsers || loadingGetUsers || loadingDeleteCollaboratorByUserAndSpace || loadingInviteSpace)
-		return <LoadingView />;
+	if (loadinginvitedUsers || loadingGetUsers) return <LoadingView />;
 
 	const handleRemoveUser = async (user: IUser) => {
 		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);

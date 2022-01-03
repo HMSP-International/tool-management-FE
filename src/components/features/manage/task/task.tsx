@@ -17,7 +17,6 @@ interface IProps {
 
 const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 	const [ isshowDetailTask, setIsShowDetailTask ] = useState(false);
-	console.log('item', item);
 
 	return (
 		<React.Fragment>

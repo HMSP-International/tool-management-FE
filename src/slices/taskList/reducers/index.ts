@@ -1,5 +1,5 @@
 // reducers
-import { changeAssignee } from './changeAssignee';
+import { changeTask } from './changeAssignee';
 import { changeList } from './changeList';
 import { createNewList } from './createNewList';
 import { createTaskInList } from './createTaskInList';
@@ -9,7 +9,7 @@ import { getListsFormatted } from './getListsFormatted';
 import { getTasksInList } from './getTasksInList';
 
 const reducers = {
-	changeAssignee,
+	changeTask,
 	changeList,
 	createNewList,
 	createTaskInList,

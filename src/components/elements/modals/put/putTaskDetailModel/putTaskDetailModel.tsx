@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 // Styled Components
 import { ModalStyled } from './putTaskDetailModel.styled';
-
 // components
 import Image from 'components/shared/image/image';
 import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
 // graphql
 import { useMutation } from '@apollo/client';
 // redux
-import { changeAssignee } from 'slices/taskList/slice';
+import { changeTask, deleteTasksInList } from 'slices/taskList/slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { CHANGE_ASSIGNEE_TASK_MUTATION } from 'apis/task/mutations';
+import { CHANGE_ASSIGNEE_TASK_MUTATION, CHANGE_TASK_NAME_MUTATION, DELETE_TASKS_MUTATION } from 'apis/task/mutations';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { dateMongooseToDateJs } from 'helpers/date/dateMongooseToDateJs';
 // interfaces
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
@@ -26,20 +26,17 @@ interface IProps {
 
 const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 	// state
-	const [ taskName, setTaskName ] = useState('');
+	const [ taskName, setTaskName ] = useState(task.name);
 
 	// redux
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	// graphql
 	const [ onChangeAssignee ] = useMutation(CHANGE_ASSIGNEE_TASK_MUTATION);
+	const [ onChangeTaskName ] = useMutation(CHANGE_TASK_NAME_MUTATION);
+	const [ onDeleteTaskName ] = useMutation(DELETE_TASKS_MUTATION);
 
 	// event
-	const handleChangeTaskName = async (e: React.FormEvent<HTMLInputElement>) => {
-		const { value } = e.currentTarget;
-		setTaskName(value);
-	};
-
 	const handleAssignee = async (newAssigne: any) => {
 		if (task.assignee === null || newAssigne !== task.assignee._id) {
 			const { isError, data } = await fetchDataAndShowNotify({
@@ -55,13 +52,54 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 			});
 
 			if (!isError) {
-				dispatch(changeAssignee(data));
+				dispatch(changeTask(data));
 			}
 		}
 	};
 
+	const handleSubmitChangeTaskName = async () => {
+		if (task.name === taskName) {
+			setHidden(false);
+		}
+		else {
+			const { isError, data } = await fetchDataAndShowNotify({
+				fnFetchData: onChangeTaskName,
+				variables:
+					{
+						changeTaskNameInput:
+							{
+								_taskId: task._id,
+								name: taskName,
+							},
+					},
+			});
+
+			if (!isError) {
+				dispatch(changeTask(data));
+				setHidden(false);
+			}
+		}
+	};
+
+	const handleDeleteTask = async () => {
+		const { isError, data } = await fetchDataAndShowNotify({
+			fnFetchData: onDeleteTaskName,
+			variables:
+				{
+					deleteTaskInput:
+						{
+							_taskIds: [ task._id ],
+						},
+				},
+		});
+
+		if (!isError) {
+			dispatch(deleteTasksInList(data));
+			setHidden(false);
+		}
+	};
+
 	// if (loadingChangeAssignee) return <LoadingView />;
-	console.log(taskName);
 
 	return (
 		<React.Fragment>
@@ -78,9 +116,9 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 						<div className='name-task'>
 							<input
 								type='text'
-								value={task.name}
+								value={taskName}
 								placeholder='Enter your task Name...'
-								onChange={handleChangeTaskName}
+								onChange={e => setTaskName(e.currentTarget.value)}
 								name='taskName'
 							/>
 						</div>
@@ -157,11 +195,16 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 						</div>
 
 						<div className='task-detail__assign__timestamp'>
-							<div className='created'>Created</div>
-							<div className='updated'>Updated</div>
+							<div className='created'>Created {dateMongooseToDateJs(task.timestamp.createAt)}</div>
+							<div className='updated'>Updated {dateMongooseToDateJs(task.timestamp.updateAt)}</div>
 						</div>
-						<div className='task-detail__assign__btn'>
-							<button>Delete Task</button>
+						<div className='task-detail__group-btn'>
+							<div className='task-detail__assign__btn-delete'>
+								<button onClick={handleDeleteTask}>Delete</button>
+							</div>
+							<div className='task-detail__assign__btn'>
+								<button onClick={handleSubmitChangeTaskName}>Update</button>
+							</div>
 						</div>
 					</div>
 				</section>

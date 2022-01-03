@@ -53,8 +53,6 @@ const ListUserBeLongProjectDD: React.FC<IProps> = ({ onChangeUser, assignee }) =
 		onChangeUser(e.value);
 	};
 
-	console.log(assignee);
-
 	return (
 		<Select
 			defaultValue={{

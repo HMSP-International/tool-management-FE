@@ -10,7 +10,7 @@ export interface ITask {
 	order: number;
 	reporter: IUser;
 	timestamp: {
-		createdAt: Date;
+		createAt: Date;
 		updateAt: Date;
 	};
 	_projectId: IProject;

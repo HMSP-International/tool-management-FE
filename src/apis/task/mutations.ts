@@ -111,3 +111,29 @@ export const CHANGE_ASSIGNEE_TASK_MUTATION = gql`
 		}
 	}
 `;
+
+export const CHANGE_TASK_NAME_MUTATION = gql`
+	mutation ChangeTaskName($changeTaskNameInput: ChangeTaskNameInput!) {
+		changeTaskName(changeTaskNameInput: $changeTaskNameInput) {
+			_id
+			name
+			_listId
+			order
+			reporter {
+				_id
+				avatar
+			}
+			timestamp {
+				createAt
+				updateAt
+			}
+			_projectId {
+				_id
+			}
+			assignee {
+				_id
+				avatar
+			}
+		}
+	}
+`;
