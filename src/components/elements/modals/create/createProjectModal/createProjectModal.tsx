@@ -66,7 +66,6 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 			const newProjects = convertProject([ data ]);
 			dispatch(createProject(newProjects));
 			setHidden(false);
-			window.location.reload();
 		}
 	};
 

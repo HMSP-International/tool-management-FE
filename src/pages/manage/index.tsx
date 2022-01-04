@@ -23,6 +23,7 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 const ManagePage: React.FC = () => {
 	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
+
 	const params = useParams();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();

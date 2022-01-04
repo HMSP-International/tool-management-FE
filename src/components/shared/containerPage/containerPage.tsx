@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 // components/shared
 // import Header from '../header/header';
 // import Footer from '../footer/footer';
-import Menu from '../../features/menu/menu';
+// import Menu from '../../features/menu/menu';
 
 interface IProps {
 	title?: string;
@@ -21,7 +21,6 @@ const ContainerPage: React.FC<IProps> = ({ children, title }) => {
 	return (
 		<React.Fragment>
 			{/* <Header /> */}
-			<Menu />
 			{children}
 			{/* <Footer /> */}
 		</React.Fragment>

@@ -9,14 +9,14 @@ import ManagePage from './pages/manage';
 import NotFound from './pages/notFound';
 import ProfilePage from './pages/profile';
 import VerifyPage from './pages/verify';
-
+import Menu from 'components/features/menu/menu';
 import PrivateRouteLogined from 'components/shared/privateRoute/privateRouteLogined/privateRouteLogined';
 
 function App () {
 	return (
 		<div className='app'>
 			{/* Start Router */}
-
+			<Menu />
 			<Routes>
 				<Route
 					path='/'

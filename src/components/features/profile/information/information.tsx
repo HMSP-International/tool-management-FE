@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CHANGE_INFORMATION_MUTAIION } from 'apis/profile/mutations';
+// components
+import Image from 'components/shared/image/image';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // Redux
@@ -68,10 +70,7 @@ const Information: React.FC = () => {
 				<div className='information__avatar'>
 					<div className='information__avatar__title'>Avatar</div>
 					<div className='information__avatar__img'>
-						<img
-							src='https://i.pinimg.com/474x/82/ab/35/82ab3533ee71daf256f23c1ccf20ad6f--avatar-maker.jpg'
-							alt=''
-						/>
+						<Image w={50} h={50} public_id={userRedux.profile.avatar} />
 					</div>
 				</div>
 				<div className='information__profile'>

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { SpaceStyled } from './space.styled';
 // modals
-import CreateProjectModal from '../../../elements/modals/create/createProjectModal/createProjectModal';
-import CreateWorkSpaceModal from '../../../elements/modals/create/createWorkSpaceModal/createWorkSpaceModal';
-import ShareWorkSpaceModal from '../../../elements/modals/get/shareWorkSpaceModal/shareWorkSpaceModal';
-import PutShareWorkSpaceModal from '../../../elements/modals/put/putShareWorkSpaceModal/putShareWorkSpaceModal';
-import PutWorkSpaceModal from '../../../elements/modals/put/putSpaceModal/putSpaceModal';
+import CreateProjectModal from 'components/elements/modals/create/createProjectModal/createProjectModal';
+import CreateWorkSpaceModal from 'components/elements/modals/create/createWorkSpaceModal/createWorkSpaceModal';
+import ShareWorkSpaceModal from 'components/elements/modals/get/shareWorkSpaceModal/shareWorkSpaceModal';
+import PutShareWorkSpaceModal from 'components/elements/modals/put/putShareWorkSpaceModal/putShareWorkSpaceModal';
+import PutWorkSpaceModal from 'components/elements/modals/put/putSpaceModal/putSpaceModal';
 // components
 import MySpace from './MySpace/mySpace';
 import SpaceInvited from './spaceInvited/spaceInvited';
 // interfaces
-import { ISpace } from '../../../../slices/space/interfaces';
+import { ISpace } from 'slices/space/interfaces';
 
 const Space: React.FC = () => {
 	// state
