@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { AiOutlineLogout, AiOutlineUser, AiFillDashboard } from 'react-icons/ai';
 import jwt_decode from 'jwt-decode';
+// import { useNavigate } from 'react-router-dom';
 // components
 import { MenuStyled } from './avatarDD.styled';
 // redux
@@ -19,12 +20,18 @@ interface IDecode {
 
 const WorkSpaceDropDown: React.FC = ({ children }) => {
 	const dispatch = useDispatch();
+	// const navigate = useNavigate();
 	const auth: IInitialStateAuth = useSelector((state: RootState) => state.auth);
 
 	const handleCheckAuth = (): boolean => {
 		const { _roleId } = jwt_decode<IDecode>(auth.jwt);
 
 		return _roleId.name === 'SUPER_ADMIN';
+	};
+
+	const handleLogout = () => {
+		dispatch(logout(''));
+		window.location.replace('/auth/login');
 	};
 
 	const menu = (
@@ -46,7 +53,7 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 			)}
 
 			<Menu.Item className='menu-item' key={'3'}>
-				<button onClick={() => dispatch(logout(''))}>
+				<button onClick={handleLogout}>
 					<AiOutlineLogout style={{ color: 'white', fontSize: '20px' }} />
 					<h4>Logout</h4>
 				</button>

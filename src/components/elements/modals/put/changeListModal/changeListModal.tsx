@@ -33,12 +33,12 @@ const ChangeListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 			}
 			else {
 				// query Backend
-				handleChangeList(inputRef.current.value);
+				handleSubmitChangeList(inputRef.current.value);
 			}
 		}
 	};
 
-	const handleChangeList = async (name: string) => {
+	const handleSubmitChangeList = async (name: string) => {
 		const { isError } = await fetchDataAndShowNotify({
 			fnFetchData: onChangeList,
 			variables: { changeNameListInput: { _listId: listId, name } },

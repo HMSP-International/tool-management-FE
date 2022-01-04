@@ -47,7 +47,7 @@ const Manage: React.FC = () => {
 				});
 
 				if (isError) {
-					navigate('notFound');
+					navigate('/notFound');
 				}
 				else {
 					const lists: IList[] = data;

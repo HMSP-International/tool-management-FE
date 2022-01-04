@@ -8,13 +8,17 @@ import LoadingView from 'components/shared/loadingView/loadingView';
 // graphql
 import { useMutation } from '@apollo/client';
 import { GET_PROJECT_BY_ID_MUTATION } from 'apis/projects/mutations';
-import { GET_USERS_BELONG_PROJECT_MUTAIION } from 'apis/paticipants/mutations';
+import {
+	FIND_PATICIPANT_BY_PROJECT_AND_MEMBER_MUTATION,
+	GET_USERS_BELONG_PROJECT_MUTAIION,
+} from 'apis/paticipants/mutations';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { currentProject } from 'slices/project/slice';
 import { IInitialStateProject } from 'slices/project/interfaces';
 import { getUserBeLongProject } from 'slices/paticipant/slice';
 import { getListsFormatted } from 'slices/taskList/slice';
+import { currentPaticipant } from 'slices/paticipant/slice';
 // interfaces
 import { RootState } from 'global/redux/rootReducer';
 import { IInitialStateUser } from 'slices/user/interfaces';
@@ -31,9 +35,9 @@ const ManagePage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [ onGetProject, { loading: loadingGetProject } ] = useMutation(GET_PROJECT_BY_ID_MUTATION);
-	// const [ onFindPaticipantByPAM, { loading: loadingFindPaticipantByPAM } ] = useMutation(
-	// 	FIND_PATICIPANT_BY_PROJECT_AND_MEMBER_MUTATION,
-	// );
+	const [ onFindPaticipantByPAM, { loading: loadingFindPaticipantByPAM } ] = useMutation(
+		FIND_PATICIPANT_BY_PROJECT_AND_MEMBER_MUTATION,
+	);
 	const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(
 		GET_USERS_BELONG_PROJECT_MUTAIION,
 	);
@@ -48,6 +52,7 @@ const ManagePage: React.FC = () => {
 					variables: { getProjectInput: { _projectId: params._id } },
 					isNotShowNotify: true,
 				});
+				console.log(data);
 
 				if (!isError) {
 					dispatch(currentProject(data));
@@ -89,6 +94,30 @@ const ManagePage: React.FC = () => {
 			dispatch(getListsFormatted({}));
 		},
 		[ dispatch ],
+	);
+
+	useEffect(
+		() => {
+			if (loadingFindPaticipantByPAM) return;
+
+			const getData = async () => {
+				const { data, isError } = await fetchDataAndShowNotify({
+					fnFetchData: onFindPaticipantByPAM,
+					variables: { getPaticipantByProjectAndMemberInput: { _projectId: params._id } },
+					isNotShowNotify: true,
+				});
+				console.log(data);
+				if (isError) {
+					dispatch(currentPaticipant(null));
+				}
+				else {
+					dispatch(currentPaticipant(data));
+				}
+			};
+			getData();
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ dispatch, navigate, onFindPaticipantByPAM, params._id ],
 	);
 
 	if (loadingGetProject) {

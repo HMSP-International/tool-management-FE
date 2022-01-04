@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 // graphql
 import { useMutation } from '@apollo/client';
 import { DELETE_PROJECT_MUTATION } from 'apis/projects/mutations';
@@ -22,7 +22,7 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ onDeleteProject, { loading } ] = useMutation(DELETE_PROJECT_MUTATION);
 	const dispatch = useDispatch();
 	const params = useParams();
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	if (loading) return <LoadingView />;
 
@@ -35,7 +35,8 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 		if (!isError) {
 			dispatch(deleteProject(data));
 			setHidden(false);
-			navigate('/');
+			// navigate('/');
+			window.location.replace('/');
 		}
 	};
 
