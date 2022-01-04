@@ -30,7 +30,7 @@ export const EmailStyled = styled.article`
 		}
 		&__content {
 			padding: 5px 10px;
-			min-width: 200px;
+			min-width: 300px;
 		}
 	}
 `;

@@ -12,6 +12,7 @@ import { convertProject } from 'helpers/formatData/convertProject';
 // redux
 import { useDispatch } from 'react-redux';
 import { createProject } from 'slices/project/slice';
+import { IProject } from 'slices/project/interfaces';
 
 interface IProps {
 	hidden: boolean;
@@ -63,7 +64,8 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 		});
 
 		if (!isError) {
-			const newProjects = convertProject([ data ]);
+			const project: IProject = data;
+			const newProjects = convertProject([ project ]);
 			dispatch(createProject(newProjects));
 			setHidden(false);
 		}

@@ -42,6 +42,11 @@ export const InformationStyled = styled.article`
 			&__content {
 				padding: 5px 10px;
 				min-width: 200px;
+				border: none;
+			}
+			&__content-public {
+				padding: 5px 10px;
+				min-width: 200px;
 			}
 		}
 	}

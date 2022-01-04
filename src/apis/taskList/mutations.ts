@@ -31,3 +31,13 @@ export const CHANGE_NAME_LIST_MUTATION = gql`
 		}
 	}
 `;
+
+export const GET_LISTS_MUTATION = gql`
+	mutation GET_LISTS($getListsInput: GetListsInput!) {
+		getLists(getListsInput: $getListsInput) {
+			_id
+			_projectId
+			name
+		}
+	}
+`;

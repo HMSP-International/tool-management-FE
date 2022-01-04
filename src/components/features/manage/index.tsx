@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
-import { useQuery } from '@apollo/client';
-import { Navigate, useParams, useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { useParams, useNavigate } from 'react-router-dom';
 // component
 import WorkSpace from './workSpace/workSpace';
 // import WithFetchedData from '../../../hocs/withFetchedData';
@@ -10,12 +10,13 @@ import LoadingView from '../../shared/loadingView/loadingView';
 import { DropResult } from 'react-beautiful-dnd';
 import { IList, ITaskList } from 'slices/taskList/interfaces';
 // graphql
-import { GET_LISTS_QUERY } from 'apis/taskList/queries';
+import { GET_LISTS_MUTATION } from 'apis/taskList/mutations';
 // helpers
 import { convertTaskList } from 'helpers/formatData/convertTaskList';
 // redux
 import { useDispatch } from 'react-redux';
 import { getListsFormatted } from 'slices/taskList/slice';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 const Manage: React.FC = () => {
 	const params = useParams();
@@ -25,33 +26,40 @@ const Manage: React.FC = () => {
 	const dispatch = useDispatch();
 
 	// fetch data
-	const { loading: loadingGetLists, data: dataGetLists, error: errorGetLists } = useQuery(GET_LISTS_QUERY, {
-		variables:
-			{
-				getListsInput:
-					{
-						_projectId: params._id,
-					},
-			},
-	});
+	const [ onGetLists, { loading: loadingGetLists } ] = useMutation(GET_LISTS_MUTATION);
 
 	// use effect
 	useEffect(
 		() => {
 			if (loadingGetLists) return;
 
-			if (dataGetLists) {
-				const lists: IList[] = dataGetLists.getLists;
+			const getData = async () => {
+				const { data, isError } = await fetchDataAndShowNotify({
+					fnFetchData: onGetLists,
+					variables:
+						{
+							getListsInput:
+								{
+									_projectId: params._id,
+								},
+						},
+					isNotShowNotify: true,
+				});
 
-				const formatted = convertTaskList(lists);
+				if (isError) {
+					navigate('notFound');
+				}
+				else {
+					const lists: IList[] = data;
+					const formatted = convertTaskList(lists);
+					dispatch(getListsFormatted(formatted));
+				}
+			};
 
-				dispatch(getListsFormatted(formatted));
-			}
-			else {
-				navigate('notFound');
-			}
+			getData();
 		},
-		[ dataGetLists, loadingGetLists, navigate, dispatch ],
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ navigate, dispatch, onGetLists, params._id ],
 	);
 
 	// handle event
@@ -105,9 +113,6 @@ const Manage: React.FC = () => {
 	// render;
 	if (loadingGetLists) {
 		return <LoadingView />;
-	}
-	if (errorGetLists) {
-		return <Navigate to='/notFound' />;
 	}
 
 	return <WorkSpace onDragEnd={handleDragEnd} />;

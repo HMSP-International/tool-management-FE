@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { IProject, IInitialStateProject } from '../interfaces';
 
 export const deleteProject = (state: IInitialStateProject, action: PayloadAction<IProject>) => {
-	const projectId = action.payload._id;
+	const { _spaceId, _id } = action.payload;
 
-	delete state.projects[projectId];
+	state.projects[_spaceId] = state.projects[_spaceId].filter(p => p._id !== _id);
 };

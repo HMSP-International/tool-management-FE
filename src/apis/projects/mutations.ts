@@ -59,3 +59,15 @@ export const CHANGE_NAME_PROJECT_MUTATION = gql`
 		}
 	}
 `;
+
+export const GET_PROJECT_BY_ID_MUTATION = gql`
+	mutation GET_PROJECT_BY_ID($getProjectInput: GetProjectInput!) {
+		getProjectById(getProjectInput: $getProjectInput) {
+			_id
+			_spaceId
+			name
+			order
+			owner
+		}
+	}
+`;

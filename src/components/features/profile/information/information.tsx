@@ -56,7 +56,6 @@ const Information: React.FC = () => {
 							displayName: values.displayName,
 						},
 				},
-			message: 'Changed information',
 		});
 
 		if (isError) {
@@ -78,7 +77,7 @@ const Information: React.FC = () => {
 						<label className='information__profile__item__title'>Name</label>
 						<input
 							name='displayName'
-							className='information__profile__item__content'
+							className='information__profile__item__content-public'
 							value={values.displayName}
 							onChange={handleOnChange}
 						/>
@@ -98,7 +97,6 @@ const Information: React.FC = () => {
 							name='position'
 							className='information__profile__item__content'
 							value={values.position}
-							// onChange={handleOnChange}
 							readOnly
 						/>
 					</div>

@@ -6,19 +6,21 @@ import ManageRoleproject from './[_id]/roles/index';
 import ContainerPage from 'components/shared/containerPage/containerPage';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // graphql
-import { useMutation, useQuery } from '@apollo/client';
-import { GET_PROJECT_BY_ID_QUERY } from 'apis/projects/queries';
-import { FIND_PATICIPANT_BY_PROJECT_AND_MEMBER_MUTATION } from 'apis/paticipants/mutations';
+import { useMutation } from '@apollo/client';
+import { GET_PROJECT_BY_ID_MUTATION } from 'apis/projects/mutations';
+import { GET_USERS_BELONG_PROJECT_MUTAIION } from 'apis/paticipants/mutations';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { currentProject } from 'slices/project/slice';
-import { IInitialStateProject, IProject } from 'slices/project/interfaces';
-import { currentPaticipant } from 'slices/paticipant/slice';
+import { IInitialStateProject } from 'slices/project/interfaces';
+import { getUserBeLongProject } from 'slices/paticipant/slice';
+import { getListsFormatted } from 'slices/taskList/slice';
 // interfaces
 import { RootState } from 'global/redux/rootReducer';
 import { IInitialStateUser } from 'slices/user/interfaces';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { IUser } from 'slices/dashboard/interfaces';
 
 const ManagePage: React.FC = () => {
 	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
@@ -28,60 +30,69 @@ const ManagePage: React.FC = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const {
-		loading: loadingGetProject,
-		data: dataGetProject,
-		error: errorGetProject,
-	} = useQuery(GET_PROJECT_BY_ID_QUERY, { variables: { getProjectInput: { _projectId: params._id } } });
-	const [ onFindPaticipantByPAM, { loading: loadingFindPaticipantByPAM } ] = useMutation(
-		FIND_PATICIPANT_BY_PROJECT_AND_MEMBER_MUTATION,
+	const [ onGetProject, { loading: loadingGetProject } ] = useMutation(GET_PROJECT_BY_ID_MUTATION);
+	// const [ onFindPaticipantByPAM, { loading: loadingFindPaticipantByPAM } ] = useMutation(
+	// 	FIND_PATICIPANT_BY_PROJECT_AND_MEMBER_MUTATION,
+	// );
+	const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(
+		GET_USERS_BELONG_PROJECT_MUTAIION,
 	);
 
 	useEffect(
 		() => {
 			if (loadingGetProject) return;
 
-			if (dataGetProject) {
-				const project: IProject = dataGetProject.getProjectById;
-				dispatch(currentProject(project));
-			}
-			else {
-				navigate('notFound');
-			}
-		},
-		[ dataGetProject, loadingGetProject, navigate, dispatch ],
-	);
-
-	useEffect(
-		() => {
-			if (loadingFindPaticipantByPAM) return;
-
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
-					fnFetchData: onFindPaticipantByPAM,
-					variables: { getPaticipantByProjectAndMemberInput: { _projectId: params._id } },
+					fnFetchData: onGetProject,
+					variables: { getProjectInput: { _projectId: params._id } },
 					isNotShowNotify: true,
 				});
 
-				if (isError) {
-					dispatch(currentPaticipant(null));
+				if (!isError) {
+					dispatch(currentProject(data));
 				}
 				else {
-					dispatch(currentPaticipant(data));
+					navigate('/');
 				}
 			};
 
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ onFindPaticipantByPAM, params._id ],
+		[ dispatch, onGetProject, params._id ],
 	);
 
-	if (loadingGetProject || loadingFindPaticipantByPAM) {
+	useEffect(
+		() => {
+			const fetchData = async () => {
+				if (!loadingGetUserBelongProject) {
+					const { data, isError } = await fetchDataAndShowNotify({
+						fnFetchData: onGetUserBeLongProject,
+						variables: { getUsersBelongProjectInput: { _projectId: params._id } },
+					});
+
+					if (!isError) {
+						const users: IUser[] = data.map((user: any) => user._memberId);
+						dispatch(getUserBeLongProject(users));
+					}
+				}
+			};
+
+			fetchData();
+		},
+		[ onGetUserBeLongProject, dispatch, loadingGetUserBelongProject, params._id ],
+	);
+
+	useEffect(
+		() => {
+			dispatch(getListsFormatted({}));
+		},
+		[ dispatch ],
+	);
+
+	if (loadingGetProject) {
 		return <LoadingView />;
-	}
-	if (errorGetProject) {
-		return <Navigate to='/notFound' />;
 	}
 
 	return (

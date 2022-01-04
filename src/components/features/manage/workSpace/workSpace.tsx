@@ -18,6 +18,7 @@ interface IProps {
 
 const WorkSpace: React.FC<IProps> = ({ onDragEnd }) => {
 	const { lists: columns }: IInitialStateList = useSelector((state: RootState) => state.taskList);
+	// console.log(columns);
 
 	return (
 		<React.Fragment>
