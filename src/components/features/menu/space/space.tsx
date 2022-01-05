@@ -3,7 +3,7 @@ import { SpaceStyled } from './space.styled';
 // modals
 import CreateProjectModal from 'components/elements/modals/create/createProjectModal/createProjectModal';
 import CreateWorkSpaceModal from 'components/elements/modals/create/createWorkSpaceModal/createWorkSpaceModal';
-import ShareWorkSpaceModal from 'components/elements/modals/get/shareWorkSpaceModal/shareWorkSpaceModal';
+import ShareWorkSpaceModal from 'components/elements/modals/create/shareWorkSpaceModal/shareWorkSpaceModal';
 import PutShareWorkSpaceModal from 'components/elements/modals/put/putShareWorkSpaceModal/putShareWorkSpaceModal';
 import PutWorkSpaceModal from 'components/elements/modals/put/putSpaceModal/putSpaceModal';
 // components

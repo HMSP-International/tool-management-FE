@@ -21,6 +21,13 @@ import { getSpaces } from 'slices/space/slice';
 import { ISpace } from 'slices/space/interfaces';
 // error
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { convertProject } from 'helpers/formatData/convertProject';
+import { createProject } from 'slices/project/slice';
+import { IProject } from 'slices/project/interfaces';
+import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
+import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
+import { convertTaskList } from 'helpers/formatData/convertTaskList';
+import { createNewList } from 'slices/taskList/slice';
 
 interface IProps {
 	hidden: boolean;
@@ -38,8 +45,10 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
 	// graphql
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
+	const [ onCreateList, { loading: loadingCreateList } ] = useMutation(CREATE_LIST_MUTATION);
 	const [ onCreateSpace, { loading: loadingCreateSpace } ] = useMutation(CREATE_SPACE_MUTATION);
 	const [ onInviteSpace, { loading: loadingInviteSpace } ] = useMutation(INVITE_SPACES_MUTATION);
+	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(CREATE_PROJECT_MUTATION);
 	// redux
 	const dispatch = useDispatch();
 	// drawer
@@ -58,12 +67,19 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		[ onGetUsers, dispatch ],
 	);
 
-	if (loadingGetUsers || loadingCreateSpace || loadingInviteSpace) return <LoadingView />;
+	if (loadingGetUsers || loadingCreateSpace || loadingInviteSpace || loadingCreateProject || loadingCreateList)
+		return <LoadingView />;
 
 	const handleSubmit = async () => {
 		// Create Space
-		handleSubmitShareModal(inviteUsers);
-		// send email to comfirm
+		const newSpace = await handleSubmitShareModal(inviteUsers);
+		if (!newSpace) return;
+		// auto create project Design -> Marketing -> IT
+		handleAutoCreateProject([ 'Design', 'Marketing', 'IT' ], newSpace._id);
+		// auto create list ToDo -> Doing -> Review -> Done -> Pending
+
+		// close modal
+		setHidden(false);
 	};
 
 	const handleSubmitShareModal = async (inviteUsers: IUser[]) => {
@@ -81,10 +97,11 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 
 		if (!isError) {
 			dispatch(getSpaces(spaces));
-			setHidden(false);
 
-			const newSpace = spaces.filter((space: ISpace) => space.name === nameSpace);
+			const newSpace: ISpace[] = spaces.filter((space: ISpace) => space.name === nameSpace);
 			handleVerifyInviteSpace(inviteUsers, newSpace);
+
+			return newSpace[0];
 		}
 	};
 
@@ -116,6 +133,52 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 	const handleRemoveUser = (user: IUser) => {
 		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
 		setInviteUsers(newListUser);
+	};
+
+	const handleAutoCreateProject = async (nameProject: string[], _spaceId: string) => {
+		for (let name of nameProject) {
+			const { data, isError } = await fetchDataAndShowNotify({
+				fnFetchData: onCreateProject,
+				variables:
+					{
+						createProjectInput:
+							{
+								name,
+								_spaceId,
+							},
+					},
+			});
+
+			if (!isError) {
+				const project: IProject = data;
+				const newProjects = convertProject([ project ]);
+				dispatch(createProject(newProjects));
+
+				// auto create list ToDo -> Doing -> Review -> Done -> Pending
+				handleCreateList([ 'To Do', 'Doing', 'Review', 'Done', 'Pending' ], project._id);
+			}
+		}
+	};
+
+	const handleCreateList = async (names: string[], _projectId: string) => {
+		for (let name of names) {
+			const { isError, data } = await fetchDataAndShowNotify({
+				fnFetchData: onCreateList,
+				variables:
+					{
+						createListInput:
+							{
+								_projectId,
+								name,
+							},
+					},
+			});
+
+			if (!isError) {
+				const list = convertTaskList([ data ]);
+				dispatch(createNewList(list));
+			}
+		}
 	};
 
 	return (

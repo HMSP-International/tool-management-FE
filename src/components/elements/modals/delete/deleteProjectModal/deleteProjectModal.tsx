@@ -22,7 +22,6 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ onDeleteProject, { loading } ] = useMutation(DELETE_PROJECT_MUTATION);
 	const dispatch = useDispatch();
 	const params = useParams();
-	// const navigate = useNavigate();
 
 	if (loading) return <LoadingView />;
 
@@ -35,7 +34,6 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 		if (!isError) {
 			dispatch(deleteProject(data));
 			setHidden(false);
-			// navigate('/');
 			window.location.replace('/');
 		}
 	};

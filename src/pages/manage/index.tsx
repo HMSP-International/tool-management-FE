@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { currentProject } from 'slices/project/slice';
 import { IInitialStateProject } from 'slices/project/interfaces';
 import { getUserBeLongProject } from 'slices/paticipant/slice';
-import { getListsFormatted } from 'slices/taskList/slice';
 import { currentPaticipant } from 'slices/paticipant/slice';
 // interfaces
 import { RootState } from 'global/redux/rootReducer';
@@ -52,7 +51,6 @@ const ManagePage: React.FC = () => {
 					variables: { getProjectInput: { _projectId: params._id } },
 					isNotShowNotify: true,
 				});
-				console.log(data);
 
 				if (!isError) {
 					dispatch(currentProject(data));
@@ -86,14 +84,8 @@ const ManagePage: React.FC = () => {
 
 			fetchData();
 		},
-		[ onGetUserBeLongProject, dispatch, loadingGetUserBelongProject, params._id ],
-	);
-
-	useEffect(
-		() => {
-			dispatch(getListsFormatted({}));
-		},
-		[ dispatch ],
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ onGetUserBeLongProject, dispatch, params._id ],
 	);
 
 	useEffect(

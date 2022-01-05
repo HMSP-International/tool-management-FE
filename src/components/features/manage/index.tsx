@@ -62,6 +62,13 @@ const Manage: React.FC = () => {
 		[ navigate, dispatch, onGetLists, params._id ],
 	);
 
+	useEffect(
+		() => {
+			dispatch(getListsFormatted({}));
+		},
+		[ dispatch ],
+	);
+
 	// handle event
 	const handleDragEnd = useCallback((result: DropResult, columns: ITaskList) => {
 		if (!result.destination) return;

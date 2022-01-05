@@ -21,12 +21,8 @@ const CreateWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit })
 			}
 			else {
 				// query Backend
-				if (true) {
-					onSubmit(inputRef.current.value);
-				}
-				else {
-					// return error from DB
-				}
+
+				onSubmit(inputRef.current.value);
 			}
 		}
 	};
@@ -38,7 +34,7 @@ const CreateWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit })
 				setInValidName(true);
 			}
 			else {
-				setMessageError('Please enter your spane name');
+				setMessageError('Please enter your space name');
 				setInValidName(false);
 			}
 		}
