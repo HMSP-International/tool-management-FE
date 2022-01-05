@@ -9,12 +9,11 @@ import PutAction from './action/put';
 // styled-component
 import { TableUserStyled } from './usersDashboard.styled';
 // interfaces
-import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
-import { RootState } from '../../../../global/redux/rootReducer';
+import { IInitialStateDashboard, IUser } from 'slices/dashboard/interfaces';
+import { RootState } from 'global/redux/rootReducer';
 // Redux
 import { useSelector } from 'react-redux';
 // helpers
-import { removeAfterSign } from 'helpers/string/removeAfter@';
 import { AdvancedImage } from '@cloudinary/react';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { fill } from '@cloudinary/url-gen/actions/resize';
@@ -56,7 +55,7 @@ const columns: TableColumn<IUser>[] = [
 			row => {
 				return (
 					<Tooltip placement='top' title={row.email}>
-						{removeAfterSign(row.email)}
+						{row.email}
 					</Tooltip>
 				);
 			},

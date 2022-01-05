@@ -27,6 +27,10 @@ export const WorkSpaceModalStyled = styled(Modal)`
             &:active{
                 background-color: #6db9d1
             }
+
+            &:hover{
+                background-color: #6db9d1
+            }
         }
     }
 

@@ -132,7 +132,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 
 							<div className='table'>
 								<div className='assignee'>
-									<div className='left'>Assigne</div>
+									<div className='left'>Assignee</div>
 									<div className='right'>
 										<div className='right__avt'>
 											<ListUserBeLongProjectDD onChangeUser={setAssignee} assignee={null} />
