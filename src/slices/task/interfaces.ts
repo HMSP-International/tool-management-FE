@@ -15,4 +15,5 @@ export interface ITask {
 	};
 	_projectId: IProject;
 	assignee: IUser | null;
+	descriptions: string[];
 }

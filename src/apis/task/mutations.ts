@@ -80,6 +80,7 @@ export const DELETE_TASKS_MUTATION = gql`
 				avatar
 				email
 			}
+			descriptions
 		}
 	}
 `;
@@ -108,6 +109,7 @@ export const CHANGE_ASSIGNEE_TASK_MUTATION = gql`
 				avatar
 				email
 			}
+			descriptions
 		}
 	}
 `;
@@ -134,6 +136,7 @@ export const CHANGE_TASK_NAME_MUTATION = gql`
 				_id
 				avatar
 			}
+			descriptions
 		}
 	}
 `;

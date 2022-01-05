@@ -126,7 +126,9 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 							<div className='des-task__content'>Description</div>
 							<input type='text' placeholder='Add ad description...' />
 							<button>Add</button>
-							<ul className='des-task__des-list'>{}</ul>
+							<ul className='des-task__des-list'>
+								{task.descriptions.map((d, i) => <li key={i}>{d}</li>)}
+							</ul>
 						</div>
 
 						<div className='comment'>

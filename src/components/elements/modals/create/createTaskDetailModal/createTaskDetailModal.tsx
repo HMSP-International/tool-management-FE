@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 // Styled Components
 import { ModalStyled } from './createTaskDetailModal.styled';
 
@@ -32,6 +32,9 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	const [ assignee, setAssignee ] = useState('');
+	const [ descriptions, setDescriptions ] = useState<string[]>([]);
+	// ref
+	const descriptionRef = useRef<HTMLInputElement>(null);
 	// graphql
 	const [ onCreateTask, { loading: loadingCreateTask } ] = useMutation(CREATE_TASK_MUTATION);
 
@@ -52,6 +55,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 								_listId: listId,
 								name: taskName,
 								assignee: assignee || null,
+								descriptions,
 							},
 					},
 			});
@@ -64,6 +68,17 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 		}
 		else {
 			openNotification({ title: 'Wanning', extensions: [ 'Please enter your task name' ] }, true);
+		}
+	};
+
+	const handleAddDescription = () => {
+		if (descriptionRef && descriptionRef.current) {
+			const newDescription = descriptionRef.current.value;
+			if (newDescription.trim().length === 0) return;
+
+			setDescriptions([ ...descriptions, newDescription ]);
+			descriptionRef.current.value = '';
+			descriptionRef.current.focus();
 		}
 	};
 
@@ -92,9 +107,9 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 						</div>
 						<div className='des-task'>
 							<div className='des-task__content'>Description</div>
-							<input type='text' placeholder='Add ad description...' />
-							<button>Add</button>
-							<ul className='des-task__des-list'>{}</ul>
+							<input type='text' placeholder='Add ad description...' ref={descriptionRef} />
+							<button onClick={handleAddDescription}>Add</button>
+							<ul className='des-task__des-list'>{descriptions.map((d, i) => <li key={i}>{d}</li>)}</ul>
 						</div>
 
 						<div className='comment'>

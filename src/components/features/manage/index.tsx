@@ -64,9 +64,12 @@ const Manage: React.FC = () => {
 
 	useEffect(
 		() => {
-			dispatch(getListsFormatted({}));
+			return () => {
+				dispatch(getListsFormatted({}));
+			};
 		},
-		[ dispatch ],
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ params._id ],
 	);
 
 	// handle event

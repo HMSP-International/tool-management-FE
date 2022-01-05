@@ -18,6 +18,7 @@ import { currentProject } from 'slices/project/slice';
 import { IInitialStateProject } from 'slices/project/interfaces';
 import { getUserBeLongProject } from 'slices/paticipant/slice';
 import { currentPaticipant } from 'slices/paticipant/slice';
+import { getListsFormatted } from 'slices/taskList/slice';
 // interfaces
 import { RootState } from 'global/redux/rootReducer';
 import { IInitialStateUser } from 'slices/user/interfaces';
@@ -87,6 +88,14 @@ const ManagePage: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ onGetUserBeLongProject, dispatch, params._id ],
 	);
+
+	useEffect(() => {
+		return () => {
+			dispatch(getListsFormatted({}));
+			dispatch(currentProject({}));
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(
 		() => {
