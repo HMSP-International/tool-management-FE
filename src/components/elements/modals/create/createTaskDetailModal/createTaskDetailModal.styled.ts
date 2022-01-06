@@ -136,7 +136,7 @@ export const ModalStyled = styled(Modal)`
 
         .task-detail__description{
             border-right: 2px solid gray;
-
+            padding-right: 15px;
             overflow-y: scroll;
 
             &::-webkit-scrollbar {
@@ -232,6 +232,7 @@ export const ModalStyled = styled(Modal)`
                 padding: 10px 0;
                 min-height: 200px;
                 height: auto;
+                
 
                 button{
                     margin-left: 20px;
@@ -253,7 +254,8 @@ export const ModalStyled = styled(Modal)`
                     background-color: lightgray;
                     padding: 3px 5px;
                     border-radius: 5px;
-                    max-width: 98px;
+                    max-width: 130px;
+                    cursor: pointer;
                 }
 
                 input{ 

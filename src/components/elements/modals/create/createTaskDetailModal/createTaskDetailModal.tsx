@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 // Styled Components
 import { ModalStyled } from './createTaskDetailModal.styled';
 
 // components
-import LoadingView from 'components/shared/loadingView/loadingView';
 import Image from 'components/shared/image/image';
+import TinyMce from 'components/shared/tinyMce/tinyMce';
+import LoadingView from 'components/shared/loadingView/loadingView';
 import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
 // graphql
 import { CREATE_TASK_MUTATION } from 'apis/task/mutations';
@@ -32,9 +33,10 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	const [ assignee, setAssignee ] = useState('');
-	const [ descriptions, setDescriptions ] = useState<string[]>([]);
+	const [ descriptions, setDescriptions ] = useState<string>('');
+	const [ isShowDescription, setIsShopDescriptions ] = useState(false);
 	// ref
-	const descriptionRef = useRef<HTMLInputElement>(null);
+	// const descriptionRef = useRef<HTMLInputElement>(null);
 	// graphql
 	const [ onCreateTask, { loading: loadingCreateTask } ] = useMutation(CREATE_TASK_MUTATION);
 
@@ -71,15 +73,10 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 		}
 	};
 
-	const handleAddDescription = () => {
-		if (descriptionRef && descriptionRef.current) {
-			const newDescription = descriptionRef.current.value;
-			if (newDescription.trim().length === 0) return;
-
-			setDescriptions([ ...descriptions, newDescription ]);
-			descriptionRef.current.value = '';
-			descriptionRef.current.focus();
-		}
+	const handleGetDes = (text: string) => {
+		setDescriptions(text);
+		setIsShopDescriptions(false);
+		console.log(text);
 	};
 
 	if (loadingCreateTask) return <LoadingView />;
@@ -106,10 +103,16 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 							/>
 						</div>
 						<div className='des-task'>
-							<div className='des-task__content'>Description</div>
-							<input type='text' placeholder='Add ad description...' ref={descriptionRef} />
+							{!isShowDescription && (
+								<div className='des-task__content' onClick={() => setIsShopDescriptions(true)}>
+									Add Description
+								</div>
+							)}
+							{/* <input type='text' placeholder='Add ad description...' ref={descriptionRef} />
 							<button onClick={handleAddDescription}>Add</button>
-							<ul className='des-task__des-list'>{descriptions.map((d, i) => <li key={i}>{d}</li>)}</ul>
+							<ul className='des-task__des-list'>{descriptions.map((d, i) => <li key={i}>{d}</li>)}</ul> */}
+
+							{isShowDescription && <TinyMce onGetText={handleGetDes} marginTop='20px' />}
 						</div>
 
 						<div className='comment'>

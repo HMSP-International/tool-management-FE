@@ -52,6 +52,7 @@ export const GET_TASKS_BY_LISTID_MUTATION = gql`
 				avatar
 				email
 			}
+			descriptions
 		}
 	}
 `;
