@@ -85,7 +85,7 @@ export const ModalStyled = styled(Modal)`
                 .title{
                     margin: 50px 0px 10px 0;
                     padding: 5px 4px 5px 7px;
-                    background-color: lightgray;
+                    background-color: lightblue;
                     font-size: ${props => props.theme.fontSize.small2};
                     font-weight: 500;
                     border-radius: 5px;
@@ -93,6 +93,7 @@ export const ModalStyled = styled(Modal)`
                     display: inline-block;
                     width: auto;
                     min-width: 70px;
+                    color: white;
                 }
             }
 
@@ -251,11 +252,17 @@ export const ModalStyled = styled(Modal)`
                 }
 
                 &__content{
-                    background-color: lightgray;
+                    background-color: lightblue;
                     padding: 3px 5px;
                     border-radius: 5px;
                     max-width: 130px;
                     cursor: pointer;
+                    color: white;
+                    transition: all 0.3s ease-out;
+
+                    &:hover{
+                        background-color: #6db9d1;
+                    }
                 }
 
                 input{ 
@@ -265,6 +272,10 @@ export const ModalStyled = styled(Modal)`
                     padding: 10px 0 5px 0;
                     font-size: ${props => props.theme.fontSize.small3};
                     border-bottom: 1px solid lightgray;
+                }
+
+                .html-tags{
+                    padding: 20px 0;
                 }
             }
         }

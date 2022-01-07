@@ -20,9 +20,15 @@ export const TinyStyled =
 			margin-top: 20px;
 			display: inline-block;
 			padding: 5px 10px;
-			background-color: lightgray;
+			background-color: lightblue;
 			border-radius: 5px;
 			cursor: pointer;
+			color: white;
+			transition: all 0.3s ease-out;
+
+			&:hover{
+                background-color: #6db9d1;
+            }
 		}
 	}
 `;

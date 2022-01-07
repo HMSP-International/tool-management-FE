@@ -7,18 +7,6 @@ export const CREATE_TASK_MUTATION = gql`
 			name
 			_listId
 			order
-			reporter {
-				_id
-				avatar
-				email
-			}
-			timestamp {
-				createAt
-				updateAt
-			}
-			_projectId {
-				_id
-			}
 			assignee {
 				_id
 				avatar
@@ -31,6 +19,22 @@ export const CREATE_TASK_MUTATION = gql`
 export const GET_TASKS_BY_LISTID_MUTATION = gql`
 	mutation GET_TASKS_BY_LISTID($getTasksInput: GetTasksInput!) {
 		getTasksByListId(getTasksInput: $getTasksInput) {
+			_id
+			name
+			_listId
+			order
+			assignee {
+				_id
+				avatar
+				email
+			}
+		}
+	}
+`;
+
+export const GET_TASK_DETAIL_MUTATION = gql`
+	mutation getTaskById($getTaskByIdInput: GetTaskByIdInput!) {
+		getTaskById(getTaskByIdInput: $getTaskByIdInput) {
 			_id
 			name
 			_listId
@@ -61,27 +65,7 @@ export const DELETE_TASKS_MUTATION = gql`
 	mutation DELETE_TASKS($deleteTaskInput: DeleteTaskInput!) {
 		deleteTasks(deleteTaskInput: $deleteTaskInput) {
 			_id
-			name
 			_listId
-			order
-			reporter {
-				_id
-				avatar
-				email
-			}
-			timestamp {
-				createAt
-				updateAt
-			}
-			_projectId {
-				_id
-			}
-			assignee {
-				_id
-				avatar
-				email
-			}
-			descriptions
 		}
 	}
 `;
@@ -89,28 +73,13 @@ export const DELETE_TASKS_MUTATION = gql`
 export const CHANGE_ASSIGNEE_TASK_MUTATION = gql`
 	mutation changeAssignee($changeAssigneeInput: ChangeAssigneeInput!) {
 		changeAssignee(changeAssigneeInput: $changeAssigneeInput) {
-			_id
-			name
 			_listId
 			order
-			reporter {
-				_id
-				avatar
-				email
-			}
-			timestamp {
-				createAt
-				updateAt
-			}
-			_projectId {
-				_id
-			}
 			assignee {
 				_id
 				avatar
 				email
 			}
-			descriptions
 		}
 	}
 `;
@@ -118,25 +87,18 @@ export const CHANGE_ASSIGNEE_TASK_MUTATION = gql`
 export const CHANGE_TASK_NAME_MUTATION = gql`
 	mutation ChangeTaskName($changeTaskNameInput: ChangeTaskNameInput!) {
 		changeTaskName(changeTaskNameInput: $changeTaskNameInput) {
-			_id
-			name
 			_listId
 			order
-			reporter {
-				_id
-				avatar
-			}
-			timestamp {
-				createAt
-				updateAt
-			}
-			_projectId {
-				_id
-			}
-			assignee {
-				_id
-				avatar
-			}
+			name
+		}
+	}
+`;
+
+export const CHANGE_TASK_DESCRIPTIONS_MUTATION = gql`
+	mutation changeDescriptions($changeDescriptionsInput: ChangeDescriptionsInput!) {
+		changeDescriptions(changeDescriptionsInput: $changeDescriptionsInput) {
+			_listId
+			order
 			descriptions
 		}
 	}

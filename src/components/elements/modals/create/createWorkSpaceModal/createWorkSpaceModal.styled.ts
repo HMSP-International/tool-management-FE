@@ -25,11 +25,11 @@ export const WorkSpaceModalStyled = styled(Modal)`
             background-color: lightblue;
 
             &:active{
-                background-color: #6db9d1
+                background-color: #6db9d1;
             }
 
             &:hover{
-                background-color: #6db9d1
+                background-color: #6db9d1;
             }
         }
     }

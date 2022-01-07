@@ -1,5 +1,5 @@
 // reducers
-import { changeTask } from './changeAssignee';
+import { changeTask } from './changeTask';
 import { changeList } from './changeList';
 import { createNewList } from './createNewList';
 import { createTaskInList } from './createTaskInList';

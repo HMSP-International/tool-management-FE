@@ -5,5 +5,5 @@ import { IInitialStateList } from '../interfaces';
 export const changeTask = (state: IInitialStateList, action: PayloadAction<ITask>) => {
 	const { _listId, order } = action.payload;
 
-	state.lists[_listId].items[order] = action.payload;
+	state.lists[_listId].items[order] = { ...state.lists[_listId].items[order], ...action.payload };
 };

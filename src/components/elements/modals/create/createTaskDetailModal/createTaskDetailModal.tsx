@@ -108,17 +108,20 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 									Add Description
 								</div>
 							)}
-							{/* <input type='text' placeholder='Add ad description...' ref={descriptionRef} />
-							<button onClick={handleAddDescription}>Add</button>
-							<ul className='des-task__des-list'>{descriptions.map((d, i) => <li key={i}>{d}</li>)}</ul> */}
 
-							{isShowDescription && <TinyMce onGetText={handleGetDes} marginTop='20px' />}
+							{isShowDescription && (
+								<TinyMce onGetText={handleGetDes} marginTop='20px' initialValue={descriptions} />
+							)}
+
+							{!isShowDescription && (
+								<div className='html-tags' dangerouslySetInnerHTML={{ __html: descriptions }} />
+							)}
 						</div>
 
-						<div className='comment'>
+						{/* <div className='comment'>
 							<div className='comment__title'>Comments</div>
 							<div className='comment__group-input'>
-								{/* {currentTask.comments.map((comment, index) => (
+								{currentTask.comments.map((comment, index) => (
 									<div className='comment__group-input__item' key={index}>
 										<div className='comment__group-input__item__avt'>
 											<img
@@ -130,9 +133,9 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 											<input type='text' value={comment.content} />
 										</div>
 									</div>
-								))} */}
+								))}
 							</div>
-						</div>
+						</div> */}
 					</div>
 
 					<div className='task-detail__assign'>

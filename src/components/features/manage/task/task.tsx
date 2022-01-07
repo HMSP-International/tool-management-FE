@@ -3,9 +3,15 @@ import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
 // Styled Components
 import { TaskStyled } from './task.styled';
-import PutTaskDetail from 'components/elements/modals/put/putTaskDetailModel/putTaskDetailModel';
-import { ITask } from 'slices/task/interfaces';
 import Image from 'components/shared/image/image';
+import PutTaskDetail from 'components/elements/modals/put/putTaskDetailModel/putTaskDetailModel';
+// interfaces
+import { ITask } from 'slices/task/interfaces';
+// graphql
+import { useMutation } from '@apollo/client';
+import { GET_TASK_DETAIL_MUTATION } from 'apis/task/mutations';
+// helpers
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 // interfaces
 interface IProps {
@@ -17,6 +23,27 @@ interface IProps {
 
 const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 	const [ isshowDetailTask, setIsShowDetailTask ] = useState(false);
+	const [ currentTask, setCurrentTask ] = useState<ITask>(item);
+
+	const [ onGetTaskDetail ] = useMutation(GET_TASK_DETAIL_MUTATION);
+
+	const handleShowTaskDetail = async () => {
+		const { isError, data } = await fetchDataAndShowNotify({
+			fnFetchData: onGetTaskDetail,
+			variables:
+				{
+					getTaskByIdInput:
+						{
+							_taskId: item._id,
+						},
+				},
+		});
+
+		if (!isError) {
+			setCurrentTask(data);
+			setIsShowDetailTask(true);
+		}
+	};
 
 	return (
 		<React.Fragment>
@@ -28,7 +55,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 					backgroundColor: snapshot.isDragging ? '#f4f5f7' : '',
 					...provided.draggableProps.style,
 				}}
-				onClick={() => setIsShowDetailTask(true)}
+				onClick={handleShowTaskDetail}
 			>
 				<div className='task-name'>{item.name}</div>
 				<div className='task-type'>{}</div>
@@ -45,7 +72,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 			</TaskStyled>
 
 			{isshowDetailTask && (
-				<PutTaskDetail hidden={isshowDetailTask} setHidden={setIsShowDetailTask} task={item} />
+				<PutTaskDetail hidden={isshowDetailTask} setHidden={setIsShowDetailTask} task={currentTask} />
 			)}
 		</React.Fragment>
 	);

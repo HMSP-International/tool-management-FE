@@ -90,14 +90,14 @@ export const ModalStyled = styled(Modal)`
                 .title{
                     margin: 50px 0px 10px 0;
                     padding: 5px 4px 5px 7px;
-                    background-color: lightgray;
+                    background-color: lightblue;
                     font-size: ${props => props.theme.fontSize.small2};
                     font-weight: 500;
                     border-radius: 5px;
-                    cursor: pointer;
                     display: inline-block;
                     width: auto;
                     min-width: 70px;
+                    color: white;
                 }
             }
 
@@ -270,10 +270,16 @@ export const ModalStyled = styled(Modal)`
                 }
 
                 &__content{
-                    background-color: lightgray;
+                    background-color: lightblue;
+                    color: white;
                     padding: 3px 5px;
                     border-radius: 5px;
-                    max-width: 98px;
+                    max-width: 130px;
+                    cursor: pointer;
+
+                    &:hover{
+                        background-color: #6db9d1;
+                    }
                 }
 
                 input{ 

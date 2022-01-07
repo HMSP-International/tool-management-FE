@@ -3,13 +3,19 @@ import React, { useState } from 'react';
 import { ModalStyled } from './putTaskDetailModel.styled';
 // components
 import Image from 'components/shared/image/image';
+import TinyMce from 'components/shared/tinyMce/tinyMce';
 import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
 // graphql
 import { useMutation } from '@apollo/client';
 // redux
 import { changeTask, deleteTasksInList } from 'slices/taskList/slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { CHANGE_ASSIGNEE_TASK_MUTATION, CHANGE_TASK_NAME_MUTATION, DELETE_TASKS_MUTATION } from 'apis/task/mutations';
+import {
+	CHANGE_ASSIGNEE_TASK_MUTATION,
+	CHANGE_TASK_DESCRIPTIONS_MUTATION,
+	CHANGE_TASK_NAME_MUTATION,
+	DELETE_TASKS_MUTATION,
+} from 'apis/task/mutations';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { dateMongooseToDateJs } from 'helpers/date/dateMongooseToDateJs';
@@ -27,13 +33,15 @@ interface IProps {
 const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 	// state
 	const [ taskName, setTaskName ] = useState(task.name);
-
+	const [ isShowDescription, setIsShowDescriptions ] = useState(false);
+	const [ descriptions, setDescriptions ] = useState<string>(task.descriptions);
 	// redux
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	// graphql
 	const [ onChangeAssignee ] = useMutation(CHANGE_ASSIGNEE_TASK_MUTATION);
 	const [ onChangeTaskName ] = useMutation(CHANGE_TASK_NAME_MUTATION);
+	const [ onChangeTaskDescriptions ] = useMutation(CHANGE_TASK_DESCRIPTIONS_MUTATION);
 	const [ onDeleteTaskName ] = useMutation(DELETE_TASKS_MUTATION);
 
 	// event
@@ -99,6 +107,28 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 		}
 	};
 
+	const handleGetDes = async (text: string) => {
+		if (task.descriptions !== text) {
+			const { isError, data } = await fetchDataAndShowNotify({
+				fnFetchData: onChangeTaskDescriptions,
+				variables:
+					{
+						changeDescriptionsInput:
+							{
+								_taskId: task._id,
+								descriptions: text,
+							},
+					},
+			});
+
+			if (!isError) {
+				dispatch(changeTask(data));
+				setDescriptions(text);
+				setIsShowDescriptions(false);
+			}
+		}
+	};
+
 	// if (loadingChangeAssignee) return <LoadingView />;
 
 	return (
@@ -122,19 +152,27 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 								name='taskName'
 							/>
 						</div>
+
 						<div className='des-task'>
-							<div className='des-task__content'>Description</div>
-							<input type='text' placeholder='Add ad description...' />
-							<button>Add</button>
-							<ul className='des-task__des-list'>
-								{task.descriptions.map((d, i) => <li key={i}>{d}</li>)}
-							</ul>
+							{!isShowDescription && (
+								<div className='des-task__content' onClick={() => setIsShowDescriptions(true)}>
+									Add Description
+								</div>
+							)}
+
+							{isShowDescription && (
+								<TinyMce onGetText={handleGetDes} marginTop='20px' initialValue={descriptions} />
+							)}
+
+							{!isShowDescription && (
+								<div className='html-tags' dangerouslySetInnerHTML={{ __html: descriptions }} />
+							)}
 						</div>
 
-						<div className='comment'>
+						{/* <div className='comment'>
 							<div className='comment__title'>Comments</div>
 							<div className='comment__group-input'>
-								{/* {currentTask.comments.map((comment, index) => (
+								{currentTask.comments.map((comment, index) => (
 									<div className='comment__group-input__item' key={index}>
 										<div className='comment__group-input__item__avt'>
 											<img
@@ -146,9 +184,9 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 											<input type='text' value={comment.content} />
 										</div>
 									</div>
-								))} */}
+								))}
 							</div>
-						</div>
+						</div> */}
 					</div>
 
 					<div className='task-detail__assign'>
