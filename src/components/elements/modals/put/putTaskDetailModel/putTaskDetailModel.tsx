@@ -13,12 +13,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	CHANGE_ASSIGNEE_TASK_MUTATION,
 	CHANGE_TASK_DESCRIPTIONS_MUTATION,
-	CHANGE_TASK_NAME_MUTATION,
 	DELETE_TASKS_MUTATION,
 } from 'apis/task/mutations';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { dateMongooseToDateJs } from 'helpers/date/dateMongooseToDateJs';
+import NameTask from './nameTask/nameTask';
 // interfaces
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
@@ -27,20 +27,18 @@ import { ITask } from 'slices/task/interfaces';
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	task: ITask;
 }
 
-const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
-	// state
-	const [ taskName, setTaskName ] = useState(task.name);
-	const [ isShowDescription, setIsShowDescriptions ] = useState(false);
-	const [ descriptions, setDescriptions ] = useState<string>(task.descriptions);
+const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 	// redux
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
+	const task: ITask = useSelector((state: RootState) => state.task.currentTask[0]);
+	// state
+	const [ isShowDescription, setIsShowDescriptions ] = useState(false);
+	const [ descriptions, setDescriptions ] = useState<string>(task.descriptions);
 	// graphql
 	const [ onChangeAssignee ] = useMutation(CHANGE_ASSIGNEE_TASK_MUTATION);
-	const [ onChangeTaskName ] = useMutation(CHANGE_TASK_NAME_MUTATION);
 	const [ onChangeTaskDescriptions ] = useMutation(CHANGE_TASK_DESCRIPTIONS_MUTATION);
 	const [ onDeleteTaskName ] = useMutation(DELETE_TASKS_MUTATION);
 
@@ -61,30 +59,6 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 
 			if (!isError) {
 				dispatch(changeTask(data));
-			}
-		}
-	};
-
-	const handleSubmitChangeTaskName = async () => {
-		if (task.name === taskName) {
-			setHidden(false);
-		}
-		else {
-			const { isError, data } = await fetchDataAndShowNotify({
-				fnFetchData: onChangeTaskName,
-				variables:
-					{
-						changeTaskNameInput:
-							{
-								_taskId: task._id,
-								name: taskName,
-							},
-					},
-			});
-
-			if (!isError) {
-				dispatch(changeTask(data));
-				setHidden(false);
 			}
 		}
 	};
@@ -143,15 +117,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 					</div>
 
 					<div className='task-detail__description'>
-						<div className='name-task'>
-							<input
-								type='text'
-								value={taskName}
-								placeholder='Enter your task Name...'
-								onChange={e => setTaskName(e.currentTarget.value)}
-								name='taskName'
-							/>
-						</div>
+						<NameTask />
 
 						<div className='des-task'>
 							{!isShowDescription && (
@@ -243,7 +209,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden, task }) => {
 								<button onClick={handleDeleteTask}>Delete</button>
 							</div>
 							<div className='task-detail__assign__btn'>
-								<button onClick={handleSubmitChangeTaskName}>Update</button>
+								<button onClick={() => setHidden(false)}>Update</button>
 							</div>
 						</div>
 					</div>

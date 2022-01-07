@@ -10,6 +10,6 @@ export const taskListSlice: Slice = createSlice({
 
 const { reducer, actions } = taskListSlice;
 
-export const {} = actions;
+export const { changeCurrentTaskModal } = actions;
 
 export default reducer;

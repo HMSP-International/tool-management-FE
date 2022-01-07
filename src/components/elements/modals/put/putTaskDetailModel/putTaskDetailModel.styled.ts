@@ -228,23 +228,6 @@ export const ModalStyled = styled(Modal)`
                 }
             }
 
-
-            .name-task{
-                color: #172b4d;
-                font-size: ${props => props.theme.fontSize.normal2};
-                font-weight: 600;
-                padding: 10px 0;
-
-                input{
-                    width: 70%;
-                    border: none;
-                    outline: none;
-                    padding: 10px 0 5px 0;
-                    font-size: ${props => props.theme.fontSize.nomal1};
-                    border-bottom: 1px solid lightgray;
-                } 
-            }
-
             .des-task{
                 color: #172b4d;
                 font-size: ${props => props.theme.fontSize.small2};

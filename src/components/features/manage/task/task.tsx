@@ -12,6 +12,8 @@ import { useMutation } from '@apollo/client';
 import { GET_TASK_DETAIL_MUTATION } from 'apis/task/mutations';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { useDispatch } from 'react-redux';
+import { changeCurrentTaskModal } from 'slices/task/slice';
 
 // interfaces
 interface IProps {
@@ -23,7 +25,7 @@ interface IProps {
 
 const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 	const [ isshowDetailTask, setIsShowDetailTask ] = useState(false);
-	const [ currentTask, setCurrentTask ] = useState<ITask>(item);
+	const dispatch = useDispatch();
 
 	const [ onGetTaskDetail ] = useMutation(GET_TASK_DETAIL_MUTATION);
 
@@ -40,7 +42,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 		});
 
 		if (!isError) {
-			setCurrentTask(data);
+			dispatch(changeCurrentTaskModal(data));
 			setIsShowDetailTask(true);
 		}
 	};
@@ -71,9 +73,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 				</div>
 			</TaskStyled>
 
-			{isshowDetailTask && (
-				<PutTaskDetail hidden={isshowDetailTask} setHidden={setIsShowDetailTask} task={currentTask} />
-			)}
+			{isshowDetailTask && <PutTaskDetail hidden={isshowDetailTask} setHidden={setIsShowDetailTask} />}
 		</React.Fragment>
 	);
 };

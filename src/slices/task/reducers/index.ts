@@ -1,5 +1,6 @@
 // reducers
+import { changeCurrentTaskModal } from './changeCurrentTaskModal';
 
-const reducers = {};
+const reducers = { changeCurrentTaskModal };
 
 export default reducers;

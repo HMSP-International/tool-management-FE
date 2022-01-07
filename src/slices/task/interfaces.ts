@@ -2,6 +2,10 @@ import { DraggableId } from 'react-beautiful-dnd';
 import { IUser } from 'slices/dashboard/interfaces';
 import { IProject } from 'slices/project/interfaces';
 
+export interface IInitialStateTask {
+	currentTask: ITask[];
+}
+
 // drag and drop
 export interface ITask {
 	_id: DraggableId;
