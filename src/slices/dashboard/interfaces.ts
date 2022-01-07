@@ -1,4 +1,4 @@
-import { IRole } from "slices/role/interfaces";
+import { IRole } from 'slices/role/interfaces';
 
 export interface IInitialStateDashboard {
 	status: string;

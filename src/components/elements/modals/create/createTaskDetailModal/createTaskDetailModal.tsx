@@ -35,8 +35,6 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	const [ assignee, setAssignee ] = useState('');
 	const [ descriptions, setDescriptions ] = useState<string>('');
 	const [ isShowDescription, setIsShopDescriptions ] = useState(false);
-	// ref
-	// const descriptionRef = useRef<HTMLInputElement>(null);
 	// graphql
 	const [ onCreateTask, { loading: loadingCreateTask } ] = useMutation(CREATE_TASK_MUTATION);
 
@@ -117,25 +115,6 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 								<div className='html-tags' dangerouslySetInnerHTML={{ __html: descriptions }} />
 							)}
 						</div>
-
-						{/* <div className='comment'>
-							<div className='comment__title'>Comments</div>
-							<div className='comment__group-input'>
-								{currentTask.comments.map((comment, index) => (
-									<div className='comment__group-input__item' key={index}>
-										<div className='comment__group-input__item__avt'>
-											<img
-												src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-												alt=''
-											/>
-										</div>
-										<div className='comment__group-input__item__input'>
-											<input type='text' value={comment.content} />
-										</div>
-									</div>
-								))}
-							</div>
-						</div> */}
 					</div>
 
 					<div className='task-detail__assign'>

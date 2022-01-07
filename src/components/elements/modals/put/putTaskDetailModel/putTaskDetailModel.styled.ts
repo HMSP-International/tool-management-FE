@@ -90,14 +90,15 @@ export const ModalStyled = styled(Modal)`
                 .title{
                     margin: 50px 0px 10px 0;
                     padding: 5px 4px 5px 7px;
-                    background-color: lightblue;
+                    background-color: white;
                     font-size: ${props => props.theme.fontSize.small2};
                     font-weight: 500;
                     border-radius: 5px;
                     display: inline-block;
                     width: auto;
                     min-width: 70px;
-                    color: white;
+                    color: back;
+                    box-shadow: 0px 0px 5px 1px lightblue;
                 }
             }
 
@@ -179,55 +180,6 @@ export const ModalStyled = styled(Modal)`
                 }
             }
 
-            .comment{
-
-                &__group-input{
-                    display: flex;
-                    flex-direction: column;
-                    margin-top: 10px;
-
-                    &__item{
-                        display: grid;
-                        gap: 20px;
-                        grid-template-columns: 36px 1fr;
-                        align-items: center;
-                        padding: 10px 10px;
-
-                        &__input{
-                            height: 100%;
-                            width: 70%;
-
-                            input {
-                                height: 100%;
-                                width: 100%; 
-                                border: none;
-                                outline: none;
-                                border-bottom: 1px solid lightgray;
-                            }
-                        }
-
-                        &__avt{
-
-                            img{ 
-                                object-fit: cover;
-                                height: 36px;
-                                width: 36px;
-                                border-radius: 100rem;
-                            }
-                        }
-                    }
-                }
-
-                &__title{
-                    background-color: lightgray;
-                    font-size: ${props => props.theme.fontSize.small2};
-                    font-weight: 500;
-                    border-radius: 5px;
-                    padding: 3px 5px;
-                    max-width: 90px;
-                }
-            }
-
             .des-task{
                 color: #172b4d;
                 font-size: ${props => props.theme.fontSize.small2};
@@ -255,10 +207,11 @@ export const ModalStyled = styled(Modal)`
                 &__content{
                     background-color: lightblue;
                     color: white;
-                    padding: 3px 5px;
+                    padding: 4px 10px;
                     border-radius: 5px;
-                    max-width: 130px;
+                    max-width: 140px;
                     cursor: pointer;
+                    transition: all 0.3s ease-out;
 
                     &:hover{
                         background-color: #6db9d1;
@@ -272,6 +225,10 @@ export const ModalStyled = styled(Modal)`
                     padding: 10px 0 5px 0;
                     font-size: ${props => props.theme.fontSize.small3};
                     border-bottom: 1px solid lightgray;
+                }
+
+                .html-tags {
+                    margin-top: 20px;
                 }
             }
         }

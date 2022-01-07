@@ -1,4 +1,5 @@
 import { DraggableId } from 'react-beautiful-dnd';
+import { IComment } from 'slices/comment/interfaces';
 import { IUser } from 'slices/dashboard/interfaces';
 import { IProject } from 'slices/project/interfaces';
 
@@ -20,4 +21,5 @@ export interface ITask {
 	_projectId: IProject;
 	assignee: IUser | null;
 	descriptions: string;
+	comments: IComment[];
 }

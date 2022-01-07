@@ -57,6 +57,20 @@ export const GET_TASK_DETAIL_MUTATION = gql`
 				email
 			}
 			descriptions
+			comments {
+				_id
+				_userId {
+					_id
+					avatar
+					displayName
+					email
+				}
+				content
+				_taskId {
+					_listId
+					_id
+				}
+			}
 		}
 	}
 `;

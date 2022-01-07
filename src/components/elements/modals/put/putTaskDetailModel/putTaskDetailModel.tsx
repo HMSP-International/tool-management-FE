@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 // Styled Components
 import { ModalStyled } from './putTaskDetailModel.styled';
 // components
+import Comment from './comment/comment';
+import NameTask from './nameTask/nameTask';
 import Image from 'components/shared/image/image';
-import TinyMce from 'components/shared/tinyMce/tinyMce';
+import Description from './description/description';
 import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
 // graphql
 import { useMutation } from '@apollo/client';
 // redux
 import { changeTask, deleteTasksInList } from 'slices/taskList/slice';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	CHANGE_ASSIGNEE_TASK_MUTATION,
-	CHANGE_TASK_DESCRIPTIONS_MUTATION,
-	DELETE_TASKS_MUTATION,
-} from 'apis/task/mutations';
+import { CHANGE_ASSIGNEE_TASK_MUTATION, DELETE_TASKS_MUTATION } from 'apis/task/mutations';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { dateMongooseToDateJs } from 'helpers/date/dateMongooseToDateJs';
-import NameTask from './nameTask/nameTask';
 // interfaces
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
@@ -34,12 +31,8 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	const task: ITask = useSelector((state: RootState) => state.task.currentTask[0]);
-	// state
-	const [ isShowDescription, setIsShowDescriptions ] = useState(false);
-	const [ descriptions, setDescriptions ] = useState<string>(task.descriptions);
 	// graphql
 	const [ onChangeAssignee ] = useMutation(CHANGE_ASSIGNEE_TASK_MUTATION);
-	const [ onChangeTaskDescriptions ] = useMutation(CHANGE_TASK_DESCRIPTIONS_MUTATION);
 	const [ onDeleteTaskName ] = useMutation(DELETE_TASKS_MUTATION);
 
 	// event
@@ -81,30 +74,6 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 		}
 	};
 
-	const handleGetDes = async (text: string) => {
-		if (task.descriptions !== text) {
-			const { isError, data } = await fetchDataAndShowNotify({
-				fnFetchData: onChangeTaskDescriptions,
-				variables:
-					{
-						changeDescriptionsInput:
-							{
-								_taskId: task._id,
-								descriptions: text,
-							},
-					},
-			});
-
-			if (!isError) {
-				dispatch(changeTask(data));
-				setDescriptions(text);
-				setIsShowDescriptions(false);
-			}
-		}
-	};
-
-	// if (loadingChangeAssignee) return <LoadingView />;
-
 	return (
 		<React.Fragment>
 			<ModalStyled centered visible={hidden} width={'90vw'} footer={null} className='modal__task-detail'>
@@ -117,42 +86,11 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 					</div>
 
 					<div className='task-detail__description'>
-						<NameTask />
+						<NameTask task={task} />
 
-						<div className='des-task'>
-							{!isShowDescription && (
-								<div className='des-task__content' onClick={() => setIsShowDescriptions(true)}>
-									Add Description
-								</div>
-							)}
+						<Description task={task} />
 
-							{isShowDescription && (
-								<TinyMce onGetText={handleGetDes} marginTop='20px' initialValue={descriptions} />
-							)}
-
-							{!isShowDescription && (
-								<div className='html-tags' dangerouslySetInnerHTML={{ __html: descriptions }} />
-							)}
-						</div>
-
-						{/* <div className='comment'>
-							<div className='comment__title'>Comments</div>
-							<div className='comment__group-input'>
-								{currentTask.comments.map((comment, index) => (
-									<div className='comment__group-input__item' key={index}>
-										<div className='comment__group-input__item__avt'>
-											<img
-												src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-												alt=''
-											/>
-										</div>
-										<div className='comment__group-input__item__input'>
-											<input type='text' value={comment.content} />
-										</div>
-									</div>
-								))}
-							</div>
-						</div> */}
+						<Comment comments={task.comments} />
 					</div>
 
 					<div className='task-detail__assign'>
