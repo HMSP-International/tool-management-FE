@@ -85,15 +85,15 @@ export const ModalStyled = styled(Modal)`
                 .title{
                     margin: 50px 0px 10px 0;
                     padding: 5px 4px 5px 7px;
-                    background-color: lightblue;
+                    background-color: white;
                     font-size: ${props => props.theme.fontSize.small2};
                     font-weight: 500;
                     border-radius: 5px;
-                    cursor: pointer;
                     display: inline-block;
                     width: auto;
                     min-width: 70px;
-                    color: white;
+                    color: back;
+                    box-shadow: 0px 0px 5px 1px lightblue;
                 }
             }
 

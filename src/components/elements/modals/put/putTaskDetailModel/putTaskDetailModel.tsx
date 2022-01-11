@@ -90,7 +90,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 
 						<Description task={task} />
 
-						<Comment comments={task.comments} />
+						<Comment task={task} />
 					</div>
 
 					<div className='task-detail__assign'>

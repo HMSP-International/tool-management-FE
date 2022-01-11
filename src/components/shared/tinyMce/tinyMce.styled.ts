@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 interface Props {
 	marginTop?: string;
+	marginBottom?: string;
 }
 
 export const TinyStyled =
@@ -9,6 +10,7 @@ export const TinyStyled =
 	Props >
 	`
 	margin-top: ${props => props.marginTop || '0px'};
+	margin-bottom: ${props => props.marginBottom || '10px'};
 
 
 	.tox-statusbar {
@@ -29,6 +31,13 @@ export const TinyStyled =
 			&:hover{
                 background-color: #6db9d1;
             }
+		}
+
+		.line {
+			height: 2px;
+			width: 100%;
+			margin-top: 20px;
+			background-color: lightgray;
 		}
 	}
 `;

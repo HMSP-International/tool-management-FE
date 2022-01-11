@@ -1,5 +1,6 @@
 import { Editor } from '@tinymce/tinymce-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import LoadingView from '../loadingView/loadingView';
 import { TinyStyled } from './tinyMce.styled';
 
 interface IProps {
@@ -10,6 +11,7 @@ interface IProps {
 
 const TinyMce: React.FC<IProps> = ({ initialValue, onGetText, marginTop }) => {
 	const editorRef = useRef<any>(null);
+	const [ loading, setLoading ] = useState(true);
 
 	const getText = () => {
 		if (editorRef && editorRef.current) {
@@ -21,8 +23,13 @@ const TinyMce: React.FC<IProps> = ({ initialValue, onGetText, marginTop }) => {
 
 	return (
 		<TinyStyled marginTop={marginTop}>
+			{loading && <LoadingView />}
 			<Editor
-				onInit={(evt, editor) => (editorRef.current = editor)}
+				onInit={(evt, editor) => {
+					setLoading(false);
+
+					return (editorRef.current = editor);
+				}}
 				initialValue={initialValue}
 				apiKey={process.env.REACT_APP_TINY_API_KEY}
 				init={{
@@ -47,6 +54,7 @@ const TinyMce: React.FC<IProps> = ({ initialValue, onGetText, marginTop }) => {
 				<span className='btn' onClick={getText}>
 					Save
 				</span>
+				<div className='line' />
 			</div>
 		</TinyStyled>
 	);

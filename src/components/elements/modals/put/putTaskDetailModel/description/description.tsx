@@ -15,8 +15,8 @@ const Description: React.FC<IProps> = ({ task }) => {
 	const [ onChangeTaskDescriptions ] = useMutation(CHANGE_TASK_DESCRIPTIONS_MUTATION);
 	const [ isShowDescription, setIsShowDescriptions ] = useState(false);
 	const [ descriptions, setDescriptions ] = useState<string>(task.descriptions);
-    const dispatch = useDispatch();
-    
+	const dispatch = useDispatch();
+
 	const handleGetDes = async (text: string) => {
 		if (task.descriptions !== text) {
 			const { isError, data } = await fetchDataAndShowNotify({
@@ -55,4 +55,3 @@ const Description: React.FC<IProps> = ({ task }) => {
 };
 
 export default Description;
-
