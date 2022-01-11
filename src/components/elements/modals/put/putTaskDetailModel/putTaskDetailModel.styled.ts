@@ -104,7 +104,7 @@ export const ModalStyled = styled(Modal)`
 
             &__list-selection{
                 select{
-                    background-color: lightgray;
+                    background-color: lightblue;
                     font-size: ${props => props.theme.fontSize.small2};
                     font-weight: 500;
                     border-radius: 5px;
@@ -115,11 +115,20 @@ export const ModalStyled = styled(Modal)`
                     /* appearance: none; */
                     width: auto;
                     min-width: 70px;
+                    color: white;
+                    transition: all 0.3s ease-out;
 
                     option{
                         border: none;
                         outline: none;
                         overflow: hidden;
+                    }
+
+                    &:hover{
+                        background-color: #6db9d1;
+                        option{
+                            background-color: #6db9d1;
+                        }
                     }
                 }
             }

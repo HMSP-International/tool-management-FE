@@ -4,6 +4,7 @@ import { ModalStyled } from './putTaskDetailModel.styled';
 // components
 import Comment from './comment/comment';
 import NameTask from './nameTask/nameTask';
+import DropDown from './dropDown/dropDown';
 import Image from 'components/shared/image/image';
 import Description from './description/description';
 import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
@@ -94,6 +95,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 					</div>
 
 					<div className='task-detail__assign'>
+						<DropDown currentList={task._listId} taskId={task._id} />
 						{/* <div className='task-detail__assign__list-selection'>
 							<select name='list' defaultValue='todo'>
 								<option value='todo'>To Do</option>

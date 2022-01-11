@@ -1,6 +1,7 @@
 // reducers
-import { changeTask } from './changeTask';
 import { changeList } from './changeList';
+import { changeListInTaskModel } from './changeListInTaskModel';
+import { changeTask } from './changeTask';
 import { createNewList } from './createNewList';
 import { createTaskInList } from './createTaskInList';
 import { deleteTaskList } from './deleteTaskList';
@@ -10,6 +11,7 @@ import { getTasksInList } from './getTasksInList';
 
 const reducers = {
 	changeTask,
+	changeListInTaskModel,
 	changeList,
 	createNewList,
 	createTaskInList,

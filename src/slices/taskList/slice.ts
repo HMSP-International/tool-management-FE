@@ -11,8 +11,9 @@ export const taskListSlice: Slice = createSlice({
 const { reducer, actions } = taskListSlice;
 
 export const {
-	changeTask,
 	changeList,
+	changeListInTaskModel,
+	changeTask,
 	getListsFormatted,
 	createTaskInList,
 	deleteTaskList,
