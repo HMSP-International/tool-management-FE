@@ -117,3 +117,12 @@ export const CHANGE_TASK_DESCRIPTIONS_MUTATION = gql`
 		}
 	}
 `;
+
+export const CHANGE_LIST_OF_TASK_MUTATION = gql`
+	mutation changeListOfTask($changeListOfTaskInput: ChangeListOfTaskInput!) {
+		changeListOfTask(changeListOfTaskInput: $changeListOfTaskInput) {
+			_id
+			_listId
+		}
+	}
+`;
