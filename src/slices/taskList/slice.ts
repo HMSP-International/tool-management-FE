@@ -13,6 +13,7 @@ const { reducer, actions } = taskListSlice;
 export const {
 	changeList,
 	changeListInTaskModel,
+	changeListUserToFindTask,
 	changeTask,
 	getListsFormatted,
 	createTaskInList,

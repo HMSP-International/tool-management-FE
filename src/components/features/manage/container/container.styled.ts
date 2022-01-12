@@ -108,6 +108,17 @@ export const WorkSpaceStyled = styled.section`
 						object-fit: cover;
 					}
 				}
+
+				&__item-active {
+					margin-right: 5px;
+					img {
+						height: 30px;
+						width: 30px;
+						object-fit: cover;
+					}
+					border-radius: 100rem;
+					box-shadow: 0px 0px 10px 2px red;
+				}
 			}
 		}
 	}

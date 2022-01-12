@@ -6,6 +6,7 @@ const INITIAL_STATE: IInitialStateList = {
 	error: null,
 
 	lists: {},
+	users: [],
 };
 
 export default INITIAL_STATE;
