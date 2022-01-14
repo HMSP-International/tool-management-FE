@@ -58,6 +58,8 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 
 	if (loading) return <LoadingView />;
 
+	const sorted = [ ...columnData.items ].sort((a, b) => a.order - b.order);
+
 	return (
 		<TaskListStyled
 			{...provided.droppableProps}
@@ -66,7 +68,7 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 				backgroundColor: snapshot.isDraggingOver ? '#bcbec4' : '#f4f5f7',
 			}}
 		>
-			{columnData.items.map((item, index) => {
+			{sorted.map((item, index) => {
 				return (
 					<Draggable key={item._id} draggableId={item._id} index={index}>
 						{(provided, snapshot) => {
