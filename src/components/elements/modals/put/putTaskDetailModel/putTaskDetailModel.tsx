@@ -99,14 +99,6 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 
 					<div className='task-detail__assign'>
 						<DropDown currentList={task._listId} taskId={task._id} />
-						{/* <div className='task-detail__assign__list-selection'>
-							<select name='list' defaultValue='todo'>
-								<option value='todo'>To Do</option>
-								<option value='doing'>Doing</option>
-								<option value='review'>Review</option>
-								<option value='done'>Done</option>
-							</select>
-						</div> */}
 
 						<div className='task-detail__assign__detail'>
 							<div className='title'>Details</div>
