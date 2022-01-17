@@ -51,9 +51,6 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 					},
 			});
 
-			console.log('current task', task);
-			console.log('new task', data);
-
 			if (!isError) {
 				dispatch(changeTask(data));
 			}

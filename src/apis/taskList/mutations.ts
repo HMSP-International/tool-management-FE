@@ -41,3 +41,23 @@ export const GET_LISTS_MUTATION = gql`
 		}
 	}
 `;
+
+export const PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION = gql`
+	mutation changeListOfTaskWithDragAndDropInOneList(
+		$changeListOfTaskWithDragAndDropInput: ChangeListOfTaskWithDragAndDropInput!
+	) {
+		changeListOfTaskWithDragAndDropInOneList(
+			changeListOfTaskWithDragAndDropInput: $changeListOfTaskWithDragAndDropInput
+		) {
+			_taskId
+			destination {
+				_listId
+				index
+			}
+			source {
+				_listId
+				index
+			}
+		}
+	}
+`;

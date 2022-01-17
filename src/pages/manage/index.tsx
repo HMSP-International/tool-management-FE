@@ -107,7 +107,7 @@ const ManagePage: React.FC = () => {
 					variables: { getPaticipantByProjectAndMemberInput: { _projectId: params._id } },
 					isNotShowNotify: true,
 				});
-				console.log(data);
+
 				if (isError) {
 					dispatch(currentPaticipant(null));
 				}
