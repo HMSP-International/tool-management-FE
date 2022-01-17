@@ -14,7 +14,10 @@ import { RootState } from 'global/redux/rootReducer';
 import { changeListInTaskSocket, getListsFormatted } from 'slices/taskList/slice';
 // graphql
 import { useMutation } from '@apollo/client';
-import { PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION } from 'apis/taskList/mutations';
+import {
+	PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION,
+	PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN_ANOTHER_LIST_MUTATION,
+} from 'apis/taskList/mutations';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 interface IProps {}
@@ -24,37 +27,56 @@ const WorkSpace: React.FC<IProps> = () => {
 	const { lists: columns }: IInitialStateList = useSelector((state: RootState) => state.taskList);
 	// graphql
 	const [ onDragAndDropIn1List ] = useMutation(PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION);
+	const [ onDragAndDropInAnotherList ] = useMutation(PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN_ANOTHER_LIST_MUTATION);
 	// handle event
 	const handleDragEnd = (result: DropResult, columns: ITaskList) => {
 		if (!result.destination) return;
 		const { source, destination, draggableId: taskId } = result;
+		console.log(columns);
 
 		if (source.droppableId !== destination.droppableId) {
-			const sourceColumn = columns[source.droppableId];
-			const destColumn = columns[destination.droppableId];
-			const sourceItems = [ ...sourceColumn.items ];
-			const destItems = [ ...destColumn.items ];
-			const [ removed ] = sourceItems.splice(source.index, 1);
-			destItems.splice(destination.index, 0, removed);
-
-			const newColumns = {
-				...columns,
-				[source.droppableId]:
-					{
-						...sourceColumn,
-						items: sourceItems,
-					},
-				[destination.droppableId]:
-					{
-						...destColumn,
-						items: destItems,
-					},
-			};
-
-			// console.log(newColumns);
+			handleDragAndDropInAnotherList(destination, taskId, source);
 		}
 		else {
 			handleDragAndDropIn1List(destination, taskId, source);
+		}
+	};
+
+	const handleDragAndDropInAnotherList = async (
+		destination: DraggableLocation,
+		taskId: string,
+		source: DraggableLocation,
+	) => {
+		const changeListOfTaskWithDragAndDropInAnotherListInput = {
+			destination:
+				{
+					index: destination.index,
+					_listId: destination.droppableId,
+				},
+			_taskId: taskId,
+		};
+
+		// start improve UX
+		const oldColumns = { ...columns };
+		dispatch(
+			changeListInTaskSocket({
+				destination: { ...destination, _listId: destination.droppableId },
+				_taskId: taskId,
+				source: { ...source, _listId: source.droppableId },
+			}),
+		);
+		// end improve UX
+
+		const { isError, data } = await fetchDataAndShowNotify({
+			fnFetchData: onDragAndDropInAnotherList,
+			variables: { changeListOfTaskWithDragAndDropInAnotherListInput },
+		});
+
+		if (!isError) {
+			dispatch(changeListInTaskSocket(data));
+		}
+		else {
+			dispatch(getListsFormatted(oldColumns));
 		}
 	};
 
@@ -63,7 +85,10 @@ const WorkSpace: React.FC<IProps> = () => {
 		taskId: string,
 		source: DraggableLocation,
 	) => {
-		const changeListOfTaskWithDragAndDropInput = { destination: { index: destination.index }, _taskId: taskId };
+		const changeListOfTaskWithDragAndDropIn1ListInput = {
+			destination: { index: destination.index },
+			_taskId: taskId,
+		};
 
 		// start improve UX
 		const oldColumns = { ...columns };
@@ -78,7 +103,7 @@ const WorkSpace: React.FC<IProps> = () => {
 
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onDragAndDropIn1List,
-			variables: { changeListOfTaskWithDragAndDropInput },
+			variables: { changeListOfTaskWithDragAndDropIn1ListInput },
 		});
 
 		if (!isError) {

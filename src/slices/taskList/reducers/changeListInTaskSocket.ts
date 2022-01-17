@@ -35,5 +35,14 @@ export const changeListInTaskSocket = (state: IInitialStateList, action: Payload
 				newList.items[i].order = i;
 			}
 		}
+		else {
+			for (let i = indexTask; i < oldList.items.length; i++) {
+				oldList.items[i].order = i;
+			}
+			insertAt(newList.items, destination.index, taskRemoved);
+			for (let i = destination.index; i < newList.items.length; i++) {
+				newList.items[i].order = i;
+			}
+		}
 	}
 };
