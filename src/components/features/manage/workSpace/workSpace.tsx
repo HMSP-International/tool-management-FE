@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 // 3rd Components
 import { DragDropContext, DraggableLocation, Droppable } from 'react-beautiful-dnd';
 import List from '../taskList/taskList';
@@ -8,31 +9,36 @@ import Container from '../container/container';
 // interfaces
 import { DropResult } from 'react-beautiful-dnd';
 import { IInitialStateList, ITaskList } from 'slices/taskList/interfaces';
+import { IInitialStateAuth } from 'slices/auth/interfaces';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'global/redux/rootReducer';
-import { changeListInTaskSocket, getListsFormatted } from 'slices/taskList/slice';
+import { changeListInTaskSocket } from 'slices/taskList/slice';
 // graphql
-import { useMutation } from '@apollo/client';
-import {
-	PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION,
-	PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN_ANOTHER_LIST_MUTATION,
-} from 'apis/taskList/mutations';
-import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+// import { useMutation } from '@apollo/client';
+// import {
+// 	PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN_ANOTHER_LIST_MUTATION,
+// 	PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION,
+// } from 'apis/taskList/mutations';
+// helpers
+// import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+// socket
+import { socket } from 'global/socket/connection';
 
 interface IProps {}
 
 const WorkSpace: React.FC<IProps> = () => {
 	const dispatch = useDispatch();
+	const params = useParams();
 	const { lists: columns }: IInitialStateList = useSelector((state: RootState) => state.taskList);
 	// graphql
-	const [ onDragAndDropIn1List ] = useMutation(PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION);
-	const [ onDragAndDropInAnotherList ] = useMutation(PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN_ANOTHER_LIST_MUTATION);
+	const authRedux: IInitialStateAuth = useSelector((state: RootState) => state.auth);
+	// const [ onDragAndDropIn1List ] = useMutation(PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION);
+	// const [ onDragAndDropInAnotherList ] = useMutation(PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN_ANOTHER_LIST_MUTATION);
 	// handle event
 	const handleDragEnd = (result: DropResult, columns: ITaskList) => {
 		if (!result.destination) return;
 		const { source, destination, draggableId: taskId } = result;
-		console.log(columns);
 
 		if (source.droppableId !== destination.droppableId) {
 			handleDragAndDropInAnotherList(destination, taskId, source);
@@ -42,22 +48,49 @@ const WorkSpace: React.FC<IProps> = () => {
 		}
 	};
 
+	useEffect(
+		() => {
+			socket.emit('connectionToProject', { data: { _projectId: params._id || '' } });
+
+			socket.on('handleDragAndDropIn1List', (data: any) => {
+				console.log(data);
+				dispatch(changeListInTaskSocket(data));
+			});
+
+			socket.on('handleDragAndDropInAnotherList', (data: any) => {
+				console.log(data);
+				dispatch(changeListInTaskSocket(data));
+			});
+
+			return () => {
+				socket.emit('disconnectionToProject', { data: { _projectId: params._id || '' } });
+			};
+		},
+		[ dispatch, params._id ],
+	);
+
 	const handleDragAndDropInAnotherList = async (
 		destination: DraggableLocation,
 		taskId: string,
 		source: DraggableLocation,
 	) => {
-		const changeListOfTaskWithDragAndDropInAnotherListInput = {
-			destination:
+		const input = {
+			data:
 				{
-					index: destination.index,
-					_listId: destination.droppableId,
+					destination:
+						{
+							index: destination.index,
+							_listId: destination.droppableId,
+						},
+					_taskId: taskId,
 				},
-			_taskId: taskId,
+			jwt: authRedux.jwt,
+			_projectId: params._id || '',
 		};
 
+		socket.emit('handleDragAndDropInAnotherList', input);
+
 		// start improve UX
-		const oldColumns = { ...columns };
 		dispatch(
 			changeListInTaskSocket({
 				destination: { ...destination, _listId: destination.droppableId },
@@ -66,18 +99,6 @@ const WorkSpace: React.FC<IProps> = () => {
 			}),
 		);
 		// end improve UX
-
-		const { isError, data } = await fetchDataAndShowNotify({
-			fnFetchData: onDragAndDropInAnotherList,
-			variables: { changeListOfTaskWithDragAndDropInAnotherListInput },
-		});
-
-		if (!isError) {
-			dispatch(changeListInTaskSocket(data));
-		}
-		else {
-			dispatch(getListsFormatted(oldColumns));
-		}
 	};
 
 	const handleDragAndDropIn1List = async (
@@ -85,13 +106,19 @@ const WorkSpace: React.FC<IProps> = () => {
 		taskId: string,
 		source: DraggableLocation,
 	) => {
-		const changeListOfTaskWithDragAndDropIn1ListInput = {
-			destination: { index: destination.index },
-			_taskId: taskId,
+		const input = {
+			data:
+				{
+					destination: { index: destination.index },
+					_taskId: taskId,
+				},
+			jwt: authRedux.jwt,
+			_projectId: params._id || '',
 		};
 
+		socket.emit('handleDragAndDropIn1List', input);
+
 		// start improve UX
-		const oldColumns = { ...columns };
 		dispatch(
 			changeListInTaskSocket({
 				destination: { ...destination, _listId: destination.droppableId },
@@ -100,18 +127,6 @@ const WorkSpace: React.FC<IProps> = () => {
 			}),
 		);
 		// end improve UX
-
-		const { isError, data } = await fetchDataAndShowNotify({
-			fnFetchData: onDragAndDropIn1List,
-			variables: { changeListOfTaskWithDragAndDropIn1ListInput },
-		});
-
-		if (!isError) {
-			dispatch(changeListInTaskSocket(data));
-		}
-		else {
-			dispatch(getListsFormatted(oldColumns));
-		}
 	};
 
 	return (
