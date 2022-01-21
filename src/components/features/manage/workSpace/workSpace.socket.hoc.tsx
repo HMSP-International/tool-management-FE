@@ -2,12 +2,20 @@ import React, { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 // redux
 import { useDispatch } from 'react-redux';
-import { changeListInTaskSocket, changeTask, createTaskInList, deleteTasksInList } from 'slices/taskList/slice';
+import {
+	changeListInTaskSocket,
+	changeTask,
+	createNewList,
+	createTaskInList,
+	deleteTaskList,
+	deleteTasksInList,
+} from 'slices/taskList/slice';
 
 import { SocketContext } from 'socketIO/context';
 import { projectEvents } from 'socketIO/events/projectEvents';
 import { taskEvents } from 'socketIO/events/taskEvents';
 import { changeCurrentTaskModal } from 'slices/task/slice';
+import { listEvents } from 'socketIO/events/listEvents';
 
 interface IProps {}
 
@@ -16,10 +24,9 @@ const WorkSpaceSocketHoc: React.FC<IProps> = ({ children }) => {
 	const params = useParams();
 	const socket = useContext(SocketContext);
 
+	// Task
 	useEffect(
 		() => {
-			socket.emit(projectEvents.emits.connectionToProject, { data: { _projectId: params._id || '' } });
-
 			socket.on(taskEvents.handleDragAndDropIn1List, (data: any) => {
 				dispatch(changeListInTaskSocket(data));
 			});
@@ -44,9 +51,31 @@ const WorkSpaceSocketHoc: React.FC<IProps> = ({ children }) => {
 				dispatch(changeCurrentTaskModal(data));
 				dispatch(changeTask(data));
 			});
+		},
+		[ dispatch, params._id, socket ],
+	);
+
+	// List
+	useEffect(
+		() => {
+			socket.on(listEvents.handleCreateList, (data: any) => {
+				dispatch(createNewList(data));
+			});
+
+			socket.on(listEvents.handleDeleteList, (data: any) => {
+				dispatch(deleteTaskList(data));
+			});
+		},
+		[ dispatch, params._id, socket ],
+	);
+
+	// Project
+	useEffect(
+		() => {
+			socket.emit(projectEvents.connectionToProject, { data: { _projectId: params._id || '' } });
 
 			return () => {
-				socket.emit(projectEvents.emits.disconnectionToProject, { data: { _projectId: params._id || '' } });
+				socket.emit(projectEvents.disconnectionToProject, { data: { _projectId: params._id || '' } });
 			};
 		},
 		[ dispatch, params._id, socket ],

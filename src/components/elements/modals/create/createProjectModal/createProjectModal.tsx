@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 // graphql
 import { useMutation } from '@apollo/client';
 import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
+import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
 // Styled Components
 import { ProjectModalStyled } from './createProjectModal.styled';
 // components
@@ -13,6 +14,8 @@ import { convertProject } from 'helpers/formatData/convertProject';
 import { useDispatch } from 'react-redux';
 import { createProject } from 'slices/project/slice';
 import { IProject } from 'slices/project/interfaces';
+import { convertTaskList } from 'helpers/formatData/convertTaskList';
+import { createNewList } from 'slices/taskList/slice';
 
 interface IProps {
 	hidden: boolean;
@@ -23,6 +26,7 @@ interface IProps {
 const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) => {
 	// graphql
 	const [ onCreateProject, { loading: loadingCreateProject } ] = useMutation(CREATE_PROJECT_MUTATION);
+	const [ onCreateList ] = useMutation(CREATE_LIST_MUTATION);
 	// state
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
@@ -39,12 +43,8 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 			}
 			else {
 				// query Backend
-				if (true) {
-					handleSubmitProjectModal(inputRef.current.value);
-				}
-				else {
-					// return error from DB
-				}
+
+				handleSubmitProjectModal(inputRef.current.value);
 			}
 		}
 	};
@@ -68,6 +68,8 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 			const newProjects = convertProject([ project ]);
 			dispatch(createProject(newProjects));
 			setHidden(false);
+
+			handleCreateList([ 'To Do', 'Doing', 'Review', 'Done', 'Pending' ], project._id);
 		}
 	};
 
@@ -80,6 +82,27 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 			else {
 				setMessageError('Please enter your project name');
 				setInValidName(false);
+			}
+		}
+	};
+
+	const handleCreateList = async (names: string[], _projectId: string) => {
+		for (let name of names) {
+			const { isError, data } = await fetchDataAndShowNotify({
+				fnFetchData: onCreateList,
+				variables:
+					{
+						createListInput:
+							{
+								_projectId,
+								name,
+							},
+					},
+			});
+
+			if (!isError) {
+				const list = convertTaskList([ data ]);
+				dispatch(createNewList(list));
 			}
 		}
 	};
