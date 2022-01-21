@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 // Styled Components
 import { ModalStyled } from './createTaskDetailModal.styled';
-
 // components
 import Image from 'components/shared/image/image';
 import TinyMce from 'components/shared/tinyMce/tinyMce';
@@ -19,6 +18,10 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { openNotification } from 'helpers/toastify/notification';
+import { useParams } from 'react-router-dom';
+// socket
+import { SocketContext } from 'socketIO/context';
+import { taskEvents } from 'socketIO/events/taskEvents';
 
 interface IProps {
 	hidden: boolean;
@@ -28,6 +31,8 @@ interface IProps {
 
 const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	// state
+	const socket = useContext(SocketContext);
+	const params = useParams();
 	const [ taskName, setTaskName ] = useState('');
 	// redux
 	const dispatch = useDispatch();
@@ -63,6 +68,8 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 			// CREATE TASKs
 			if (!isError) {
 				dispatch(createTaskInList(data));
+				// socket
+				socket.emit(taskEvents.handleCreateTask, { data, _projectId: params._id || '' });
 				setHidden(false);
 			}
 		}
@@ -74,7 +81,6 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	const handleGetDes = (text: string) => {
 		setDescriptions(text);
 		setIsShopDescriptions(false);
-		console.log(text);
 	};
 
 	if (loadingCreateTask) return <LoadingView />;
@@ -118,15 +124,6 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 					</div>
 
 					<div className='task-detail__assign'>
-						{/* <div className='task-detail__assign__list-selection'>
-							<select name='list' defaultValue='todo'>
-								<option value='todo'>To Do</option>
-								<option value='doing'>Doing</option>
-								<option value='review'>Review</option>
-								<option value='done'>Done</option>
-							</select>
-						</div> */}
-
 						<div className='task-detail__assign__detail'>
 							<div className='title'>Details</div>
 

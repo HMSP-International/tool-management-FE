@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
-
+import { SocketContext, socket } from './socketIO/context';
 // pages
 import HomePage from './pages';
 import AuthPage from './pages/auth';
@@ -14,63 +14,65 @@ import PrivateRouteLogined from 'components/shared/privateRoute/privateRouteLogi
 
 function App () {
 	return (
-		<div className='app'>
-			{/* Start Router */}
-			<Menu />
-			<Routes>
-				<Route
-					path='/'
-					element={
-						<PrivateRouteLogined>
-							<HomePage />
-						</PrivateRouteLogined>
-					}
-				/>
+		<SocketContext.Provider value={socket}>
+			<div className='app'>
+				{/* Start Router */}
+				<Menu />
+				<Routes>
+					<Route
+						path='/'
+						element={
+							<PrivateRouteLogined>
+								<HomePage />
+							</PrivateRouteLogined>
+						}
+					/>
 
-				<Route path='/auth/*' element={<AuthPage />} />
+					<Route path='/auth/*' element={<AuthPage />} />
 
-				<Route
-					path='/dashboard'
-					element={
-						<PrivateRouteLogined>
-							<DashboardPage />
-						</PrivateRouteLogined>
-					}
-				/>
+					<Route
+						path='/dashboard'
+						element={
+							<PrivateRouteLogined>
+								<DashboardPage />
+							</PrivateRouteLogined>
+						}
+					/>
 
-				<Route
-					path='/manage/:_id/*'
-					element={
-						<PrivateRouteLogined>
-							<ManagePage />
-						</PrivateRouteLogined>
-					}
-				/>
+					<Route
+						path='/manage/:_id/*'
+						element={
+							<PrivateRouteLogined>
+								<ManagePage />
+							</PrivateRouteLogined>
+						}
+					/>
 
-				<Route path='/notFound' element={<NotFound />} />
+					<Route path='/notFound' element={<NotFound />} />
 
-				<Route
-					path='/profile/*'
-					element={
-						<PrivateRouteLogined>
-							<ProfilePage />
-						</PrivateRouteLogined>
-					}
-				/>
+					<Route
+						path='/profile/*'
+						element={
+							<PrivateRouteLogined>
+								<ProfilePage />
+							</PrivateRouteLogined>
+						}
+					/>
 
-				<Route
-					path='/verify/:name'
-					element={
-						<PrivateRouteLogined>
-							<VerifyPage />
-						</PrivateRouteLogined>
-					}
-				/>
+					<Route
+						path='/verify/:name'
+						element={
+							<PrivateRouteLogined>
+								<VerifyPage />
+							</PrivateRouteLogined>
+						}
+					/>
 
-				<Route path='*' element={<Navigate to='/notFound' />} />
-			</Routes>
-			{/* End Router */}
-		</div>
+					<Route path='*' element={<Navigate to='/notFound' />} />
+				</Routes>
+				{/* End Router */}
+			</div>
+		</SocketContext.Provider>
 	);
 }
 

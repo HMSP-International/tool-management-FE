@@ -6,6 +6,8 @@ export const TaskStyled = styled.div`
 	padding: 10px;
 	margin-bottom: 5px;
 	cursor: pointer;
+	display: flex;
+	flex-direction: column;
 
 	font-size: ${props => props.theme.fontSize.big};
 	background-color: #fff;
@@ -16,6 +18,7 @@ export const TaskStyled = styled.div`
 		font-size: 14px;
 		margin-bottom: 5px;
 		color: #172d4d;
+		flex-grow: 1;
 	}
 
 	.task-type {
@@ -31,7 +34,7 @@ export const TaskStyled = styled.div`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-top: 15px;
+		/* margin-top: 15px; */
 
 		&__ {
 			color: #7a689a;

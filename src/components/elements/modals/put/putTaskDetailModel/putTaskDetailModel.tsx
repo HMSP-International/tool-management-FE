@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 // Styled Components
 import { ModalStyled } from './putTaskDetailModel.styled';
 // components
@@ -21,6 +21,10 @@ import { dateMongooseToDateJs } from 'helpers/date/dateMongooseToDateJs';
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { ITask } from 'slices/task/interfaces';
+import { SocketContext } from 'socketIO/context';
+import { useParams } from 'react-router-dom';
+// socket
+import { taskEvents } from 'socketIO/events/taskEvents';
 
 interface IProps {
 	hidden: boolean;
@@ -28,6 +32,8 @@ interface IProps {
 }
 
 const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
+	const socket = useContext(SocketContext);
+	const params = useParams();
 	// redux
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
@@ -37,24 +43,25 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ onDeleteTaskName ] = useMutation(DELETE_TASKS_MUTATION);
 
 	// event
-	const handleAssignee = async (newAssigne: any) => {
-		if (task.assignee === null || newAssigne !== task.assignee._id) {
-			const { isError, data } = await fetchDataAndShowNotify({
-				fnFetchData: onChangeAssignee,
-				variables:
-					{
-						changeAssigneeInput:
-							{
-								_taskId: task._id,
-								assignee: newAssigne,
-							},
-					},
-			});
+	const handleAssignee = async (newAssigne: string) => {
+		// if (task.assignee === null || newAssigne !== task.assignee._id) {
+		const { isError, data } = await fetchDataAndShowNotify({
+			fnFetchData: onChangeAssignee,
+			variables:
+				{
+					changeAssigneeInput:
+						{
+							_taskId: task._id,
+							assignee: newAssigne,
+						},
+				},
+		});
 
-			if (!isError) {
-				dispatch(changeTask(data));
-			}
+		if (!isError) {
+			dispatch(changeTask(data));
+			socket.emit(taskEvents.changeAssingeeTask, { data, _projectId: params._id || '' });
 		}
+		// }
 	};
 
 	const handleDeleteTask = async () => {
@@ -71,6 +78,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 
 		if (!isError) {
 			dispatch(deleteTasksInList(data));
+			socket.emit(taskEvents.handleDeleteTask, { data, _projectId: params._id || '' });
 			setHidden(false);
 		}
 	};
