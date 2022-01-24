@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { MenuStyled } from './menu.styled';
 import Header from './header/header';
 import Space from './space/space';
 import { AiOutlineArrowRight } from 'react-icons/ai';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { projectEvents } from 'socketIO/events/projectEvents';
+import { SocketContext } from 'socketIO/context';
+import { deleteProject } from 'slices/project/slice';
+import { useDispatch } from 'react-redux';
 
 const Menu: React.FC = () => {
 	const [ show, setShow ] = useState(true);
+	const socket = useContext(SocketContext);
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	useEffect(
+		() => {
+			socket.on(projectEvents.handleDeleteProject, (data: any) => {
+				dispatch(deleteProject(data));
+				navigate('/');
+			});
+		},
+		[ dispatch, navigate, socket ],
+	);
 
 	const { pathname } = useLocation();
 	const reg = new RegExp('/auth/', 'i');

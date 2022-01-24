@@ -26,8 +26,6 @@ import { createProject } from 'slices/project/slice';
 import { IProject } from 'slices/project/interfaces';
 import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
 import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
-import { convertTaskList } from 'helpers/formatData/convertTaskList';
-import { createNewList } from 'slices/taskList/slice';
 
 interface IProps {
 	hidden: boolean;
@@ -153,7 +151,6 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 				const project: IProject = data;
 				const newProjects = convertProject([ project ]);
 				dispatch(createProject(newProjects));
-
 				// auto create list ToDo -> Doing -> Review -> Done -> Pending
 				handleCreateList([ 'To Do', 'Doing', 'Review', 'Done', 'Pending' ], project._id);
 			}
@@ -162,7 +159,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 
 	const handleCreateList = async (names: string[], _projectId: string) => {
 		for (let name of names) {
-			const { isError, data } = await fetchDataAndShowNotify({
+			await fetchDataAndShowNotify({
 				fnFetchData: onCreateList,
 				variables:
 					{
@@ -173,11 +170,6 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 							},
 					},
 			});
-
-			if (!isError) {
-				const list = convertTaskList([ data ]);
-				dispatch(createNewList(list));
-			}
 		}
 	};
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 // graphql
 import { useMutation } from '@apollo/client';
 import { DELETE_PROJECT_MUTATION } from 'apis/projects/mutations';
@@ -13,6 +13,10 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
 import { DeleteTaskListModalStyled } from './deleteProjectModal.styled';
+// socket
+import { SocketContext } from 'socketIO/context';
+import { projectEvents } from 'socketIO/events/projectEvents';
+
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
@@ -22,6 +26,8 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ onDeleteProject, { loading } ] = useMutation(DELETE_PROJECT_MUTATION);
 	const dispatch = useDispatch();
 	const params = useParams();
+	const socket = useContext(SocketContext);
+	const navigate = useNavigate();
 
 	if (loading) return <LoadingView />;
 
@@ -34,7 +40,9 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 		if (!isError) {
 			dispatch(deleteProject(data));
 			setHidden(false);
-			window.location.replace('/');
+			socket.emit(projectEvents.handleDeleteProject, { data, _projectId: params._id || '' });
+			// window.location.replace('/');
+			navigate('/');
 		}
 	};
 

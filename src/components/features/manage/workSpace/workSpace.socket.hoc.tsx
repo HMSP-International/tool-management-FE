@@ -52,7 +52,7 @@ const WorkSpaceSocketHoc: React.FC<IProps> = ({ children }) => {
 				dispatch(changeTask(data));
 			});
 		},
-		[ dispatch, params._id, socket ],
+		[ dispatch, socket ],
 	);
 
 	// List
@@ -66,7 +66,7 @@ const WorkSpaceSocketHoc: React.FC<IProps> = ({ children }) => {
 				dispatch(deleteTaskList(data));
 			});
 		},
-		[ dispatch, params._id, socket ],
+		[ dispatch, socket ],
 	);
 
 	// Project

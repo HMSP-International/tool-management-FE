@@ -14,8 +14,6 @@ import { convertProject } from 'helpers/formatData/convertProject';
 import { useDispatch } from 'react-redux';
 import { createProject } from 'slices/project/slice';
 import { IProject } from 'slices/project/interfaces';
-import { convertTaskList } from 'helpers/formatData/convertTaskList';
-import { createNewList } from 'slices/taskList/slice';
 
 interface IProps {
 	hidden: boolean;
@@ -88,7 +86,7 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 
 	const handleCreateList = async (names: string[], _projectId: string) => {
 		for (let name of names) {
-			const { isError, data } = await fetchDataAndShowNotify({
+			await fetchDataAndShowNotify({
 				fnFetchData: onCreateList,
 				variables:
 					{
@@ -99,11 +97,6 @@ const CreateProjectModal: React.FC<IProps> = ({ hidden, setHidden, spaceId }) =>
 							},
 					},
 			});
-
-			if (!isError) {
-				const list = convertTaskList([ data ]);
-				dispatch(createNewList(list));
-			}
 		}
 	};
 
