@@ -79,7 +79,7 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 					if (!isError) {
 						const projects: IProject[] = data;
 						const newProjects = convertProject(projects);
-
+						console.log('huy', projects);
 						dispatch(getProjectsFromCollaborator(newProjects));
 					}
 				};
