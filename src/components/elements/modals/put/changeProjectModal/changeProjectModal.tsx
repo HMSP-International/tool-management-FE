@@ -11,7 +11,7 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { convertProject } from 'helpers/formatData/convertProject';
 // redux
 import { useDispatch } from 'react-redux';
-import { changeProject } from 'slices/project/slice';
+import { changeProject, currentProject } from 'slices/project/slice';
 
 interface IProps {
 	hidden: boolean;
@@ -51,6 +51,7 @@ const ChangeProjectModal: React.FC<IProps> = ({ hidden, setHidden, projectId }) 
 		if (!isError) {
 			const newProjects = convertProject([ data ]);
 			dispatch(changeProject(newProjects));
+			dispatch(currentProject(data));
 			setHidden(false);
 		}
 	};
