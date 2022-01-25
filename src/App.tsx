@@ -31,7 +31,7 @@ function App () {
 					<Route path='/auth/*' element={<AuthPage />} />
 
 					<Route
-						path='/dashboard'
+						path='/dashboard/:name/*'
 						element={
 							<PrivateRouteLogined>
 								<DashboardPage />

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Modal
-import CreateNewUserDrawer from '../../elements/drawers/createUserDrawer/createUserDrawer';
+import CreateNewUserDrawer from 'components/elements/drawers/createUserDrawer/createUserDrawer';
 
 // components
-import ContainerPage from '../../shared/containerPage/containerPage';
-import UsersDashboard from '../../elements/tables/usersDashboard/usersDashboard';
+import ContainerPage from 'components/shared/containerPage/containerPage';
+import UsersDashboard from 'components/elements/tables/usersDashboard/usersDashboard';
 import { DashboardStyled } from './index.styled';
-import LoadingView from '../../shared/loadingView/loadingView';
+import LoadingView from 'components/shared/loadingView/loadingView';
 
 // redux
 import { getUsers } from 'slices/dashboard/slice';

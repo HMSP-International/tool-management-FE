@@ -33,7 +33,6 @@ const Manage: React.FC = () => {
 					});
 
 					if (!isError) {
-						console.log(data);
 						dispatch(getCollaboratorBeLongProject(data));
 					}
 				}

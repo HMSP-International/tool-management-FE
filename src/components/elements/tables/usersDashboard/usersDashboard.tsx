@@ -13,10 +13,8 @@ import { IInitialStateDashboard, IUser } from 'slices/dashboard/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 // Redux
 import { useSelector } from 'react-redux';
-// helpers
-import { AdvancedImage } from '@cloudinary/react';
-import { Cloudinary } from '@cloudinary/url-gen';
-import { fill } from '@cloudinary/url-gen/actions/resize';
+// components
+import ImageLink from 'components/shared/image/imageLink';
 
 const columns: TableColumn<IUser>[] = [
 	{
@@ -25,20 +23,15 @@ const columns: TableColumn<IUser>[] = [
 		sortable: true,
 		center: true,
 		cell:
-			row => {
-				const cld = new Cloudinary({
-					cloud:
-						{
-							cloudName: 'hmsp-com',
-						},
-				});
-
-				const myImage = cld.image(row.avatar);
-
-				myImage.resize(fill().width(50).height(50));
-
-				return <AdvancedImage cldImg={myImage} />;
-			},
+			row => (
+				<ImageLink
+					w={50}
+					h={50}
+					public_id={row.avatar}
+					link={'/dashboard/user/' + row._id}
+					styles={{ cursor: 'pointer' }}
+				/>
+			),
 	},
 	{
 		name: 'Name',
