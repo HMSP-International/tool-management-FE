@@ -4,6 +4,7 @@ import { SocketContext, socket } from './socketIO/context';
 import HomePage from './pages';
 import AuthPage from './pages/auth';
 import DashboardPage from './pages/dashboard';
+import EmployeeDutiesPage from './pages/employee-duties';
 import ManagePage from './pages/manage';
 
 import NotFound from './pages/notFound';
@@ -31,7 +32,7 @@ function App () {
 					<Route path='/auth/*' element={<AuthPage />} />
 
 					<Route
-						path='/dashboard/:name/*'
+						path='/dashboard'
 						element={
 							<PrivateRouteLogined>
 								<DashboardPage />
@@ -40,7 +41,16 @@ function App () {
 					/>
 
 					<Route
-						path='/manage/:_id/*'
+						path='/employee-duties/:_userId'
+						element={
+							<PrivateRouteLogined>
+								<EmployeeDutiesPage />
+							</PrivateRouteLogined>
+						}
+					/>
+
+					<Route
+						path='/manage/:_projectId/*'
 						element={
 							<PrivateRouteLogined>
 								<ManagePage />

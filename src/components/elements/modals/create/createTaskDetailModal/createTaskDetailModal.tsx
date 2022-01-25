@@ -69,7 +69,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 			if (!isError) {
 				dispatch(createTaskInList(data));
 				// socket
-				socket.emit(taskEvents.handleCreateTask, { data, _projectId: params._id || '' });
+				socket.emit(taskEvents.handleCreateTask, { data, _projectId: params._projectId || '' });
 				setHidden(false);
 			}
 		}

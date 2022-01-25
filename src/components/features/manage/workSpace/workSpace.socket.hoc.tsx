@@ -72,13 +72,13 @@ const WorkSpaceSocketHoc: React.FC<IProps> = ({ children }) => {
 	// Project
 	useEffect(
 		() => {
-			socket.emit(projectEvents.connectionToProject, { data: { _projectId: params._id || '' } });
+			socket.emit(projectEvents.connectionToProject, { data: { _projectId: params._projectId || '' } });
 
 			return () => {
-				socket.emit(projectEvents.disconnectionToProject, { data: { _projectId: params._id || '' } });
+				socket.emit(projectEvents.disconnectionToProject, { data: { _projectId: params._projectId || '' } });
 			};
 		},
-		[ dispatch, params._id, socket ],
+		[ dispatch, params._projectId, socket ],
 	);
 
 	return <React.Fragment>{children}</React.Fragment>;

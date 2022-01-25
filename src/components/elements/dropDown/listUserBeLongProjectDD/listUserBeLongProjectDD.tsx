@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const ListUserBeLongProjectDD: React.FC<IProps> = ({ onChangeUser, assignee }) => {
-	const { _id: _projectId } = useParams();
+	const { _projectId } = useParams();
 	const [ options, setOptions ] = useState([]);
 
 	const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(

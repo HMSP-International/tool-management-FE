@@ -81,7 +81,7 @@ const WorkSpace: React.FC<IProps> = () => {
 
 			const input = {
 				data,
-				_projectId: params._id || '',
+				_projectId: params._projectId || '',
 			};
 			socket.emit(taskEvents.handleDragAndDropInAnotherList, input);
 		}
@@ -108,7 +108,7 @@ const WorkSpace: React.FC<IProps> = () => {
 
 			const input = {
 				data,
-				_projectId: params._id || '',
+				_projectId: params._projectId || '',
 			};
 			socket.emit(taskEvents.handleDragAndDropIn1List, input);
 		}

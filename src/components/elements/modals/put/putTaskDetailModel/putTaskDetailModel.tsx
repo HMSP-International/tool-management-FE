@@ -59,7 +59,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 
 		if (!isError) {
 			dispatch(changeTask(data));
-			socket.emit(taskEvents.changeAssingeeTask, { data, _projectId: params._id || '' });
+			socket.emit(taskEvents.changeAssingeeTask, { data, _projectId: params._projectId || '' });
 		}
 		// }
 	};
@@ -78,7 +78,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 
 		if (!isError) {
 			dispatch(deleteTasksInList(data));
-			socket.emit(taskEvents.handleDeleteTask, { data, _projectId: params._id || '' });
+			socket.emit(taskEvents.handleDeleteTask, { data, _projectId: params._projectId || '' });
 			setHidden(false);
 		}
 	};

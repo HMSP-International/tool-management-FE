@@ -37,7 +37,7 @@ const Manage: React.FC = () => {
 						{
 							getListsInput:
 								{
-									_projectId: params._id,
+									_projectId: params._projectId,
 								},
 						},
 					isNotShowNotify: true,
@@ -56,7 +56,7 @@ const Manage: React.FC = () => {
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ navigate, dispatch, onGetLists, params._id ],
+		[ navigate, dispatch, onGetLists, params._projectId ],
 	);
 
 	useEffect(
@@ -66,7 +66,7 @@ const Manage: React.FC = () => {
 			};
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ params._id ],
+		[ params._projectId ],
 	);
 
 	// render;

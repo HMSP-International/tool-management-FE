@@ -1,7 +1,7 @@
 import React from 'react';
-import Dashboard from 'components/features/dashboard/index';
+import EmployeeDuties from 'components/features/employeeDuties/index';
 const DashboardPage: React.FC = () => {
-	return <Dashboard />;
+	return <EmployeeDuties />;
 };
 
 export default DashboardPage;

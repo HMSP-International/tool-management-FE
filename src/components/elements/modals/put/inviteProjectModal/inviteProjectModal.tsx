@@ -37,7 +37,7 @@ const showText = (text: string) => {
 };
 
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject }) => {
-	const { _id: _projectId } = useParams();
+	const { _projectId } = useParams();
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
 	// const [ onDeletePaticipant, { loading: loadingDeletePaticipant } ] = useMutation(DELETE_PATICIPANT_MUTAIION);
 	// const [ onCreatePaticiant, { loading: loadingCreatePaticipant } ] = useMutation(CREATE_PATICIPANT_MUTAIION);

@@ -45,7 +45,7 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 
 			{handleCheckAuth() && (
 				<Menu.Item className='menu-item' key={'2'}>
-					<Link to='/dashboard/admin' className='menu__body__tabs-item'>
+					<Link to='/dashboard' className='menu__body__tabs-item'>
 						<AiFillDashboard style={{ color: 'white', fontSize: '20px' }} />
 						<h4>Dashboard</h4>
 					</Link>

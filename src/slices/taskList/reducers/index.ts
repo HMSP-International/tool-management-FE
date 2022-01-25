@@ -10,6 +10,7 @@ import { deleteTaskList } from './deleteTaskList';
 import { deleteTasksInList } from './deleteTasksInList';
 import { getListsFormatted } from './getListsFormatted';
 import { getTasksInList } from './getTasksInList';
+import { renameList } from './renameList';
 
 const reducers = {
 	changeTask,
@@ -23,6 +24,7 @@ const reducers = {
 	deleteTasksInList,
 	getListsFormatted,
 	getTasksInList,
+	renameList,
 };
 
 export default reducers;

@@ -49,7 +49,7 @@ const ManagePage: React.FC = () => {
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onGetProject,
-					variables: { getProjectInput: { _projectId: params._id } },
+					variables: { getProjectInput: { _projectId: params._projectId } },
 					isNotShowNotify: true,
 				});
 
@@ -64,7 +64,7 @@ const ManagePage: React.FC = () => {
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ dispatch, onGetProject, params._id ],
+		[ dispatch, onGetProject, params._projectId ],
 	);
 
 	useEffect(
@@ -73,7 +73,7 @@ const ManagePage: React.FC = () => {
 				if (!loadingGetUserBelongProject) {
 					const { data, isError } = await fetchDataAndShowNotify({
 						fnFetchData: onGetUserBeLongProject,
-						variables: { getUsersBelongProjectInput: { _projectId: params._id } },
+						variables: { getUsersBelongProjectInput: { _projectId: params._projectId } },
 					});
 
 					if (!isError) {
@@ -86,7 +86,7 @@ const ManagePage: React.FC = () => {
 			fetchData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ onGetUserBeLongProject, dispatch, params._id ],
+		[ onGetUserBeLongProject, dispatch, params._projectId ],
 	);
 
 	useEffect(() => {
@@ -104,7 +104,7 @@ const ManagePage: React.FC = () => {
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onFindPaticipantByPAM,
-					variables: { getPaticipantByProjectAndMemberInput: { _projectId: params._id } },
+					variables: { getPaticipantByProjectAndMemberInput: { _projectId: params._projectId } },
 					isNotShowNotify: true,
 				});
 
@@ -118,7 +118,7 @@ const ManagePage: React.FC = () => {
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ dispatch, navigate, onFindPaticipantByPAM, params._id ],
+		[ dispatch, navigate, onFindPaticipantByPAM, params._projectId ],
 	);
 
 	if (loadingGetProject) {

@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 import { getCollaboratorBeLongProject } from 'slices/paticipant/slice';
 
 const Manage: React.FC = () => {
-	const { _id: _projectId } = useParams();
+	const { _projectId } = useParams();
 	const dispatch = useDispatch();
 
 	const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(

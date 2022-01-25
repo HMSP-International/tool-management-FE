@@ -34,13 +34,13 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const handleDeleteProject = async () => {
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onDeleteProject,
-			variables: { deleteProjectInput: { _projectId: params._id } },
+			variables: { deleteProjectInput: { _projectId: params._projectId } },
 		});
 
 		if (!isError) {
 			dispatch(deleteProject(data));
 			setHidden(false);
-			// socket.emit(projectEvents.handleDeleteProject, { data, _projectId: params._id || '' });
+			// socket.emit(projectEvents.handleDeleteProject, { data, _projectId: params._projectId || '' });
 			// window.location.replace('/');
 			navigate('/');
 		}

@@ -53,7 +53,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 				{
 					createListInput:
 						{
-							_projectId: params._id,
+							_projectId: params._projectId,
 							name,
 						},
 				},
@@ -62,7 +62,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 		if (!isError) {
 			const list = convertTaskList([ data ]);
 			dispatch(createNewList(list));
-			socket.emit(listEvents.handleCreateList, { data: list, _projectId: params._id || '' });
+			socket.emit(listEvents.handleCreateList, { data: list, _projectId: params._projectId || '' });
 			setHidden(false);
 		}
 	};

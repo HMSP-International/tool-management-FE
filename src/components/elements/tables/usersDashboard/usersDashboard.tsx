@@ -28,7 +28,7 @@ const columns: TableColumn<IUser>[] = [
 					w={50}
 					h={50}
 					public_id={row.avatar}
-					link={'/dashboard/user/' + row._id}
+					link={'/employee-duties/' + row._id}
 					styles={{ cursor: 'pointer' }}
 				/>
 			),

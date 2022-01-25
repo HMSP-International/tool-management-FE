@@ -1,7 +1,7 @@
 import React from 'react';
-
+import X from '../manage/index';
 const DashboardUser: React.FC = () => {
-	return <p>1</p>;
+	return <X />;
 };
 
 export default DashboardUser;

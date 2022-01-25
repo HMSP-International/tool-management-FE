@@ -43,7 +43,7 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) =>
 
 		if (!isError) {
 			dispatch(deleteTaskList(data._id));
-			socket.emit(listEvents.handleDeleteList, { data: data._id, _projectId: params._id || '' });
+			socket.emit(listEvents.handleDeleteList, { data: data._id, _projectId: params._projectId || '' });
 		}
 	};
 
