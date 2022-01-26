@@ -10,7 +10,16 @@ interface IProps {
 
 const ListFilterSpaceProjectListDD: React.FC<IProps> = () => {
 	// const { _projectId } = useParams();
-	const [ options ] = useState([]);
+	const [ options ] = useState([
+		{
+			label: 'All Space',
+			value: '',
+		},
+		{
+			label: 'HMSP',
+			value: '12',
+		},
+	]);
 
 	// const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(
 	// 	GET_USERS_BELONG_PROJECT_MUTAIION,
@@ -55,8 +64,8 @@ const ListFilterSpaceProjectListDD: React.FC<IProps> = () => {
 			// 	value: assignee ? assignee._id : '',
 			// }}
 			defaultValue={{
-				label: 'All Space',
-				value: '',
+				label: 'hha',
+				value: '12',
 			}}
 			onChange={handleChangeUser}
 			options={options}

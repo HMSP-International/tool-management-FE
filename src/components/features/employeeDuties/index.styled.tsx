@@ -5,6 +5,13 @@ export const EmployeeDutiesStyled = styled.section`
 		display: flex;
 		justify-content: space-around;
 
+		&__container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+
 		&__item {
 			border: 1px solid lightblue;
 			transition: all 0.3s ease-in-out;
