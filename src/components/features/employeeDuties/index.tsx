@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 // Component
-import { EmployeeDutiesStyled } from './index.styled';
-import ListFilterSpaceProjectListDD from 'components/elements/dropDown/ListFilterSpaceProjectListDD/ListFilterSpaceDD';
 import WorkSpace from './workSpace/workSpace';
 import LoadingView from 'components/shared/loadingView/loadingView';
 import { getListsFormatted } from 'slices/taskList/slice';

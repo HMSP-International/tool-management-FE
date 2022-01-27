@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const EmployeeDutiesStyled = styled.section`
+	width: 100%;
 	.employee-duties__filter {
 		display: flex;
 		justify-content: space-around;
@@ -10,6 +11,14 @@ export const EmployeeDutiesStyled = styled.section`
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+		}
+
+		&__name {
+			p {
+				margin-bottom: 10px;
+				bold: 600;
+				cursor: context-menu;
+			}
 		}
 
 		&__item {

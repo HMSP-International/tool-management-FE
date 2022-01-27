@@ -13,7 +13,7 @@ const ListFilterSpaceProjectListDD: React.FC<IProps> = () => {
 	const [ options ] = useState([
 		{
 			label: 'All Space',
-			value: '',
+			value: '-1',
 		},
 		{
 			label: 'HMSP',
@@ -64,8 +64,8 @@ const ListFilterSpaceProjectListDD: React.FC<IProps> = () => {
 			// 	value: assignee ? assignee._id : '',
 			// }}
 			defaultValue={{
-				label: 'hha',
-				value: '12',
+				label: 'All',
+				value: '-1',
 			}}
 			onChange={handleChangeUser}
 			options={options}

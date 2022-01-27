@@ -1,22 +1,10 @@
 import React from 'react';
-// 3rd Components
-// Styled Components
 import { WorkSpaceStyled } from './container.styled';
-// redux
-import { useSelector } from 'react-redux';
-// graphql
-// helper
-
-// interfaces
-import { RootState } from 'global/redux/rootReducer';
-import { IInitialStateProject } from 'slices/project/interfaces';
 
 import { EmployeeDutiesStyled } from '../index.styled';
 import ListFilterSpaceProjectListDD from 'components/elements/dropDown/ListFilterSpaceProjectListDD/ListFilterSpaceDD';
 
 const Container: React.FC = ({ children }) => {
-	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
-
 	return (
 		<React.Fragment>
 			<WorkSpaceStyled className='workspace'>
