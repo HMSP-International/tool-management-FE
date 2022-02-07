@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const EmployeeDutiesStyled = styled.section`
 	width: 100%;
 	.employee-duties__filter {
-		display: flex;
+		display: grid;
 		justify-content: space-around;
+		grid-template-columns: 1fr 1fr;
 
 		&__container {
 			display: flex;
