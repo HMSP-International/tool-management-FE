@@ -33,7 +33,6 @@ const ImageLink: React.FC<IProps> = ({ w, h, public_id, styles = {}, tooltip, pl
 	myImage.resize(fill().width(w).height(h));
 
 	const handleGoToPage = () => {
-		console.log(link);
 		navigate(link);
 	};
 

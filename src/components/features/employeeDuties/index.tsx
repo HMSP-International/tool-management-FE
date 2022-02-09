@@ -1,21 +1,31 @@
 import React, { useEffect } from 'react';
-// Component
+import { useNavigate } from 'react-router-dom';
+// Components
 import WorkSpace from './workSpace/workSpace';
 import LoadingView from 'components/shared/loadingView/loadingView';
 import { getListsFormatted } from 'slices/taskList/slice';
 import { convertTaskList } from 'helpers/formatData/convertTaskList';
 import { IList } from 'slices/taskList/interfaces';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// graphql
 import { useMutation } from '@apollo/client';
+// redux
+import { useDispatch, useSelector } from 'react-redux';
 import { GET_LISTS_MUTATION } from 'apis/taskList/mutations';
+import { IInitialStateEmployeeDuties } from 'slices/employeeDuties/interfaces';
+import { RootState } from 'global/redux/rootReducer';
+import { setProject, setSpace } from 'slices/employeeDuties/slice';
+import { PROJECT_DEFAULT, SPACE_DEFAULT } from 'slices/employeeDuties/initialState';
 
 const EmployeeDuties: React.FC = () => {
 	const navigate = useNavigate();
+
+	const employeeDutiesRedux: IInitialStateEmployeeDuties = useSelector((state: RootState) => state.employeeDuties);
+
 	const params = {
-		_projectId: '61f0f6c41649b5b6a4199604',
+		_projectId: employeeDutiesRedux.project.value,
 	};
+
 	// redux
 	const dispatch = useDispatch();
 
@@ -25,18 +35,12 @@ const EmployeeDuties: React.FC = () => {
 	// use effect
 	useEffect(
 		() => {
-			if (loadingGetLists) return;
+			if (loadingGetLists || params._projectId === '-1') return;
 
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onGetLists,
-					variables:
-						{
-							getListsInput:
-								{
-									_projectId: params._projectId,
-								},
-						},
+					variables: { getListsInput: { _projectId: params._projectId } },
 					isNotShowNotify: true,
 				});
 
@@ -64,6 +68,17 @@ const EmployeeDuties: React.FC = () => {
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ params._projectId ],
+	);
+
+	useEffect(
+		() => {
+			return () => {
+				dispatch(setProject(PROJECT_DEFAULT));
+				dispatch(setSpace(SPACE_DEFAULT));
+			};
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[],
 	);
 
 	// render;

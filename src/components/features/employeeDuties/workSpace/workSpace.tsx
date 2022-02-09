@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-// import { useParams } from 'react-router-dom';
 // 3rd Components
 import { DragDropContext, DraggableLocation, Droppable } from 'react-beautiful-dnd';
 import List from '../taskList/taskList';
@@ -25,15 +24,19 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // socket
 import { SocketContext } from 'socketIO/context';
 import { taskEvents } from 'socketIO/events/taskEvents';
+// redux
+import { IInitialStateEmployeeDuties } from 'slices/employeeDuties/interfaces';
 
 interface IProps {}
 
 const WorkSpace: React.FC<IProps> = () => {
 	const dispatch = useDispatch();
-	// const params = useParams();
+
+	const employeeDutiesRedux: IInitialStateEmployeeDuties = useSelector((state: RootState) => state.employeeDuties);
 	const params = {
-		_projectId: '61f0f6c41649b5b6a4199604',
+		_projectId: employeeDutiesRedux.project.value,
 	};
+
 	const socket = useContext(SocketContext);
 	const { lists: columns }: IInitialStateList = useSelector((state: RootState) => state.taskList);
 	// graphql

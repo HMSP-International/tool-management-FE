@@ -46,6 +46,15 @@ const Dashboard: React.FC = () => {
 		[ onGetUsers, dispatch, navigate ],
 	);
 
+	useEffect(
+		() => {
+			return () => {
+				dispatch(getUsers([]));
+			};
+		},
+		[ dispatch ],
+	);
+
 	if (loading) return <LoadingView />;
 
 	return (

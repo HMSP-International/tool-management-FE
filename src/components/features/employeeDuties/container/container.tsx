@@ -1,33 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { WorkSpaceStyled } from './container.styled';
-
 import { EmployeeDutiesStyled } from '../index.styled';
-import ListFilterSpaceDD, {
-	IPropsDefaultValue,
-} from 'components/elements/dropDown/ListFilterSpaceProjectListDD/ListFilterSpaceDD/ListFilterSpaceDD';
+// components
+import ListFilterSpaceDD from 'components/elements/dropDown/ListFilterSpaceProjectDD/ListFilterSpaceDD/ListFilterSpaceDD';
+import ListFilterProjectDD from 'components/elements/dropDown/ListFilterSpaceProjectDD/ListFilterProjectDD/ListFilterProjectDD';
+// redux
+import { RootState } from 'global/redux/rootReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProject, setSpace } from 'slices/employeeDuties/slice';
+// interface
+import { IInitialStateEmployeeDuties } from 'slices/employeeDuties/interfaces';
+import { PROJECT_DEFAULT } from 'slices/employeeDuties/initialState';
 
 const Container: React.FC = ({ children }) => {
-	const [ space, setSpace ] = useState<IPropsDefaultValue>({
-		label: 'All Projects',
-		value: '-1',
-	});
-	const [ project, setProject ] = useState<IPropsDefaultValue>({
-		label: 'All Projects',
-		value: '-1',
-	});
-
-	const handleChangeProject = (e: any) => {
-		setProject(e);
-	};
+	const employeeDutiesRedux: IInitialStateEmployeeDuties = useSelector((state: RootState) => state.employeeDuties);
+	const dispatch = useDispatch();
 
 	const handleChangeSpace = (e: any) => {
-		setSpace(e);
-		if (e.value !== space.value) {
-			setProject({
-				label: 'All Projects',
-				value: '-1',
-			});
+		dispatch(setSpace(e));
+
+		if (e.value !== employeeDutiesRedux.space.value) {
+			dispatch(setProject(PROJECT_DEFAULT));
 		}
+	};
+
+	const handleChangeProject = (e: any) => {
+		dispatch(setProject(e));
 	};
 
 	return (
@@ -45,18 +43,22 @@ const Container: React.FC = ({ children }) => {
 										<p>Work Space</p>
 									</div>
 									<div className='employee-duties__filter__item'>
-										<ListFilterSpaceDD defaultValue={space} onChangeData={handleChangeSpace} />
+										<ListFilterSpaceDD
+											defaultValue={employeeDutiesRedux.space}
+											onChangeData={handleChangeSpace}
+										/>
 									</div>
 								</div>
-								{space.value !== '-1' && (
+								{employeeDutiesRedux.space.value !== '-1' && (
 									<div className='employee-duties__filter__container'>
 										<div className='employee-duties__filter__name'>
 											<p>Project</p>
 										</div>
 										<div className='employee-duties__filter__item'>
-											<ListFilterSpaceDD
-												defaultValue={project}
+											<ListFilterProjectDD
+												defaultValue={employeeDutiesRedux.project}
 												onChangeData={handleChangeProject}
+												space={employeeDutiesRedux.space}
 											/>
 										</div>
 									</div>
@@ -66,7 +68,7 @@ const Container: React.FC = ({ children }) => {
 					</div>
 				</section>
 
-				{children}
+				{employeeDutiesRedux.space.value !== '-1' && employeeDutiesRedux.project.value !== '-1' && children}
 			</WorkSpaceStyled>
 		</React.Fragment>
 	);

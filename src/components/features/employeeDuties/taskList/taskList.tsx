@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import Task from '../task/task';
 import { DroppableStateSnapshot, DroppableProvided, Draggable } from 'react-beautiful-dnd';
@@ -11,13 +12,12 @@ import { GET_TASKS_BY_LISTID_MUTATION } from 'apis/task/mutations';
 import { useMutation } from '@apollo/client';
 
 // interfaces
-import { IDataColumn, IInitialStateList } from 'slices/taskList/interfaces';
+import { IDataColumn } from 'slices/taskList/interfaces';
 import { ITask } from 'slices/task/interfaces';
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getTasksInList } from 'slices/taskList/slice';
-import { RootState } from 'global/redux/rootReducer';
 
 interface IProps {
 	provided: DroppableProvided;
@@ -28,21 +28,19 @@ interface IProps {
 
 const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 	const [ onGetTasksByListId, { loading } ] = useMutation(GET_TASKS_BY_LISTID_MUTATION);
-	const taskListRedux: IInitialStateList = useSelector((state: RootState) => state.taskList);
 	const dispatch = useDispatch();
+	const params = useParams();
 
 	useEffect(
 		() => {
 			const fetchData = async () => {
-				const ids = taskListRedux.users.map(u => u._id);
-
 				const { data } = await onGetTasksByListId({
 					variables:
 						{
 							getTasksInput:
 								{
 									_listId: listId,
-									_userIds: ids,
+									_userIds: params._userId === undefined ? [] : [ params._userId ],
 								},
 						},
 				});
@@ -53,7 +51,7 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 
 			fetchData();
 		},
-		[ listId, onGetTasksByListId, dispatch, taskListRedux.users ],
+		[ listId, onGetTasksByListId, dispatch, params._userId ],
 	);
 
 	if (loading) return <LoadingView />;
