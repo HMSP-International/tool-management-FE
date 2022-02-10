@@ -13,9 +13,8 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
 import { DeleteTaskListModalStyled } from './deleteProjectModal.styled';
+import { mainParamPage } from 'global/routes/page';
 // socket
-// import { SocketContext } from 'socketIO/context';
-// import { projectEvents } from 'socketIO/events/projectEvents';
 
 interface IProps {
 	hidden: boolean;
@@ -26,7 +25,6 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ onDeleteProject, { loading } ] = useMutation(DELETE_PROJECT_MUTATION);
 	const dispatch = useDispatch();
 	const params = useParams();
-	// const socket = useContext(SocketContext);
 	const navigate = useNavigate();
 
 	if (loading) return <LoadingView />;
@@ -34,14 +32,12 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const handleDeleteProject = async () => {
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onDeleteProject,
-			variables: { deleteProjectInput: { _projectId: params._projectId } },
+			variables: { deleteProjectInput: { _projectId: params[mainParamPage.projectId] } },
 		});
 
 		if (!isError) {
 			dispatch(deleteProject(data));
 			setHidden(false);
-			// socket.emit(projectEvents.handleDeleteProject, { data, _projectId: params._projectId || '' });
-			// window.location.replace('/');
 			navigate('/');
 		}
 	};

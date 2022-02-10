@@ -15,6 +15,7 @@ import { IPaticipant } from 'slices/paticipant/interfaces';
 import { IUser } from 'slices/dashboard/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { IInitialStateEmployeeDuties } from 'slices/employeeDuties/interfaces';
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
 	onChangeUser(T: IUser): void;
@@ -22,7 +23,7 @@ interface IProps {
 }
 
 const ListUserBeLongProjectDD: React.FC<IProps> = ({ onChangeUser, assignee }) => {
-	const { _projectId } = useParams();
+	const params = useParams();
 	const [ options, setOptions ] = useState([]);
 
 	const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(
@@ -39,7 +40,10 @@ const ListUserBeLongProjectDD: React.FC<IProps> = ({ onChangeUser, assignee }) =
 						variables:
 							{
 								getUsersBelongProjectInput:
-									{ _projectId: _projectId || employeeDutiesRedux.project.value },
+									{
+										_projectId:
+											params[mainParamPage.projectId] || employeeDutiesRedux.project.value,
+									},
 							},
 					});
 
@@ -57,7 +61,7 @@ const ListUserBeLongProjectDD: React.FC<IProps> = ({ onChangeUser, assignee }) =
 			fetchData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ _projectId, onGetUserBeLongProject ],
+		[ params[mainParamPage.projectId], onGetUserBeLongProject ],
 	);
 
 	if (loadingGetUserBelongProject) return <LoadingView />;

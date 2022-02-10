@@ -5,15 +5,16 @@ import { AiOutlineSetting } from 'react-icons/ai';
 // components
 import CreateListModal from 'components/elements/modals/create/createListModal/createListModal';
 import InviteProjectModal from 'components/elements/modals/put/inviteProjectModal/inviteProjectModal';
-import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
 import ChangeProjectModal from 'components/elements/modals/put/changeProjectModal/changeProjectModal';
+import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
 // redux
 import { useSelector } from 'react-redux';
 import { RootState } from 'global/redux/rootReducer';
 // interface
 import { DropDownStyled, MenuStyled } from './configProjectDD.styled';
-// import { IInitialStateUser } from 'slices/user/interfaces';
 import { IInitialStateProject } from 'slices/project/interfaces';
+// routes
+import { mainRouterPage } from 'global/routes/page';
 
 interface IProps {}
 
@@ -26,15 +27,13 @@ const WorkSpaceDropDown: React.FC<IProps> = () => {
 	const [ showDeleteProject, setShowDeleteProject ] = useState(false);
 	const [ showInviteProject, setShowInviteProject ] = useState(false);
 	// redux
-	// const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
 
 	const menu = (
 		<MenuStyled>
-			{/* {project.owner === userRedux.profile._id && ( */}
 			<React.Fragment>
 				<Menu.Item className='menu-item' key='1'>
-					<button onClick={() => navigate(`/manage/${project._id}`)}>Tasks</button>
+					<button onClick={() => navigate(`/${mainRouterPage.manage.index}/${project._id}`)}>Tasks</button>
 				</Menu.Item>
 				<Menu.Item className='menu-item' key='2'>
 					<button onClick={() => setShowCreateList(true)}>Create List</button>
@@ -46,13 +45,14 @@ const WorkSpaceDropDown: React.FC<IProps> = () => {
 					<button onClick={() => setShowInviteProject(true)}>Invite</button>
 				</Menu.Item>
 				<Menu.Item className='menu-item' key='5'>
-					<button onClick={() => navigate(`/manage/${project._id}/roles`)}>Roles</button>
+					<button onClick={() => navigate(`/${mainRouterPage.manage.index}/${project._id}/roles`)}>
+						Roles
+					</button>
 				</Menu.Item>
 				<Menu.Item className='menu-item' key='6'>
 					<button onClick={() => setShowDeleteProject(true)}>Delete Project</button>
 				</Menu.Item>
 			</React.Fragment>
-			{/* // )} */}
 		</MenuStyled>
 	);
 

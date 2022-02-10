@@ -3,29 +3,29 @@ import { Tooltip } from 'antd';
 // Styled Components
 import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 // Components
-import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
-import LoadingView from 'components/shared/loadingView/loadingView';
 import Image from 'components/shared/image/image';
+import LoadingView from 'components/shared/loadingView/loadingView';
+import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
 // interfaces
-import { IUser } from 'slices/dashboard/interfaces';
 // graphql
-import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import { useMutation } from '@apollo/client';
-import { INVITE_SPACES_MUTATION } from 'apis/collaborators/mutations';
+import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import { CREATE_SPACE_MUTATION } from 'apis/spaces/mutations';
+import { INVITE_SPACES_MUTATION } from 'apis/collaborators/mutations';
 // redux
 import { useDispatch } from 'react-redux';
-import { getUsers } from 'slices/dashboard/slice';
 import { getSpaces } from 'slices/space/slice';
+import { getUsers } from 'slices/dashboard/slice';
 // interfaces
 import { ISpace } from 'slices/space/interfaces';
+import { IUser } from 'slices/dashboard/interfaces';
 // error
-import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-import { convertProject } from 'helpers/formatData/convertProject';
 import { createProject } from 'slices/project/slice';
 import { IProject } from 'slices/project/interfaces';
-import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
 import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
+import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
+import { convertProject } from 'helpers/formatData/convertProject';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;

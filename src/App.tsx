@@ -3,7 +3,7 @@ import { SocketContext, socket } from './socketIO/context';
 // pages
 import HomePage from './pages';
 import AuthPage from './pages/auth';
-import DashboardPage from './pages/dashboard';
+import DashboardStaffPage from './pages/dashboard-staff';
 import EmployeeDutiesPage from './pages/employee-duties';
 import ManagePage from './pages/manage';
 
@@ -13,6 +13,9 @@ import VerifyPage from './pages/verify';
 import Menu from 'components/features/menu/menu';
 import PrivateRouteLogined from 'components/shared/privateRoute/privateRouteLogined/privateRouteLogined';
 
+// routes
+import { mainRouterPage } from 'global/routes/page';
+
 function App () {
 	return (
 		<SocketContext.Provider value={socket}>
@@ -21,7 +24,7 @@ function App () {
 				<Menu />
 				<Routes>
 					<Route
-						path='/'
+						path={mainRouterPage.home}
 						element={
 							<PrivateRouteLogined>
 								<HomePage />
@@ -29,19 +32,19 @@ function App () {
 						}
 					/>
 
-					<Route path='/auth/*' element={<AuthPage />} />
+					<Route path={mainRouterPage.auth.restOfAuth} element={<AuthPage />} />
 
 					<Route
-						path='/dashboard'
+						path={mainRouterPage.dashboardStaff}
 						element={
 							<PrivateRouteLogined>
-								<DashboardPage />
+								<DashboardStaffPage />
 							</PrivateRouteLogined>
 						}
 					/>
 
 					<Route
-						path='/employee-duties/:_userId'
+						path={mainRouterPage.employeeDuties}
 						element={
 							<PrivateRouteLogined>
 								<EmployeeDutiesPage />
@@ -50,7 +53,7 @@ function App () {
 					/>
 
 					<Route
-						path='/manage/:_projectId/*'
+						path={mainRouterPage.manage.withProject}
 						element={
 							<PrivateRouteLogined>
 								<ManagePage />
@@ -58,10 +61,10 @@ function App () {
 						}
 					/>
 
-					<Route path='/notFound' element={<NotFound />} />
+					<Route path={mainRouterPage.notFound} element={<NotFound />} />
 
 					<Route
-						path='/profile/*'
+						path={mainRouterPage.profile.restOfRouters}
 						element={
 							<PrivateRouteLogined>
 								<ProfilePage />
@@ -70,7 +73,7 @@ function App () {
 					/>
 
 					<Route
-						path='/verify/:name'
+						path={mainRouterPage.verify}
 						element={
 							<PrivateRouteLogined>
 								<VerifyPage />
@@ -78,7 +81,7 @@ function App () {
 						}
 					/>
 
-					<Route path='*' element={<Navigate to='/notFound' />} />
+					<Route path={mainRouterPage.restOfRouters} element={<Navigate to={mainRouterPage.notFound} />} />
 				</Routes>
 				{/* End Router */}
 			</div>

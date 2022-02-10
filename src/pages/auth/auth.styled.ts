@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 
 export const AppStyled = createGlobalStyle`
-    .app{
-        display: block
+    .app {
+        display: block;
     }
 `;
 
 export const AuthStyled = styled.section`
-	height: auto;
+	height: 100vh;
 	background-color: rgb(241, 211, 150);
 
 	display: flex;

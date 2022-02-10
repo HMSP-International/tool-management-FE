@@ -16,6 +16,7 @@ import { convertTaskList } from 'helpers/formatData/convertTaskList';
 // socket
 import { SocketContext } from 'socketIO/context';
 import { listEvents } from 'socketIO/events/listEvents';
+import { mainParamPage } from 'global/routes/page';
 // interfaces
 interface IProps {
 	hidden: boolean;
@@ -53,7 +54,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 				{
 					createListInput:
 						{
-							_projectId: params._projectId,
+							_projectId: params[mainParamPage.projectId],
 							name,
 						},
 				},
@@ -62,7 +63,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 		if (!isError) {
 			const list = convertTaskList([ data ]);
 			dispatch(createNewList(list));
-			socket.emit(listEvents.handleCreateList, { data: list, _projectId: params._projectId || '' });
+			socket.emit(listEvents.handleCreateList, { data: list, _projectId: params[mainParamPage.projectId] || '' });
 			setHidden(false);
 		}
 	};

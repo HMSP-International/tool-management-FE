@@ -16,6 +16,8 @@ import { IInitialStateEmployeeDuties } from 'slices/employeeDuties/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { setProject, setSpace } from 'slices/employeeDuties/slice';
 import { PROJECT_DEFAULT, SPACE_DEFAULT } from 'slices/employeeDuties/initialState';
+// routes
+import { mainRouterPage } from 'global/routes/page';
 
 const EmployeeDuties: React.FC = () => {
 	const navigate = useNavigate();
@@ -45,7 +47,7 @@ const EmployeeDuties: React.FC = () => {
 				});
 
 				if (isError) {
-					navigate('/notFound');
+					navigate(`/${mainRouterPage.notFound}`);
 				}
 				else {
 					const lists: IList[] = data;

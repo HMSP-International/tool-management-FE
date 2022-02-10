@@ -8,6 +8,7 @@ import Select from 'react-select';
 import { SPACE_DEFAULT } from 'slices/employeeDuties/initialState';
 import { IPropsDefaultValue } from 'slices/employeeDuties/interfaces';
 import { ISpace } from 'slices/space/interfaces';
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
 	defaultValue: IPropsDefaultValue;
@@ -15,7 +16,7 @@ interface IProps {
 }
 
 const ListFilterSpaceProjectListDD: React.FC<IProps> = ({ defaultValue, onChangeData }) => {
-	const { _userId } = useParams();
+	const params = useParams();
 	const [ options, setOptions ] = useState([ defaultValue ]);
 
 	const [ onGetSpacesByMemberId, { loading: loadingGetSpacesByMemberId } ] = useMutation(
@@ -27,7 +28,7 @@ const ListFilterSpaceProjectListDD: React.FC<IProps> = ({ defaultValue, onChange
 			if (!loadingGetSpacesByMemberId) {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onGetSpacesByMemberId,
-					variables: { findByMemberId: { _memberId: _userId } },
+					variables: { findByMemberId: { _memberId: params[mainParamPage.userId] } },
 				});
 
 				if (!isError) {

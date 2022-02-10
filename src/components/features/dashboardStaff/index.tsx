@@ -18,7 +18,7 @@ import { useMutation } from '@apollo/client';
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
-const Dashboard: React.FC = () => {
+const DashboardStaff: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [ showCreateUserDrawer, setShowCreateUserDrawer ] = useState(false);
@@ -75,4 +75,4 @@ const Dashboard: React.FC = () => {
 	);
 };
 
-export default Dashboard;
+export default DashboardStaff;

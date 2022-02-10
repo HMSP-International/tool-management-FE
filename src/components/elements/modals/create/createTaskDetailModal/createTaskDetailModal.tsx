@@ -26,6 +26,7 @@ import { IUser } from 'slices/dashboard/interfaces';
 import { SocketContext } from 'socketIO/context';
 import { taskEvents } from 'socketIO/events/taskEvents';
 import { getFirstKey } from 'helpers/object/getFirstKey';
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
 	hidden: boolean;
@@ -49,7 +50,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 		loading: loadingGetUserById,
 		error: errorGetUserById,
 		data: onGetUserById,
-	} = useQuery(GET_USER_BY_ID_QUERY, { variables: { getUserByIdInput: { _userId: params._userId } } });
+	} = useQuery(GET_USER_BY_ID_QUERY, { variables: { getUserByIdInput: { _userId: params[mainParamPage.userId] } } });
 	const currentUser: IUser = getFirstKey(onGetUserById);
 	const [ assignee, setAssignee ] = useState<IUser | null>(currentUser || null);
 	// event
@@ -78,7 +79,10 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 			if (!isError) {
 				dispatch(createTaskInList(data));
 				// socket
-				socket.emit(taskEvents.handleCreateTask, { data, _projectId: params._projectId || '' });
+				socket.emit(taskEvents.handleCreateTask, {
+					data,
+					_projectId: params[mainParamPage.projectId] || '',
+				});
 				setHidden(false);
 			}
 		}

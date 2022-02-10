@@ -57,7 +57,7 @@ const Container: React.FC = ({ children }) => {
 				<section className='workspace__header'>
 					<div className='workspace__header__top'>
 						<div>
-							<Link to='/dashboard'>User</Link> <AiOutlineArrowRight /> {currentUser.displayName}
+							<Link to='/dashboard-staff'>User</Link> <AiOutlineArrowRight /> {currentUser.displayName}
 						</div>
 					</div>
 					<div className='workspace__header__assign'>

@@ -5,9 +5,11 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
-import { PROJECT_DEFAULT  } from 'slices/employeeDuties/initialState';
+import { PROJECT_DEFAULT } from 'slices/employeeDuties/initialState';
 import { IPropsDefaultValue } from 'slices/employeeDuties/interfaces';
 import { IProject } from 'slices/project/interfaces';
+// routes
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
 	defaultValue: IPropsDefaultValue;
@@ -16,7 +18,7 @@ interface IProps {
 }
 // This is the page to check the tasks of every project about an employee
 const ListFilterSpaceProjectListDD: React.FC<IProps> = ({ defaultValue, onChangeData, space }) => {
-	const { _userId } = useParams();
+	const params = useParams();
 	const [ options, setOptions ] = useState<IPropsDefaultValue[]>([
 		{
 			label: 'All Projects',
@@ -34,11 +36,15 @@ const ListFilterSpaceProjectListDD: React.FC<IProps> = ({ defaultValue, onChange
 				if (!loadingGetprojectByMemberIdAndSpaceId) {
 					const { data, isError } = await fetchDataAndShowNotify({
 						fnFetchData: onGetSpacesByMemberIdAndSpaceId,
-						variables: { findByMemberIdAndSpaceIdInput: { _memberId: _userId, _spaceId: space.value } },
+						variables:
+							{
+								findByMemberIdAndSpaceIdInput:
+									{ _memberId: params[mainParamPage.userId], _spaceId: space.value },
+							},
 					});
 
 					if (!isError) {
-						const newOptions: IPropsDefaultValue[] = [ PROJECT_DEFAULT  ];
+						const newOptions: IPropsDefaultValue[] = [ PROJECT_DEFAULT ];
 
 						newOptions.push(
 							...data.map((d: IProject) => ({

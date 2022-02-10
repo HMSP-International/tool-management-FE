@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 // css
 import { ListUserDrawerStyled } from './listUserDrawer.styled';
 // interfaces
-import { RootState } from '../../../../global/redux/rootReducer';
-import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
-import { IInitialStateAuth } from '../../../../slices/auth/interfaces';
+import { RootState } from 'global/redux/rootReducer';
+import { IInitialStateDashboard, IUser } from 'slices/dashboard/interfaces';
+import { IInitialStateAuth } from 'slices/auth/interfaces';
 
 interface IProps {
 	hidden: boolean;

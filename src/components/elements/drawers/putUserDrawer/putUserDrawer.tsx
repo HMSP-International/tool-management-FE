@@ -3,7 +3,7 @@ import { Form, Input, Select } from 'antd';
 import equal from 'deep-equal';
 // Styled Components
 import { PutUserDrawerStyled } from './putUserDrawer.styled';
-import LoadingView from '../../../shared/loadingView/loadingView';
+import LoadingView from 'components/shared/loadingView/loadingView';
 import ErrorView from 'components/shared/errorView/errorView';
 // Graphql
 import { useMutation, useQuery } from '@apollo/client';
