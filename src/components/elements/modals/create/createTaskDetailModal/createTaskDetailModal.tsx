@@ -4,11 +4,13 @@ import { ModalStyled } from './createTaskDetailModal.styled';
 // components
 import Image from 'components/shared/image/image';
 import TinyMce from 'components/shared/tinyMce/tinyMce';
+import ErrorView from 'components/shared/errorView/errorView';
 import LoadingView from 'components/shared/loadingView/loadingView';
 import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
 // graphql
 import { CREATE_TASK_MUTATION } from 'apis/task/mutations';
-import { useMutation } from '@apollo/client';
+import { GET_USER_BY_ID_QUERY } from 'apis/users/queries';
+import { useMutation, useQuery } from '@apollo/client';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createTaskInList } from 'slices/taskList/slice';
@@ -19,9 +21,11 @@ import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { openNotification } from 'helpers/toastify/notification';
 import { useParams } from 'react-router-dom';
+import { IUser } from 'slices/dashboard/interfaces';
 // socket
 import { SocketContext } from 'socketIO/context';
 import { taskEvents } from 'socketIO/events/taskEvents';
+import { getFirstKey } from 'helpers/object/getFirstKey';
 
 interface IProps {
 	hidden: boolean;
@@ -37,12 +41,17 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	// redux
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
-	const [ assignee, setAssignee ] = useState('');
 	const [ descriptions, setDescriptions ] = useState<string>('');
 	const [ isShowDescription, setIsShopDescriptions ] = useState(false);
 	// graphql
 	const [ onCreateTask, { loading: loadingCreateTask } ] = useMutation(CREATE_TASK_MUTATION);
-
+	const {
+		loading: loadingGetUserById,
+		error: errorGetUserById,
+		data: onGetUserById,
+	} = useQuery(GET_USER_BY_ID_QUERY, { variables: { getUserByIdInput: { _userId: params._userId } } });
+	const currentUser: IUser = getFirstKey(onGetUserById);
+	const [ assignee, setAssignee ] = useState<IUser | null>(currentUser || null);
 	// event
 	const handleChangeTaskName = async (e: React.FormEvent<HTMLInputElement>) => {
 		const { value } = e.currentTarget;
@@ -83,7 +92,8 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 		setIsShopDescriptions(false);
 	};
 
-	if (loadingCreateTask) return <LoadingView />;
+	if (loadingCreateTask || loadingGetUserById) return <LoadingView />;
+	if (errorGetUserById) return <ErrorView error={errorGetUserById} />;
 
 	return (
 		<React.Fragment>
@@ -132,7 +142,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 									<div className='left'>Assignee</div>
 									<div className='right'>
 										<div className='right__avt'>
-											<ListUserBeLongProjectDD onChangeUser={setAssignee} assignee={null} />
+											<ListUserBeLongProjectDD onChangeUser={setAssignee} assignee={assignee} />
 										</div>
 										<div className='right__name'>{''}</div>
 									</div>

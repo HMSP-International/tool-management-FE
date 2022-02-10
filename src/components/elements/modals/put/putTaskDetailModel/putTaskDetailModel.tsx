@@ -5,9 +5,8 @@ import { ModalStyled } from './putTaskDetailModel.styled';
 import Comment from './comment/comment';
 import NameTask from './nameTask/nameTask';
 import DropDown from './dropDown/dropDown';
-import Image from 'components/shared/image/image';
 import Description from './description/description';
-import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
+import Reporter from './reporter/reporter';
 // graphql
 import { useMutation } from '@apollo/client';
 // redux
@@ -18,13 +17,14 @@ import { CHANGE_ASSIGNEE_TASK_MUTATION, DELETE_TASKS_MUTATION } from 'apis/task/
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { dateMongooseToDateJs } from 'helpers/date/dateMongooseToDateJs';
 // interfaces
-import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { ITask } from 'slices/task/interfaces';
 import { SocketContext } from 'socketIO/context';
 import { useParams } from 'react-router-dom';
 // socket
 import { taskEvents } from 'socketIO/events/taskEvents';
+import Assignee from './assignee/assignee';
+import { IUser } from 'slices/dashboard/interfaces';
 
 interface IProps {
 	hidden: boolean;
@@ -36,14 +36,13 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const params = useParams();
 	// redux
 	const dispatch = useDispatch();
-	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	const task: ITask = useSelector((state: RootState) => state.task.currentTask[0]);
 	// graphql
 	const [ onChangeAssignee ] = useMutation(CHANGE_ASSIGNEE_TASK_MUTATION);
 	const [ onDeleteTaskName ] = useMutation(DELETE_TASKS_MUTATION);
 
 	// event
-	const handleAssignee = async (newAssigne: string) => {
+	const handleAssignee = async (newAssigne: IUser) => {
 		// if (task.assignee === null || newAssigne !== task.assignee._id) {
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangeAssignee,
@@ -52,7 +51,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 					changeAssigneeInput:
 						{
 							_taskId: task._id,
-							assignee: newAssigne,
+							assignee: newAssigne._id,
 						},
 				},
 		});
@@ -109,34 +108,8 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 							<div className='title'>Details</div>
 
 							<div className='table'>
-								<div className='assignee'>
-									<div className='left'>Assignee</div>
-									<div className='right'>
-										<div className='right__avt'>
-											<ListUserBeLongProjectDD
-												onChangeUser={handleAssignee}
-												assignee={task.assignee}
-											/>
-										</div>
-										<div className='right__name'>{''}</div>
-									</div>
-								</div>
-								<div className='reporter'>
-									<div className='left'>Reporter</div>
-									<div className='right'>
-										<div className='right__avt'>
-											<Image
-												public_id={userRedux.profile.avatar}
-												w={40}
-												h={40}
-												styles={{ borderRadius: '100rem' }}
-												tooltip={userRedux.profile.email}
-												placement={'rightBottom'}
-											/>
-										</div>
-										<div className='right__name'>{userRedux.profile.displayName}</div>
-									</div>
-								</div>
+								<Assignee task={task} handleAssignee={handleAssignee} />
+								<Reporter />
 							</div>
 						</div>
 

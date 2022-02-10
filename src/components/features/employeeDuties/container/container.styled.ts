@@ -33,31 +33,10 @@ export const WorkSpaceStyled = styled.section`
 			font-size: 15px;
 			display: flex;
 
-			&__btn {
-				flex-grow: 1;
-
-				display: flex;
-				justify-content: flex-end;
-
-				.create-list {
-					button {
-						min-width: 120px;
-						cursor: pointer;
-						padding: 5px 10px;
-						border-radius: 5px;
-					}
-				}
-
-				.delete-list {
-					button {
-						min-width: 120px;
-						cursor: pointer;
-						padding: 5px 10px;
-						border-radius: 5px;
-						background-color: red;
-						color: white;
-						margin-right: 20px;
-					}
+			div {
+				svg {
+					position: relative;
+					top: 3px;
 				}
 			}
 		}
