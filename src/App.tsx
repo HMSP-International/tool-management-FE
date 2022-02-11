@@ -35,7 +35,7 @@ function App () {
 					<Route path={mainRouterPage.auth.restOfAuth} element={<AuthPage />} />
 
 					<Route
-						path={mainRouterPage.dashboardStaff}
+						path={mainRouterPage.dashboardStaff.index}
 						element={
 							<PrivateRouteLogined>
 								<DashboardStaffPage />

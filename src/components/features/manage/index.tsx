@@ -14,6 +14,7 @@ import { convertTaskList } from 'helpers/formatData/convertTaskList';
 import { useDispatch } from 'react-redux';
 import { getListsFormatted } from 'slices/taskList/slice';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { mainParamPage, mainRouterPage } from 'global/routes/page';
 
 const Manage: React.FC = () => {
 	const params = useParams();
@@ -33,18 +34,12 @@ const Manage: React.FC = () => {
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onGetLists,
-					variables:
-						{
-							getListsInput:
-								{
-									_projectId: params._projectId,
-								},
-						},
+					variables: { getListsInput: { _projectId: params[mainParamPage.projectId] } },
 					isNotShowNotify: true,
 				});
 
 				if (isError) {
-					navigate('/notFound');
+					navigate(`/${mainRouterPage.notFound}`);
 				}
 				else {
 					const lists: IList[] = data;
@@ -56,7 +51,7 @@ const Manage: React.FC = () => {
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ navigate, dispatch, onGetLists, params._projectId ],
+		[ navigate, dispatch, onGetLists, params[mainParamPage.projectId] ],
 	);
 
 	useEffect(
@@ -66,7 +61,7 @@ const Manage: React.FC = () => {
 			};
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ params._projectId ],
+		[ params[mainParamPage.projectId] ],
 	);
 
 	// render;

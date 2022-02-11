@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { WorkSpaceStyled } from './container.styled';
 import { EmployeeDutiesStyled } from '../index.styled';
 import { AiOutlineArrowRight } from 'react-icons/ai';
+import { mainRouterPage } from 'global/routes/page';
 // components
 import ListFilterSpaceDD from 'components/elements/dropDown/ListFilterSpaceProjectDD/ListFilterSpaceDD/ListFilterSpaceDD';
 import ListFilterProjectDD from 'components/elements/dropDown/ListFilterSpaceProjectDD/ListFilterProjectDD/ListFilterProjectDD';
@@ -57,7 +58,8 @@ const Container: React.FC = ({ children }) => {
 				<section className='workspace__header'>
 					<div className='workspace__header__top'>
 						<div>
-							<Link to='/dashboard-staff'>User</Link> <AiOutlineArrowRight /> {currentUser.displayName}
+							<Link to={`/${mainRouterPage.dashboardStaff.index}`}>User</Link> <AiOutlineArrowRight />{' '}
+							{currentUser.displayName}
 						</div>
 					</div>
 					<div className='workspace__header__assign'>

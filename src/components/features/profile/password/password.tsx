@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CHANGE_PASSWORD_MUTAIION } from 'apis/profile/mutations';
 // components
-import LoadingView from '../../../shared/loadingView/loadingView';
+import LoadingView from 'components/shared/loadingView/loadingView';
 import { PasswordStyled } from './password.styled';
 // helpers
-import { fetchDataAndShowNotify } from '../../../../helpers/graphql/fetchDataAndShowNotify';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 const Password: React.FC = () => {
 	const [ onChangePassword, { loading } ] = useMutation(CHANGE_PASSWORD_MUTAIION);
@@ -36,13 +36,7 @@ const Password: React.FC = () => {
 		await fetchDataAndShowNotify({
 			fnFetchData: onChangePassword,
 			variables:
-				{
-					changePasswordInput:
-						{
-							newPassword: values.newPassword,
-							currentPassword: values.currentPassword,
-						},
-				},
+				{ changePasswordInput: { newPassword: values.newPassword, currentPassword: values.currentPassword } },
 			message: 'Changed password',
 		});
 	};

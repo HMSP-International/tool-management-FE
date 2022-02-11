@@ -21,12 +21,7 @@ import { mainRouterPage } from 'global/routes/page';
 
 const EmployeeDuties: React.FC = () => {
 	const navigate = useNavigate();
-
 	const employeeDutiesRedux: IInitialStateEmployeeDuties = useSelector((state: RootState) => state.employeeDuties);
-
-	const params = {
-		_projectId: employeeDutiesRedux.project.value,
-	};
 
 	// redux
 	const dispatch = useDispatch();
@@ -37,12 +32,12 @@ const EmployeeDuties: React.FC = () => {
 	// use effect
 	useEffect(
 		() => {
-			if (loadingGetLists || params._projectId === '-1') return;
+			if (loadingGetLists || employeeDutiesRedux.project.value === '-1') return;
 
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onGetLists,
-					variables: { getListsInput: { _projectId: params._projectId } },
+					variables: { getListsInput: { _projectId: employeeDutiesRedux.project.value } },
 					isNotShowNotify: true,
 				});
 
@@ -59,7 +54,7 @@ const EmployeeDuties: React.FC = () => {
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ navigate, dispatch, onGetLists, params._projectId ],
+		[ navigate, dispatch, onGetLists, employeeDutiesRedux.project.value ],
 	);
 
 	useEffect(
@@ -69,7 +64,7 @@ const EmployeeDuties: React.FC = () => {
 			};
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ params._projectId ],
+		[ employeeDutiesRedux.project.value ],
 	);
 
 	useEffect(

@@ -18,6 +18,7 @@ import { ITask } from 'slices/task/interfaces';
 // Redux
 import { useDispatch } from 'react-redux';
 import { getTasksInList } from 'slices/taskList/slice';
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
 	provided: DroppableProvided;
@@ -40,7 +41,10 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 							getTasksInput:
 								{
 									_listId: listId,
-									_userIds: params._userId === undefined ? [] : [ params._userId ],
+									_userIds:
+										params[mainParamPage.userId] === undefined
+											? []
+											: [ params[mainParamPage.userId] ],
 								},
 						},
 				});
@@ -51,7 +55,7 @@ const List: React.FC<IProps> = ({ provided, snapshot, columnData, listId }) => {
 
 			fetchData();
 		},
-		[ listId, onGetTasksByListId, dispatch, params._userId ],
+		[listId, onGetTasksByListId, dispatch, params],
 	);
 
 	if (loading) return <LoadingView />;

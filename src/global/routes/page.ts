@@ -10,7 +10,10 @@ export const pathNamePage = {
 
 export const mainRouterPage = {
 	home: '',
-	dashboardStaff: 'dashboard-staff',
+	dashboardStaff:
+		{
+			index: 'dashboard-staff',
+		},
 	employeeDuties: `employee-duties/:${mainParamPage.userId}`,
 	manage:
 		{

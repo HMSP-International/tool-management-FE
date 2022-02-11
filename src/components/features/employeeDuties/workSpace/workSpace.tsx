@@ -31,11 +31,7 @@ interface IProps {}
 
 const WorkSpace: React.FC<IProps> = () => {
 	const dispatch = useDispatch();
-
 	const employeeDutiesRedux: IInitialStateEmployeeDuties = useSelector((state: RootState) => state.employeeDuties);
-	const params = {
-		_projectId: employeeDutiesRedux.project.value,
-	};
 
 	const socket = useContext(SocketContext);
 	const { lists: columns }: IInitialStateList = useSelector((state: RootState) => state.taskList);
@@ -87,7 +83,7 @@ const WorkSpace: React.FC<IProps> = () => {
 
 			const input = {
 				data,
-				_projectId: params._projectId || '',
+				_projectId: employeeDutiesRedux.project.value || '',
 			};
 			socket.emit(taskEvents.handleDragAndDropInAnotherList, input);
 		}
@@ -114,7 +110,7 @@ const WorkSpace: React.FC<IProps> = () => {
 
 			const input = {
 				data,
-				_projectId: params._projectId || '',
+				_projectId: employeeDutiesRedux.project.value || '',
 			};
 			socket.emit(taskEvents.handleDragAndDropIn1List, input);
 		}

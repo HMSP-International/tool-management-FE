@@ -25,6 +25,7 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // socket
 import { SocketContext } from 'socketIO/context';
 import { taskEvents } from 'socketIO/events/taskEvents';
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {}
 
@@ -81,7 +82,7 @@ const WorkSpace: React.FC<IProps> = () => {
 
 			const input = {
 				data,
-				_projectId: params._projectId || '',
+				_projectId: params[mainParamPage.projectId] || '',
 			};
 			socket.emit(taskEvents.handleDragAndDropInAnotherList, input);
 		}
@@ -108,7 +109,7 @@ const WorkSpace: React.FC<IProps> = () => {
 
 			const input = {
 				data,
-				_projectId: params._projectId || '',
+				_projectId: params[mainParamPage.projectId] || '',
 			};
 			socket.emit(taskEvents.handleDragAndDropIn1List, input);
 		}

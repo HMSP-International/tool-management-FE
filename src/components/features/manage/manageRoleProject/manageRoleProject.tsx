@@ -6,17 +6,15 @@ import LoadingView from 'components/shared/loadingView/loadingView';
 import UsersProject from 'components/elements/tables/usersProject/usersProject';
 // Styled Components
 import Container from '../container/container';
-// interfaces
-// graphql
-// helpers
 // redux
 import { GET_USERS_BELONG_PROJECT_MUTAIION } from 'apis/paticipants/mutations';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { useDispatch } from 'react-redux';
 import { getCollaboratorBeLongProject } from 'slices/paticipant/slice';
+import { mainParamPage } from 'global/routes/page';
 
 const Manage: React.FC = () => {
-	const { _projectId } = useParams();
+	const params = useParams();
 	const dispatch = useDispatch();
 
 	const [ onGetUserBeLongProject, { loading: loadingGetUserBelongProject } ] = useMutation(
@@ -29,7 +27,7 @@ const Manage: React.FC = () => {
 				if (!loadingGetUserBelongProject) {
 					const { data, isError } = await fetchDataAndShowNotify({
 						fnFetchData: onGetUserBeLongProject,
-						variables: { getUsersBelongProjectInput: { _projectId } },
+						variables: { getUsersBelongProjectInput: { _projectId: params[mainParamPage.projectId] } },
 					});
 
 					if (!isError) {
@@ -41,7 +39,7 @@ const Manage: React.FC = () => {
 			fetchData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ _projectId, onGetUserBeLongProject ],
+		[ params[mainParamPage.projectId], onGetUserBeLongProject ],
 	);
 
 	if (loadingGetUserBelongProject) return <LoadingView />;

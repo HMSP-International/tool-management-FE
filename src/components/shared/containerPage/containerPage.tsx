@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
 
-// components
-// components/shared
-// import Header from '../header/header';
-// import Footer from '../footer/footer';
-// import Menu from '../../features/menu/menu';
-
 interface IProps {
 	title?: string;
 }

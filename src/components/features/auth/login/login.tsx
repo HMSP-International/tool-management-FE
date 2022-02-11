@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { login } from 'slices/auth/slice';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-
+import { mainRouterPage } from 'global/routes/page';
 const NAME_INPUT = {
 	password: 'password',
 	email: 'youremail',
@@ -140,7 +140,7 @@ const Login: React.FC = () => {
 				<button onClick={handleSubmit}>Log In</button>
 			</div>
 			<div className='login-page__form-forget'>
-				<Link className='p' to={'/auth/forgot'}>
+				<Link className='p' to={`/${mainRouterPage.auth.forgot}`}>
 					forgot password???
 				</Link>
 			</div>

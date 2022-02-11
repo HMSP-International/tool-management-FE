@@ -14,6 +14,7 @@ import { IInitialStateProfile, IInitialStateUser } from 'slices/user/interfaces'
 import { useQuery } from '@apollo/client';
 import { GET_PROFILE_QUERY } from 'apis/profile/queries';
 import { getProfile } from 'slices/user/slice';
+import { mainRouterPage } from 'global/routes/page';
 
 interface IProps {
 	onClose(value: boolean): void;
@@ -43,7 +44,7 @@ const Header: React.FC<IProps> = ({ onClose }) => {
 	return (
 		<HeaderStyled className='menu__header'>
 			<div className='menu__header__logo'>
-				<Link to='/'>
+				<Link to={`/${mainRouterPage.home}`}>
 					<AvatarDD>
 						<img src='https://cdn.logo.com/hotlink-ok/logo-social.png' alt='hmsp' />
 					</AvatarDD>

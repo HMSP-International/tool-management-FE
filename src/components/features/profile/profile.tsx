@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ProfileStyled } from './profile.styled';
-
 // redux
 import { useDispatch } from 'react-redux';
 import { getProfile } from 'slices/user/slice';
@@ -8,7 +7,7 @@ import { getProfile } from 'slices/user/slice';
 import Email from './email/email';
 import Information from './information/information';
 import Password from './password/password';
-import LoadingView from '../../shared/loadingView/loadingView';
+import LoadingView from 'components/shared/loadingView/loadingView';
 // graphql
 import { useQuery } from '@apollo/client';
 import { GET_PROFILE_QUERY } from 'apis/profile/queries';
