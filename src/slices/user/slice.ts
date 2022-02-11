@@ -9,5 +9,5 @@ export const userSlice: Slice = createSlice({
 	reducers,
 });
 const { reducer, actions } = userSlice;
-export const { getProfile } = actions;
+export const { getProfile, setEmail, setNewAvatar } = actions;
 export default reducer;

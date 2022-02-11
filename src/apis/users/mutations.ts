@@ -70,3 +70,21 @@ export const GET_USERS_MUTATION = gql`
 		}
 	}
 `;
+
+export const CHANGE_AVATAR_MUTATION = gql`
+	mutation changeAvatar($changeAvatarInput: ChangeAvatarInput!) {
+		changeAvatar(changeAvatarInput: $changeAvatarInput) {
+			_id
+			avatar
+		}
+	}
+`;
+
+export const CHANGE_EMAIL_MUTATION = gql`
+	mutation changeEmail($changeEmailInput: ChangeEmailInput!) {
+		changeEmail(changeEmailInput: $changeEmailInput) {
+			_id
+			email
+		}
+	}
+`;
