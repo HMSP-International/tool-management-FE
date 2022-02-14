@@ -1,15 +1,16 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { SocketContext, socket } from './socketIO/context';
 // pages
-import HomePage from './pages';
-import AuthPage from './pages/auth';
-import DashboardStaffPage from './pages/dashboard-staff';
-import EmployeeDutiesPage from './pages/employee-duties';
-import ManagePage from './pages/manage';
+import HomePage from 'pages';
+import AuthPage from 'pages/auth';
+import DashboardCustomerPage from 'pages/dashboard-customer';
+import DashboardStaffPage from 'pages/dashboard-staff';
+import EmployeeDutiesPage from 'pages/employee-duties';
+import ManagePage from 'pages/manage';
 
-import NotFound from './pages/notFound';
-import ProfilePage from './pages/profile';
-import VerifyPage from './pages/verify';
+import NotFound from 'pages/notFound';
+import ProfilePage from 'pages/profile';
+import VerifyPage from 'pages/verify';
 import Menu from 'components/features/menu/menu';
 import PrivateRouteLogined from 'components/shared/privateRoute/privateRouteLogined/privateRouteLogined';
 
@@ -39,6 +40,15 @@ function App () {
 						element={
 							<PrivateRouteLogined>
 								<DashboardStaffPage />
+							</PrivateRouteLogined>
+						}
+					/>
+
+					<Route
+						path={mainRouterPage.dashboardCustomer.index}
+						element={
+							<PrivateRouteLogined>
+								<DashboardCustomerPage />
 							</PrivateRouteLogined>
 						}
 					/>

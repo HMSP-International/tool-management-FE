@@ -37,4 +37,8 @@ export const mainRouterPage = {
 			restOfAuth: `${pathNamePage.auth}/*`,
 			index: `${pathNamePage.auth}`,
 		},
+	dashboardCustomer:
+		{
+			index: 'dashboard-customer',
+		},
 };

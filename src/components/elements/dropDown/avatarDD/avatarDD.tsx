@@ -48,7 +48,16 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 				<Menu.Item className='menu-item' key={'2'}>
 					<Link to='/dashboard-staff' className='menu__body__tabs-item'>
 						<AiFillDashboard style={{ color: 'white', fontSize: '20px' }} />
-						<h4>Dashboard</h4>
+						<h4>Dashboard User</h4>
+					</Link>
+				</Menu.Item>
+			)}
+
+			{handleCheckAuth() && (
+				<Menu.Item className='menu-item' key={'2'}>
+					<Link to='/dashboard-customer' className='menu__body__tabs-item'>
+						<AiFillDashboard style={{ color: 'white', fontSize: '20px' }} />
+						<h4>Dashboard Customer</h4>
 					</Link>
 				</Menu.Item>
 			)}

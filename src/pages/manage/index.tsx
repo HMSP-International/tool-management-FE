@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 // components
 import Manage from 'components/features/manage';
-import ManageRoleproject from './[_id]/roles/index';
+import ManageRoleproject from './[_projectId]/roles/index';
 import ContainerPage from 'components/shared/containerPage/containerPage';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // graphql
