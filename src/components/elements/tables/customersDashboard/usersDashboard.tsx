@@ -7,31 +7,22 @@ import { Tooltip } from 'antd';
 import DeleteAction from './action/delete';
 import PutAction from './action/put';
 // styled-component
-import { TableUserStyled } from './usersDashboard.styled';
+import { TableCustomerStyled } from './usersDashboard.styled';
 // interfaces
-import { IInitialStateDashboard, IUserDashboard } from 'slices/dashboard/interfaces';
+import { IInitialStateDashboard, ICustomerDashboard } from 'slices/dashboard/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 // Redux
 import { useSelector } from 'react-redux';
 // components
-import ImageLink from 'components/shared/image/imageLink';
+import Image from 'components/shared/image/image';
 
-const columns: TableColumn<IUserDashboard>[] = [
+const columns: TableColumn<ICustomerDashboard>[] = [
 	{
 		name: 'Avt',
 		selector: row => row.avatar,
 		sortable: true,
 		center: true,
-		cell:
-			row => (
-				<ImageLink
-					w={50}
-					h={50}
-					public_id={row.avatar}
-					link={'/employee-duties/' + row._id}
-					styles={{ cursor: 'pointer' }}
-				/>
-			),
+		cell: row => <Image w={50} h={50} public_id={row.avatar} />,
 	},
 	{
 		name: 'Name',
@@ -54,30 +45,6 @@ const columns: TableColumn<IUserDashboard>[] = [
 			},
 	},
 	{
-		name: 'Department',
-		selector: row => row.department,
-		sortable: true,
-		center: true,
-	},
-	{
-		name: 'Position',
-		selector: row => row.position,
-		sortable: true,
-		center: true,
-	},
-	{
-		name: 'Title',
-		selector: row => row.title,
-		sortable: true,
-		center: true,
-	},
-	{
-		name: 'Role',
-		selector: row => row._roleId.name,
-		sortable: true,
-		center: true,
-	},
-	{
 		name: 'Action',
 		selector: row => row.action,
 		sortable: true,
@@ -86,23 +53,23 @@ const columns: TableColumn<IUserDashboard>[] = [
 			row => {
 				return (
 					<div style={{ display: 'flex' }}>
-						<PutAction user={row} />
-						<DeleteAction user={{ _id: row._id, email: row.email }} />
+						<PutAction customer={row} />
+						<DeleteAction customer={{ _id: row._id, email: row.email }} />
 					</div>
 				);
 			},
 	},
 ];
 
-const UsersDashboard: React.FC = () => {
+const CustomersDashboard: React.FC = () => {
 	// redux
 	const dashboardRedux: IInitialStateDashboard = useSelector((state: RootState) => state.dashboard);
 
 	return (
-		<TableUserStyled>
-			<DataTable columns={columns} data={dashboardRedux.users} className='123' />
-		</TableUserStyled>
+		<TableCustomerStyled>
+			<DataTable columns={columns} data={dashboardRedux.customers} />
+		</TableCustomerStyled>
 	);
 };
 
-export default UsersDashboard;
+export default CustomersDashboard;

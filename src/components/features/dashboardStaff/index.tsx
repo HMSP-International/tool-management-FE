@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Modal
-import CreateNewUserDrawer from 'components/elements/drawers/createUserDrawer/createUserDrawer';
+import CreateNewUserDrawer from 'components/elements/drawers/create/createUserDrawer/createUserDrawer';
 
 // components
 import ContainerPage from 'components/shared/containerPage/containerPage';
-import UsersDashboard from 'components/elements/tables/usersDashboard/usersDashboard';
+import CustomersDashboard from 'components/elements/tables/usersDashboard/usersDashboard';
 import { DashboardStyled } from './index.styled';
 import LoadingView from 'components/shared/loadingView/loadingView';
 
@@ -64,7 +64,7 @@ const DashboardStaff: React.FC = () => {
 					<div className='dashboard__add-new-user'>
 						<button onClick={() => setShowCreateUserDrawer(true)}>Add new user</button>
 					</div>
-					<UsersDashboard />
+					<CustomersDashboard />
 				</DashboardStyled>
 			</ContainerPage>
 

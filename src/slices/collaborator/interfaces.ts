@@ -1,4 +1,4 @@
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { ISpace } from '../space/interfaces';
 
 export interface IInitialStateCollaborator {
@@ -10,7 +10,7 @@ export interface IInitialStateCollaborator {
 
 export interface ICollaborator {
 	_id: string;
-	_memberId: IUser;
+	_memberId: IUserDashboard;
 	_adminId: string;
 	_workSpaceId: ISpace;
 	confirmEmail: boolean;

@@ -3,11 +3,11 @@ import { Tooltip } from 'antd';
 // Styled Components
 import { ShareModalStyled } from './putShareWorkSpaceModal.styled';
 // Components
-import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
+import ListUserDrawer from 'components/elements/drawers/find/listUserDrawer/listUserDrawer';
 import LoadingView from 'components/shared/loadingView/loadingView';
 import Image from 'components/shared/image/image';
 // interfaces
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { ISpace } from 'slices/space/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
@@ -36,7 +36,7 @@ const showText = (text: string) => {
 };
 
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, currentSpace, nameSpace }) => {
-	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
+	const [ inviteUsers, setInviteUsers ] = useState<IUserDashboard[]>([]);
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
 	const [ onDeleteCollaboratorByUserAndSpace ] = useMutation(DELETE_BY_USER_AND_SPACE_MUTAIION);
 	const [ onInviteSpace ] = useMutation(INVITE_SPACES_MUTATION);
@@ -71,7 +71,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 							},
 					});
 
-					const users: IUser[] = data.findUsersBySpaceId.map((user: any) => user._memberId);
+					const users: IUserDashboard[] = data.findUsersBySpaceId.map((user: any) => user._memberId);
 
 					setInviteUsers(users);
 				}
@@ -84,7 +84,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 
 	if (loadinginvitedUsers || loadingGetUsers) return <LoadingView />;
 
-	const handleRemoveUser = async (user: IUser) => {
+	const handleRemoveUser = async (user: IUserDashboard) => {
 		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
 		setInviteUsers(newListUser);
 
@@ -105,7 +105,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, curr
 		}
 	};
 
-	const handleClickEmail = async (user: IUser) => {
+	const handleClickEmail = async (user: IUserDashboard) => {
 		setInviteUsers([ ...inviteUsers, user ]);
 
 		const { isError } = await fetchDataAndShowNotify({

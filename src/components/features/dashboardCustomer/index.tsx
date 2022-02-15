@@ -1,39 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Modal
-import CreateNewCustomerDrawer from 'components/elements/drawers/createCustomerDrawer/createCustomerDrawer';
+import CreateNewCustomerDrawer from 'components/elements/drawers/create/createCustomerDrawer/createCustomerDrawer';
 // components
 import ContainerPage from 'components/shared/containerPage/containerPage';
-import UsersDashboard from 'components/elements/tables/usersDashboard/usersDashboard';
+import CustomersDashboard from 'components/elements/tables/customersDashboard/usersDashboard';
 import { DashboardStyled } from './index.styled';
 import LoadingView from 'components/shared/loadingView/loadingView';
-
 // redux
-import { getUsers } from 'slices/dashboard/slice';
+import { getCustomers } from 'slices/dashboard/slice';
 import { useDispatch } from 'react-redux';
-
 // graphql
 import { useMutation } from '@apollo/client';
-import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { GET_CUSTOMERS_MUTAIION } from 'apis/customers/mutations';
 
 const DashboardCustomer: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [ showCreateUserDrawer, setShowCreateUserDrawer ] = useState(false);
 
-	const [ onGetUsers, { loading } ] = useMutation(GET_USERS_MUTATION);
+	const [ onGetCustomers, { loading } ] = useMutation(GET_CUSTOMERS_MUTAIION);
 
 	useEffect(
 		() => {
 			const fetchUsers = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
-					fnFetchData: onGetUsers,
+					fnFetchData: onGetCustomers,
 					isNotShowNotify: true,
 				});
 
 				if (!isError) {
-					dispatch(getUsers(data));
+					dispatch(getCustomers(data));
 				}
 				else {
 					navigate('/', { replace: true });
@@ -42,13 +40,13 @@ const DashboardCustomer: React.FC = () => {
 
 			fetchUsers();
 		},
-		[ onGetUsers, dispatch, navigate ],
+		[ onGetCustomers, dispatch, navigate ],
 	);
 
 	useEffect(
 		() => {
 			return () => {
-				dispatch(getUsers([]));
+				dispatch(getCustomers([]));
 			};
 		},
 		[ dispatch ],
@@ -63,7 +61,7 @@ const DashboardCustomer: React.FC = () => {
 					<div className='dashboard__add-new-user'>
 						<button onClick={() => setShowCreateUserDrawer(true)}>Add new customer</button>
 					</div>
-					<UsersDashboard />
+					<CustomersDashboard />
 				</DashboardStyled>
 			</ContainerPage>
 

@@ -12,14 +12,14 @@ import { GET_USERS_BELONG_PROJECT_MUTAIION } from 'apis/paticipants/mutations';
 import { useSelector } from 'react-redux';
 // interfaces
 import { IPaticipant } from 'slices/paticipant/interfaces';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { IInitialStateEmployeeDuties } from 'slices/employeeDuties/interfaces';
 import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
-	onChangeUser(T: IUser): void;
-	assignee: IUser | null;
+	onChangeUser(T: IUserDashboard): void;
+	assignee: IUserDashboard | null;
 }
 
 const ListUserBeLongProjectDD: React.FC<IProps> = ({ onChangeUser, assignee }) => {

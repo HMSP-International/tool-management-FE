@@ -24,7 +24,7 @@ import { useParams } from 'react-router-dom';
 // socket
 import { taskEvents } from 'socketIO/events/taskEvents';
 import Assignee from './assignee/assignee';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 
 interface IProps {
 	hidden: boolean;
@@ -42,7 +42,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ onDeleteTaskName ] = useMutation(DELETE_TASKS_MUTATION);
 
 	// event
-	const handleAssignee = async (newAssigne: IUser) => {
+	const handleAssignee = async (newAssigne: IUserDashboard) => {
 		// if (task.assignee === null || newAssigne !== task.assignee._id) {
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangeAssignee,

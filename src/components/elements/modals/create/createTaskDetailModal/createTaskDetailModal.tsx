@@ -21,7 +21,7 @@ import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { openNotification } from 'helpers/toastify/notification';
 import { useParams } from 'react-router-dom';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 // socket
 import { SocketContext } from 'socketIO/context';
 import { taskEvents } from 'socketIO/events/taskEvents';
@@ -51,8 +51,8 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 		error: errorGetUserById,
 		data: onGetUserById,
 	} = useQuery(GET_USER_BY_ID_QUERY, { variables: { getUserByIdInput: { _userId: params[mainParamPage.userId] } } });
-	const currentUser: IUser = getFirstKey(onGetUserById);
-	const [ assignee, setAssignee ] = useState<IUser | null>(currentUser || null);
+	const currentUser: IUserDashboard = getFirstKey(onGetUserById);
+	const [ assignee, setAssignee ] = useState<IUserDashboard | null>(currentUser || null);
 	// event
 	const handleChangeTaskName = async (e: React.FormEvent<HTMLInputElement>) => {
 		const { value } = e.currentTarget;

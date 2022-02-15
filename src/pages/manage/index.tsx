@@ -24,7 +24,7 @@ import { RootState } from 'global/redux/rootReducer';
 import { IInitialStateUser } from 'slices/user/interfaces';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 
 const ManagePage: React.FC = () => {
 	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
@@ -77,7 +77,7 @@ const ManagePage: React.FC = () => {
 					});
 
 					if (!isError) {
-						const users: IUser[] = data.map((user: any) => user._memberId);
+						const users: IUserDashboard[] = data.map((user: any) => user._memberId);
 						dispatch(getUserBeLongProject(users));
 					}
 				}

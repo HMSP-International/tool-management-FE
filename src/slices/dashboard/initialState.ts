@@ -6,6 +6,7 @@ const INITIAL_STATE: IInitialStateDashboard = {
 	error: null,
 
 	users: [],
+	customers: [],
 };
 
 export default INITIAL_STATE;

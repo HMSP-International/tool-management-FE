@@ -5,7 +5,7 @@ import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 // Components
 import Image from 'components/shared/image/image';
 import LoadingView from 'components/shared/loadingView/loadingView';
-import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
+import ListUserDrawer from 'components/elements/drawers/find/listUserDrawer/listUserDrawer';
 // interfaces
 // graphql
 import { useMutation } from '@apollo/client';
@@ -18,7 +18,7 @@ import { getSpaces } from 'slices/space/slice';
 import { getUsers } from 'slices/dashboard/slice';
 // interfaces
 import { ISpace } from 'slices/space/interfaces';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 // error
 import { createProject } from 'slices/project/slice';
 import { IProject } from 'slices/project/interfaces';
@@ -40,7 +40,7 @@ const showText = (text: string) => {
 
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, nameSpace }) => {
 	// state
-	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
+	const [ inviteUsers, setInviteUsers ] = useState<IUserDashboard[]>([]);
 	// graphql
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
 	const [ onCreateList, { loading: loadingCreateList } ] = useMutation(CREATE_LIST_MUTATION);
@@ -80,7 +80,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		setHidden(false);
 	};
 
-	const handleSubmitShareModal = async (inviteUsers: IUser[]) => {
+	const handleSubmitShareModal = async (inviteUsers: IUserDashboard[]) => {
 		const { data: spaces, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onCreateSpace,
 			variables:
@@ -103,7 +103,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		}
 	};
 
-	const handleVerifyInviteSpace = async (inviteUsers: IUser[], newSpace: ISpace[]) => {
+	const handleVerifyInviteSpace = async (inviteUsers: IUserDashboard[], newSpace: ISpace[]) => {
 		if (newSpace.length >= 1) {
 			const _workSpaceId = newSpace[0]._id;
 			const role = 'MEMBER';
@@ -124,11 +124,11 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		}
 	};
 
-	const handleClickEmail = (user: IUser) => {
+	const handleClickEmail = (user: IUserDashboard) => {
 		setInviteUsers([ ...inviteUsers, user ]);
 	};
 
-	const handleRemoveUser = (user: IUser) => {
+	const handleRemoveUser = (user: IUserDashboard) => {
 		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
 		setInviteUsers(newListUser);
 	};

@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { Tag } from 'antd';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { IUserDashboard } from 'slices/dashboard/interfaces';
+import { ICustomerDashboard } from 'slices/dashboard/interfaces';
 
-import PutUserDrawer from 'components/elements/drawers/put/putUserDrawer/putUserDrawer';
+import PutCustomerDrawer from 'components/elements/drawers/put/putCustomerDrawer/putCustomerDrawer';
 // Redux
 import { useDispatch } from 'react-redux';
 import { updateInformationUser } from 'slices/dashboard/slice';
 
 interface IProps {
-	user: IUserDashboard;
+	customer: ICustomerDashboard;
 }
 
-const PutAction: React.FC<IProps> = ({ user }) => {
+const PutAction: React.FC<IProps> = ({ customer }) => {
 	const dispatch = useDispatch();
 	const [ showUserDrawer, setShowUserDrawer ] = useState(false);
 
-	const handlePutUser = (putUser: IUserDashboard, type: string) => {
+	const handlePutUser = (putUser: ICustomerDashboard, type: string) => {
 		if (type === 'information') {
 			dispatch(updateInformationUser(putUser));
 		}
@@ -32,8 +32,8 @@ const PutAction: React.FC<IProps> = ({ user }) => {
 			</Tag>
 
 			{showUserDrawer && (
-				<PutUserDrawer
-					user={user}
+				<PutCustomerDrawer
+					customer={customer}
 					hidden={showUserDrawer}
 					setHidden={setShowUserDrawer}
 					onSubmit={handlePutUser}

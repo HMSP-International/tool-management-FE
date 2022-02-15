@@ -17,7 +17,7 @@ import { setProject, setSpace } from 'slices/employeeDuties/slice';
 import { IInitialStateEmployeeDuties } from 'slices/employeeDuties/interfaces';
 import { PROJECT_DEFAULT } from 'slices/employeeDuties/initialState';
 import { useQuery } from '@apollo/client';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 // graphql
 import { GET_USER_BY_ID_QUERY } from 'apis/users/queries';
 // helpers
@@ -32,7 +32,7 @@ const Container: React.FC = ({ children }) => {
 		data: onGetUserById,
 	} = useQuery(GET_USER_BY_ID_QUERY, { variables: { getUserByIdInput: { _userId } } });
 
-	const currentUser: IUser = getFirstKey(onGetUserById);
+	const currentUser: IUserDashboard = getFirstKey(onGetUserById);
 
 	const employeeDutiesRedux: IInitialStateEmployeeDuties = useSelector((state: RootState) => state.employeeDuties);
 	const dispatch = useDispatch();

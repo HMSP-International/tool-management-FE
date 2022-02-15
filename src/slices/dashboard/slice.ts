@@ -9,5 +9,13 @@ export const userSlice: Slice = createSlice({
 	reducers,
 });
 const { reducer, actions } = userSlice;
-export const { createUser, getUsers, deleteUser, updateInformationUser } = actions;
+export const {
+	createCustomer,
+	createUser,
+	deleteCustomer,
+	deleteUser,
+	getUsers,
+	getCustomers,
+	updateInformationUser,
+} = actions;
 export default reducer;

@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { IInitialStateDashboard, IUser } from '../interfaces';
+import { IInitialStateDashboard, IUserDashboard } from '../interfaces';
 
-export const getUsers = (state: IInitialStateDashboard, action: PayloadAction<IUser[]>) => {
+export const getUsers = (state: IInitialStateDashboard, action: PayloadAction<IUserDashboard[]>) => {
 	state.users = action.payload;
 };

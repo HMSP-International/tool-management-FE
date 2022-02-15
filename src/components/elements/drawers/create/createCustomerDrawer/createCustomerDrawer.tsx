@@ -7,6 +7,8 @@ import LoadingView from 'components/shared/loadingView/loadingView';
 import { useMutation } from '@apollo/client';
 // interfaces
 // redux
+import { createCustomer } from 'slices/dashboard/slice';
+import { useDispatch } from 'react-redux';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { CREATE_CUSTOMER_BY_ADMIN_MUTAIION } from 'apis/customers/mutations';
@@ -18,6 +20,7 @@ interface IProps {
 
 const CreateCustomerDrawer: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ form ] = Form.useForm();
+	const dispatch = useDispatch();
 	const [ onCreateCustomer, { loading: loadingCreateCustomer } ] = useMutation(CREATE_CUSTOMER_BY_ADMIN_MUTAIION);
 	// state
 	const [ avatar, setAvatar ] = useState<string | ArrayBuffer>('');
@@ -29,16 +32,14 @@ const CreateCustomerDrawer: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const onFinish = async () => {
 		const values = form.getFieldsValue();
 
-		const { isError } = await fetchDataAndShowNotify({
+		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onCreateCustomer,
 			variables: { createCustomerByAdminInput: { ...values, avatar } },
 			message: 'Created new customer',
 		});
 
 		if (!isError) {
-			// TODO
-			// ADD CUSTOMER TO DASHBOARD
-			// dispatch(createUser(data));
+			dispatch(createCustomer(data));
 			setHidden(false);
 		}
 	};

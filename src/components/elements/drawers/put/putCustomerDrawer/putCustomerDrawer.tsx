@@ -1,62 +1,37 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Form, Input, Select } from 'antd';
+import React, { useRef } from 'react';
+import { Form, Input } from 'antd';
 import equal from 'deep-equal';
 // Styled Components
-import { PutUserDrawerStyled } from './putUserDrawer.styled';
+import { PutCustomerDrawerStyled } from './putCustomerDrawer.styled';
 import LoadingView from 'components/shared/loadingView/loadingView';
-import ErrorView from 'components/shared/errorView/errorView';
 // Graphql
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { CHANGE_INFORMATION_BY_ADMIN_MUTAIION, CHANGE_PASSWORD_BY_ADMIN_MUTAIION } from 'apis/users/mutations';
-import { GET_ROLES_QUERY } from 'apis/roles/queries';
 // interface
-import { IRole } from 'slices/role/interfaces';
-import { IUser } from 'slices/dashboard/interfaces';
+import { ICustomerDashboard } from 'slices/dashboard/interfaces';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
-const { Option } = Select;
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	onSubmit(putUser: IUser, type: string): void;
-	user: IUser;
+	onSubmit(putUser: ICustomerDashboard, type: string): void;
+	customer: ICustomerDashboard;
 }
 
-const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) => {
+const PutCustomerDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, customer }) => {
 	const [ onChangeInformation, { loading: loadingI4 } ] = useMutation(CHANGE_INFORMATION_BY_ADMIN_MUTAIION);
 	const [ onChangePassword, { loading: loadingPass } ] = useMutation(CHANGE_PASSWORD_BY_ADMIN_MUTAIION);
-	const { data, loading: loadingGetRoles, error } = useQuery(GET_ROLES_QUERY);
 	const [ form ] = Form.useForm();
 	const btnI4Ref = useRef<HTMLButtonElement>(null);
 	const btnPasswordRef = useRef<HTMLButtonElement>(null);
 	// state
-	const [ roles, setRoles ] = useState<IRole[]>([]);
-
-	useEffect(
-		() => {
-			if (!loadingGetRoles) {
-				console.log(data.getRoles);
-
-				setRoles(data.getRoles);
-			}
-		},
-		[ loadingGetRoles, data ],
-	);
-
-	useEffect(
-		() => {
-			form.setFieldsValue({ ...user, _roleId: user._roleId._id });
-		},
-		[ form, user ],
-	);
 
 	if (loadingI4 || loadingPass) return <LoadingView />;
-	if (error) return <ErrorView error={error} />;
 
 	const onFinish = async () => {
 		const values = form.getFieldsValue();
-		values._id = user._id;
+		values._id = customer._id;
 		delete values.password;
 
 		const { isError, data } = await fetchDataAndShowNotify({
@@ -76,12 +51,12 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangePassword,
-			variables: { changePasswordInputByAdmin: { newPassword, _id: user._id } },
+			variables: { changePasswordInputByAdmin: { newPassword, _id: customer._id } },
 			message: 'Changed password user',
 		});
 
 		if (isError) {
-			form.setFieldsValue(user);
+			form.setFieldsValue(customer);
 		}
 		else {
 			onSubmit(data, 'password');
@@ -92,7 +67,7 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 	// event
 	const handleChangeInput = () => {
 		const newUser = form.getFieldsValue();
-		const currentUser = user;
+		const currentUser = customer;
 
 		delete newUser.password;
 		newUser.__typename = currentUser.__typename;
@@ -128,7 +103,7 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 	};
 
 	return (
-		<PutUserDrawerStyled
+		<PutCustomerDrawerStyled
 			visible={hidden}
 			placement={'right'}
 			footer={null}
@@ -160,27 +135,6 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 						]}
 					>
 						<Input placeholder='huy@gmail.com' value='' />
-					</Form.Item>
-					<Form.Item label='Title' name='title'>
-						<Input placeholder='Web Developer' value='' />
-					</Form.Item>
-
-					<Form.Item label='Position' name='position'>
-						<Input placeholder='Intership' value='' />
-					</Form.Item>
-
-					<Form.Item label='Department' name='department'>
-						<Input placeholder='D2 - 510' value='' />
-					</Form.Item>
-
-					<Form.Item label='Role' name='_roleId'>
-						<Select placeholder='Please select a role'>
-							{roles.map((role: IRole) => (
-								<Option key={role._id} value={role._id}>
-									{role.name}
-								</Option>
-							))}
-						</Select>
 					</Form.Item>
 				</div>
 
@@ -214,8 +168,8 @@ const PutUserDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, user }) 
 					</span>
 				</div>
 			</Form>
-		</PutUserDrawerStyled>
+		</PutCustomerDrawerStyled>
 	);
 };
 
-export default PutUserDrawer;
+export default PutCustomerDrawer;
