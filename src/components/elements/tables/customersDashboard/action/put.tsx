@@ -6,7 +6,7 @@ import { ICustomerDashboard } from 'slices/dashboard/interfaces';
 import PutCustomerDrawer from 'components/elements/drawers/put/putCustomerDrawer/putCustomerDrawer';
 // Redux
 import { useDispatch } from 'react-redux';
-import { updateInformationUser } from 'slices/dashboard/slice';
+import { updateInformationCustomer } from 'slices/dashboard/slice';
 
 interface IProps {
 	customer: ICustomerDashboard;
@@ -16,9 +16,9 @@ const PutAction: React.FC<IProps> = ({ customer }) => {
 	const dispatch = useDispatch();
 	const [ showUserDrawer, setShowUserDrawer ] = useState(false);
 
-	const handlePutUser = (putUser: ICustomerDashboard, type: string) => {
+	const handlePutUser = (putCustomer: ICustomerDashboard, type: string) => {
 		if (type === 'information') {
-			dispatch(updateInformationUser(putUser));
+			dispatch(updateInformationCustomer(putCustomer));
 		}
 	};
 

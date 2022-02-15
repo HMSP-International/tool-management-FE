@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Form, Input } from 'antd';
 import equal from 'deep-equal';
 // Styled Components
@@ -6,7 +6,10 @@ import { PutCustomerDrawerStyled } from './putCustomerDrawer.styled';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Graphql
 import { useMutation } from '@apollo/client';
-import { CHANGE_INFORMATION_BY_ADMIN_MUTAIION, CHANGE_PASSWORD_BY_ADMIN_MUTAIION } from 'apis/users/mutations';
+import {
+	CHANGE_INFO_CUSTOMER_BY_ADMIN_MUTATION,
+	CHANGE_PASSWORD_CUSTOMER_BY_ADMIN_MUTATION,
+} from 'apis/customers/mutations';
 // interface
 import { ICustomerDashboard } from 'slices/dashboard/interfaces';
 // helpers
@@ -20,12 +23,18 @@ interface IProps {
 }
 
 const PutCustomerDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, customer }) => {
-	const [ onChangeInformation, { loading: loadingI4 } ] = useMutation(CHANGE_INFORMATION_BY_ADMIN_MUTAIION);
-	const [ onChangePassword, { loading: loadingPass } ] = useMutation(CHANGE_PASSWORD_BY_ADMIN_MUTAIION);
+	const [ onChangeInformation, { loading: loadingI4 } ] = useMutation(CHANGE_INFO_CUSTOMER_BY_ADMIN_MUTATION);
+	const [ onChangePassword, { loading: loadingPass } ] = useMutation(CHANGE_PASSWORD_CUSTOMER_BY_ADMIN_MUTATION);
 	const [ form ] = Form.useForm();
 	const btnI4Ref = useRef<HTMLButtonElement>(null);
 	const btnPasswordRef = useRef<HTMLButtonElement>(null);
 	// state
+	useEffect(
+		() => {
+			form.setFieldsValue(customer);
+		},
+		[ customer, form ],
+	);
 
 	if (loadingI4 || loadingPass) return <LoadingView />;
 
@@ -36,14 +45,14 @@ const PutCustomerDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, cust
 
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangeInformation,
-			variables: { changeInformationInputByAdmin: values },
+			variables: { changeInformationOfCustomerByAdminInput: values },
 			message: 'Edited user',
 		});
 
 		if (!isError) {
 			onSubmit(data, 'information');
-			setHidden(false);
 		}
+		setHidden(false);
 	};
 
 	const handleSubmitPassword = async () => {
@@ -51,7 +60,7 @@ const PutCustomerDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, cust
 
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangePassword,
-			variables: { changePasswordInputByAdmin: { newPassword, _id: customer._id } },
+			variables: { changePasswordOfCustomerByAdminInput: { newPassword, _id: customer._id } },
 			message: 'Changed password user',
 		});
 
@@ -66,14 +75,17 @@ const PutCustomerDrawer: React.FC<IProps> = ({ hidden, setHidden, onSubmit, cust
 
 	// event
 	const handleChangeInput = () => {
-		const newUser = form.getFieldsValue();
-		const currentUser = customer;
+		const newcustomer = form.getFieldsValue();
+		const currentCustomer = customer;
 
-		delete newUser.password;
-		newUser.__typename = currentUser.__typename;
-		newUser._id = currentUser._id;
+		delete newcustomer.password;
+		newcustomer.__typename = currentCustomer.__typename;
+		newcustomer._id = currentCustomer._id;
 
-		const isMatched = equal(newUser, currentUser);
+		console.log(newcustomer);
+		console.log(currentCustomer);
+
+		const isMatched = equal(newcustomer, currentCustomer);
 
 		if (isMatched) {
 			if (btnI4Ref.current) {

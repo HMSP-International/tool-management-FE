@@ -15,7 +15,6 @@ export const GET_CUSTOMERS_MUTAIION = gql`
 	mutation getCustomers {
 		getCustomers {
 			_id
-			avatar
 			email
 			displayName
 		}
@@ -26,9 +25,31 @@ export const DELETE_CUSTOMER_MUTATION = gql`
 	mutation deleteCustomer($deleteCustomerInput: DeleteCustomerInput!) {
 		deleteCustomer(deleteCustomerInput: $deleteCustomerInput) {
 			_id
-			avatar
-			email
+		}
+	}
+`;
+
+export const CHANGE_PASSWORD_CUSTOMER_BY_ADMIN_MUTATION = gql`
+	mutation chagePasswordOfCustomerByAdmin(
+		$changePasswordOfCustomerByAdminInput: ChangePasswordOfCustomerByAdminInput!
+	) {
+		chagePasswordOfCustomerByAdmin(changePasswordOfCustomerByAdminInput: $changePasswordOfCustomerByAdminInput) {
+			_id
+		}
+	}
+`;
+
+export const CHANGE_INFO_CUSTOMER_BY_ADMIN_MUTATION = gql`
+	mutation chageInformationOfCustomerByAdmin(
+		$changeInformationOfCustomerByAdminInput: ChangeInformationOfCustomerByAdminInput!
+	) {
+		chageInformationOfCustomerByAdmin(
+			changeInformationOfCustomerByAdminInput: $changeInformationOfCustomerByAdminInput
+		) {
+			_id
 			displayName
+			email
+			avatar
 		}
 	}
 `;

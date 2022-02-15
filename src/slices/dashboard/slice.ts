@@ -16,6 +16,7 @@ export const {
 	deleteUser,
 	getUsers,
 	getCustomers,
+	updateInformationCustomer,
 	updateInformationUser,
 } = actions;
 export default reducer;
