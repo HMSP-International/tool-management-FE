@@ -17,6 +17,7 @@ export const GET_CUSTOMERS_MUTAIION = gql`
 			_id
 			email
 			displayName
+			avatar
 		}
 	}
 `;

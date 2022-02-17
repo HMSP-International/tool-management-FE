@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { deleteCustomer } from 'slices/dashboard/slice';
 
 // Styled Components
-import { DeleteUserModalStyled } from './deleteCustomer.styled';
+import { DeleteCustomerModalStyled } from './deleteCustomer.styled';
 import { DELETE_CUSTOMER_MUTATION } from 'apis/customers/mutations';
 interface IProps {
 	hidden: boolean;
@@ -21,7 +21,7 @@ interface IProps {
 	};
 }
 
-const DeleteUserModal: React.FC<IProps> = ({ hidden, setHidden, customer }) => {
+const DeleteCustomerModal: React.FC<IProps> = ({ hidden, setHidden, customer }) => {
 	// redux
 	const dispatch = useDispatch();
 	// graphql
@@ -42,7 +42,7 @@ const DeleteUserModal: React.FC<IProps> = ({ hidden, setHidden, customer }) => {
 	};
 
 	return (
-		<DeleteUserModalStyled
+		<DeleteCustomerModalStyled
 			centered
 			visible={hidden}
 			footer={null}
@@ -56,8 +56,8 @@ const DeleteUserModal: React.FC<IProps> = ({ hidden, setHidden, customer }) => {
 					<button onClick={() => handleDeleteCustomer(customer._id)}>Delete</button>
 				</div>
 			</div>
-		</DeleteUserModalStyled>
+		</DeleteCustomerModalStyled>
 	);
 };
 
-export default DeleteUserModal;
+export default DeleteCustomerModal;

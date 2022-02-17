@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Modal } from 'antd';
 
-export const DeleteUserModalStyled = styled(Modal)`
+export const DeleteCustomerModalStyled = styled(Modal)`
 
 
     .delete-user-modal__container{

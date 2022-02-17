@@ -29,7 +29,7 @@ const columns: TableColumn<IUserDashboard>[] = [
 					h={50}
 					public_id={row.avatar}
 					link={'/employee-duties/' + row._id}
-					styles={{ cursor: 'pointer' }}
+					styles={{ cursor: 'pointer', borderRadius: '100rem' }}
 				/>
 			),
 	},

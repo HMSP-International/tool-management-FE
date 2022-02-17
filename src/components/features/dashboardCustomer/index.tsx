@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import CreateNewCustomerDrawer from 'components/elements/drawers/create/createCustomerDrawer/createCustomerDrawer';
 // components
 import ContainerPage from 'components/shared/containerPage/containerPage';
-import CustomersDashboard from 'components/elements/tables/customersDashboard/usersDashboard';
+import CustomersDashboard from 'components/elements/tables/customersDashboard/customersDashboard';
 import { DashboardStyled } from './index.styled';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // redux

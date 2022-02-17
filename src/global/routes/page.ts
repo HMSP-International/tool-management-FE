@@ -1,6 +1,7 @@
 export const mainParamPage = {
 	userId: '_userId',
 	projectId: '_projectId',
+	customerId: '_customerId',
 	token: 'name',
 };
 
@@ -40,5 +41,6 @@ export const mainRouterPage = {
 	dashboardCustomer:
 		{
 			index: 'dashboard-customer',
+			customerId: `dashboard-customer/:${mainParamPage.customerId}`,
 		},
 };
