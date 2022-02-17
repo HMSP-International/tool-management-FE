@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { Tag } from 'antd';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 
-import PutUserDrawer from 'components/elements/drawers/putUserDrawer/putUserDrawer';
+import PutUserDrawer from 'components/elements/drawers/put/putUserDrawer/putUserDrawer';
 // Redux
 import { useDispatch } from 'react-redux';
 import { updateInformationUser } from 'slices/dashboard/slice';
 
 interface IProps {
-	user: IUser;
+	user: IUserDashboard;
 }
 
 const PutAction: React.FC<IProps> = ({ user }) => {
 	const dispatch = useDispatch();
 	const [ showUserDrawer, setShowUserDrawer ] = useState(false);
 
-	const handlePutUser = (putUser: IUser, type: string) => {
+	const handlePutUser = (putUser: IUserDashboard, type: string) => {
 		if (type === 'information') {
 			dispatch(updateInformationUser(putUser));
 		}

@@ -5,15 +5,15 @@ import { useSelector } from 'react-redux';
 // css
 import { ListUserDrawerStyled } from './listUserDrawer.styled';
 // interfaces
-import { RootState } from '../../../../global/redux/rootReducer';
-import { IInitialStateDashboard, IUser } from '../../../../slices/dashboard/interfaces';
-import { IInitialStateAuth } from '../../../../slices/auth/interfaces';
+import { RootState } from 'global/redux/rootReducer';
+import { IInitialStateDashboard, IUserDashboard } from 'slices/dashboard/interfaces';
+import { IInitialStateAuth } from 'slices/auth/interfaces';
 
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
-	inviteUsers: IUser[];
-	onClickUser(user: IUser): void;
+	inviteUsers: IUserDashboard[];
+	onClickUser(user: IUserDashboard): void;
 }
 
 interface IJWTDecode {
@@ -23,7 +23,7 @@ interface IJWTDecode {
 const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden, inviteUsers, onClickUser }) => {
 	const authRedux: IInitialStateAuth = useSelector((state: RootState) => state.auth);
 	const dashboardRedux: IInitialStateDashboard = useSelector((state: RootState) => state.dashboard);
-	const [ listUser, setListUser ] = useState<IUser[]>([]);
+	const [ listUser, setListUser ] = useState<IUserDashboard[]>([]);
 
 	useEffect(
 		() => {
@@ -45,8 +45,8 @@ const ListUserDrawer: React.FC<IProps> = ({ hidden, setHidden, inviteUsers, onCl
 		[ inviteUsers, dashboardRedux ],
 	);
 
-	const handleDeleteOwer = (users: IUser[], authRedux: IInitialStateAuth) => {
-		const listUser: IUser[] = JSON.parse(JSON.stringify(users));
+	const handleDeleteOwer = (users: IUserDashboard[], authRedux: IInitialStateAuth) => {
+		const listUser: IUserDashboard[] = JSON.parse(JSON.stringify(users));
 		const decoded = jwt_decode<IJWTDecode>(authRedux.jwt);
 
 		return listUser.filter(user => user._id !== decoded._id);

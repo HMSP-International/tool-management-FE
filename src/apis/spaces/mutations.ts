@@ -11,6 +11,16 @@ export const CREATE_SPACE_MUTATION = gql`
 	}
 `;
 
+export const GET_SPACE_BY_MEMBER_ID_MUTATION = gql`
+	mutation GetSpacesByMemberId($findByMemberId: FindByMemberId!) {
+		getSpacesByMemberId(findByMemberId: $findByMemberId) {
+			_id
+			name
+			order
+		}
+	}
+`;
+
 // export const PUT_INVITED_SPACES_MUTATION = gql`
 // 	mutation putInvitedSpaces($putInvitedSpaceInput: PutInvitedSpaceInput!) {
 // 		putInvitedSpaces(putInvitedSpaceInput: $putInvitedSpaceInput) {

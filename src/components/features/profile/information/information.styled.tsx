@@ -12,6 +12,10 @@ export const InformationStyled = styled.article`
 			border-radius: 5px;
 			cursor: pointer;
 			background-color: lightblue;
+			transition: all 0.3s ease-in-out;
+			&:hover {
+				background-color: #69c9e9;
+			}
 		}
 	}
 

@@ -25,6 +25,7 @@ import { RootState } from 'global/redux/rootReducer';
 import { getCollaborators } from 'slices/collaborator/slice';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { mainRouterPage } from 'global/routes/page';
 
 const { SubMenu } = Menu;
 
@@ -79,7 +80,6 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 					if (!isError) {
 						const projects: IProject[] = data;
 						const newProjects = convertProject(projects);
-
 						dispatch(getProjectsFromCollaborator(newProjects));
 					}
 				};
@@ -133,7 +133,9 @@ const SpaceInvited: React.FC<IProps> = ({ handleOpenModel }) => {
 							{keys.map(key =>
 								projectRedux.projectsFromCollaborator[key].map(project => (
 									<Menu.Item key={project._id} icon={<AppstoreOutlined />}>
-										<Link to={`/manage/${project._id}`}>{project.name}</Link>
+										<Link to={`/${mainRouterPage.manage.index}/${project._id}`}>
+											{project.name}
+										</Link>
 									</Menu.Item>
 								)),
 							)}

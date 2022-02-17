@@ -15,7 +15,7 @@ import { IInitialStateProject } from 'slices/project/interfaces';
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { IInitialStatePaticipant } from 'slices/paticipant/interfaces';
 import { IInitialStateList } from 'slices/taskList/interfaces';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 
 const Container: React.FC = ({ children }) => {
 	const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const Container: React.FC = ({ children }) => {
 	const taskListRedux: IInitialStateList = useSelector((state: RootState) => state.taskList);
 	const paticipantRedux: IInitialStatePaticipant = useSelector((state: RootState) => state.paticipant);
 
-	const handleChooseUser = async (user: IUser) => {
+	const handleChooseUser = async (user: IUserDashboard) => {
 		const users = [ ...taskListRedux.users ];
 
 		const index = users.findIndex(u => u._id === user._id);

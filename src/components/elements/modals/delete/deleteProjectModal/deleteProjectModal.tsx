@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 // graphql
 import { useMutation } from '@apollo/client';
 import { DELETE_PROJECT_MUTATION } from 'apis/projects/mutations';
@@ -13,6 +13,9 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
 import { DeleteTaskListModalStyled } from './deleteProjectModal.styled';
+import { mainParamPage } from 'global/routes/page';
+// socket
+
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
@@ -22,19 +25,20 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ onDeleteProject, { loading } ] = useMutation(DELETE_PROJECT_MUTATION);
 	const dispatch = useDispatch();
 	const params = useParams();
+	const navigate = useNavigate();
 
 	if (loading) return <LoadingView />;
 
 	const handleDeleteProject = async () => {
 		const { data, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onDeleteProject,
-			variables: { deleteProjectInput: { _projectId: params._id } },
+			variables: { deleteProjectInput: { _projectId: params[mainParamPage.projectId] } },
 		});
 
 		if (!isError) {
 			dispatch(deleteProject(data));
 			setHidden(false);
-			window.location.replace('/');
+			navigate('/');
 		}
 	};
 

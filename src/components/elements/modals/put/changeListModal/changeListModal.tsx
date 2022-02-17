@@ -7,6 +7,8 @@ import { ListModalStyled } from './changeListModal.styled';
 import { useMutation } from '@apollo/client';
 import { CHANGE_NAME_LIST_MUTATION } from 'apis/taskList/mutations';
 // redux
+import { renameList } from 'slices/taskList/slice';
+import { useDispatch } from 'react-redux';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // interfaces
@@ -20,7 +22,7 @@ const ChangeListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	const [ isValidName, setInValidName ] = useState(true);
 	const [ messageError, setMessageError ] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
-
+	const dispatch = useDispatch();
 	// graphql
 	const [ onChangeList, { loading: loadingChangeList } ] = useMutation(CHANGE_NAME_LIST_MUTATION);
 	// redux
@@ -39,13 +41,13 @@ const ChangeListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	};
 
 	const handleSubmitChangeList = async (name: string) => {
-		const { isError } = await fetchDataAndShowNotify({
+		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangeList,
 			variables: { changeNameListInput: { _listId: listId, name } },
 		});
 
 		if (!isError) {
-			window.location.reload();
+			dispatch(renameList(data));
 			setHidden(false);
 		}
 	};

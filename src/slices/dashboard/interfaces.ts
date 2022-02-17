@@ -4,10 +4,11 @@ export interface IInitialStateDashboard {
 	status: string;
 	error?: string | null;
 
-	users: IUser[];
+	users: IUserDashboard[];
+	customers: ICustomerDashboard[];
 }
 
-export interface IUser {
+export interface IUserDashboard {
 	_id: string;
 	avatar: string;
 	displayName: string;
@@ -18,4 +19,13 @@ export interface IUser {
 	action: string;
 	__typename?: string;
 	_roleId: IRole;
+}
+
+export interface ICustomerDashboard {
+	_id: string;
+	avatar: string;
+	displayName: string;
+	email: string;
+	action: string;
+	__typename?: string;
 }

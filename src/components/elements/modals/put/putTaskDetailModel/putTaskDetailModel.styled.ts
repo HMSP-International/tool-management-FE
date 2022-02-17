@@ -60,31 +60,6 @@ export const ModalStyled = styled(Modal)`
                     flex-direction: column;
                     border: 1px solid lightgray;
                     border-radius: 5px;
-                    
-                    > *{
-                        padding: 10px;
-                        display: grid;
-                        grid-template-columns: auto 1fr;  
-                        justify-content: space-between;
-
-                        .left{
-                            width: 100px;
-                        }
-
-                        .right{
-                            display: flex;
-                            align-items: center;
-
-                            &__avt{
-                                img{
-                                    height: 25px;
-                                    width: 25px;
-                                    object-fit: cover;
-                                    margin-right: 10px;
-                                }
-                            }
-                        }
-                    }
                 }
 
                 .title{

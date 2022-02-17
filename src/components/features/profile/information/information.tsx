@@ -6,15 +6,20 @@ import Image from 'components/shared/image/image';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'global/redux/rootReducer';
 // Interfaces
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { InformationStyled } from './information.styled';
 import LoadingView from '../../../shared/loadingView/loadingView';
+import { setNewAvatar } from 'slices/user/slice';
+import { CHANGE_AVATAR_MUTATION } from 'apis/users/mutations';
 
 const Information: React.FC = () => {
-	const [ onChangeInformation, { loading } ] = useMutation(CHANGE_INFORMATION_MUTAIION);
+	const dispatch = useDispatch();
+
+	const [ onChangeInformation, { loading: loadingChangeInformation } ] = useMutation(CHANGE_INFORMATION_MUTAIION);
+	const [ onChangeAvatar, { loading: loadingChangeAvatar } ] = useMutation(CHANGE_AVATAR_MUTATION);
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
 	const [ isSubmit, setIsSubmit ] = useState(true);
 	const [ values, setValues ] = useState({
@@ -39,7 +44,7 @@ const Information: React.FC = () => {
 		[ values, userRedux.profile ],
 	);
 
-	if (loading) return <LoadingView />;
+	if (loadingChangeInformation) return <LoadingView />;
 	// handle event --------------------------------------------------------------
 	const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
 		const { name, value } = e.currentTarget;
@@ -49,17 +54,35 @@ const Information: React.FC = () => {
 	const handleSubmit = async () => {
 		const { isError } = await fetchDataAndShowNotify({
 			fnFetchData: onChangeInformation,
-			variables:
-				{
-					changeInformationInput:
-						{
-							displayName: values.displayName,
-						},
-				},
+			variables: { changeInformationInput: { displayName: values.displayName } },
 		});
 
 		if (isError) {
 			setValues(userRedux.profile);
+		}
+	};
+
+	const handleChangeAvatar = (e: any) => {
+		let file = e.target.files[0];
+
+		let reader = new FileReader();
+		reader.readAsDataURL(file);
+
+		reader.onloadend = function () {
+			if (reader.result) {
+				postNewAvatar(reader.result);
+			}
+		};
+	};
+
+	const postNewAvatar = async (image: string | ArrayBuffer) => {
+		const { isError, data } = await fetchDataAndShowNotify({
+			fnFetchData: onChangeAvatar,
+			variables: { changeAvatarInput: { avatar: image } },
+		});
+
+		if (isError) {
+			dispatch(setNewAvatar(data));
 		}
 	};
 
@@ -69,7 +92,22 @@ const Information: React.FC = () => {
 				<div className='information__avatar'>
 					<div className='information__avatar__title'>Avatar</div>
 					<div className='information__avatar__img'>
-						<Image w={50} h={50} public_id={userRedux.profile.avatar} />
+						{loadingChangeAvatar === true ? (
+							<LoadingView />
+						) : (
+							<React.Fragment>
+								<label htmlFor='change-avatar'>
+									<Image w={50} h={50} public_id={userRedux.profile.avatar} />
+								</label>
+								<input
+									id='change-avatar'
+									name='avatar'
+									type='file'
+									style={{ display: 'none' }}
+									onChange={handleChangeAvatar}
+								/>
+							</React.Fragment>
+						)}
 					</div>
 				</div>
 				<div className='information__profile'>

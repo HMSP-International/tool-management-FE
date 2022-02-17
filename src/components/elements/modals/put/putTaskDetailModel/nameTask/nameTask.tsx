@@ -2,12 +2,16 @@ import { useMutation } from '@apollo/client';
 import { CHANGE_TASK_NAME_MUTATION } from 'apis/task/mutations';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { AiOutlineCheck } from 'react-icons/ai';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ITask } from 'slices/task/interfaces';
 import { changeTask } from 'slices/taskList/slice';
 import { NameTaskStyled } from './nameTask.styled';
 import { changeCurrentTaskModal } from 'slices/task/slice';
+// socket
+import { taskEvents } from 'socketIO/events/taskEvents';
+import { SocketContext } from 'socketIO/context';
+import { useParams } from 'react-router-dom';
 
 interface IProps {
 	task: ITask;
@@ -18,6 +22,8 @@ const NameTask: React.FC<IProps> = ({ task }) => {
 	const [ wasChanged, setWasChanged ] = useState(false);
 	const dispatch = useDispatch();
 	const [ onChangeTaskName ] = useMutation(CHANGE_TASK_NAME_MUTATION);
+	const params = useParams();
+	const socket = useContext(SocketContext);
 
 	const handleSubmitChangeTaskName = async () => {
 		if (task.name !== name) {
@@ -38,6 +44,8 @@ const NameTask: React.FC<IProps> = ({ task }) => {
 				setWasChanged(false);
 				dispatch(changeCurrentTaskModal(data));
 				dispatch(changeTask(data));
+
+				socket.emit(taskEvents.changeTaskName, { data, _projectId: params._id || '' });
 			}
 			else {
 				setName(task.name);

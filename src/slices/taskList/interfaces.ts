@@ -1,4 +1,4 @@
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { ITask } from 'slices/task/interfaces';
 
 // redux
@@ -19,7 +19,7 @@ export interface IInitialStateList {
 	error?: string | null;
 
 	lists: ITaskList;
-	users: IUser[]; // find tasks of list user
+	users: IUserDashboard[]; // find tasks of list user
 }
 
 export interface ITaskList {

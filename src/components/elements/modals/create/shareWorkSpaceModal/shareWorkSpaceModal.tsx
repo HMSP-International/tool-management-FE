@@ -3,31 +3,29 @@ import { Tooltip } from 'antd';
 // Styled Components
 import { ShareModalStyled } from './shareWorkSpaceModal.styled';
 // Components
-import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
-import LoadingView from 'components/shared/loadingView/loadingView';
 import Image from 'components/shared/image/image';
+import LoadingView from 'components/shared/loadingView/loadingView';
+import ListUserDrawer from 'components/elements/drawers/find/listUserDrawer/listUserDrawer';
 // interfaces
-import { IUser } from 'slices/dashboard/interfaces';
 // graphql
-import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import { useMutation } from '@apollo/client';
-import { INVITE_SPACES_MUTATION } from 'apis/collaborators/mutations';
+import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import { CREATE_SPACE_MUTATION } from 'apis/spaces/mutations';
+import { INVITE_SPACES_MUTATION } from 'apis/collaborators/mutations';
 // redux
 import { useDispatch } from 'react-redux';
-import { getUsers } from 'slices/dashboard/slice';
 import { getSpaces } from 'slices/space/slice';
+import { getUsers } from 'slices/dashboard/slice';
 // interfaces
 import { ISpace } from 'slices/space/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 // error
-import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-import { convertProject } from 'helpers/formatData/convertProject';
 import { createProject } from 'slices/project/slice';
 import { IProject } from 'slices/project/interfaces';
-import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
 import { CREATE_LIST_MUTATION } from 'apis/taskList/mutations';
-import { convertTaskList } from 'helpers/formatData/convertTaskList';
-import { createNewList } from 'slices/taskList/slice';
+import { CREATE_PROJECT_MUTATION } from 'apis/projects/mutations';
+import { convertProject } from 'helpers/formatData/convertProject';
+import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
 interface IProps {
 	hidden: boolean;
@@ -42,7 +40,7 @@ const showText = (text: string) => {
 
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, nameSpace }) => {
 	// state
-	const [ inviteUsers, setInviteUsers ] = useState<IUser[]>([]);
+	const [ inviteUsers, setInviteUsers ] = useState<IUserDashboard[]>([]);
 	// graphql
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
 	const [ onCreateList, { loading: loadingCreateList } ] = useMutation(CREATE_LIST_MUTATION);
@@ -82,7 +80,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		setHidden(false);
 	};
 
-	const handleSubmitShareModal = async (inviteUsers: IUser[]) => {
+	const handleSubmitShareModal = async (inviteUsers: IUserDashboard[]) => {
 		const { data: spaces, isError } = await fetchDataAndShowNotify({
 			fnFetchData: onCreateSpace,
 			variables:
@@ -105,7 +103,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		}
 	};
 
-	const handleVerifyInviteSpace = async (inviteUsers: IUser[], newSpace: ISpace[]) => {
+	const handleVerifyInviteSpace = async (inviteUsers: IUserDashboard[], newSpace: ISpace[]) => {
 		if (newSpace.length >= 1) {
 			const _workSpaceId = newSpace[0]._id;
 			const role = 'MEMBER';
@@ -126,11 +124,11 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 		}
 	};
 
-	const handleClickEmail = (user: IUser) => {
+	const handleClickEmail = (user: IUserDashboard) => {
 		setInviteUsers([ ...inviteUsers, user ]);
 	};
 
-	const handleRemoveUser = (user: IUser) => {
+	const handleRemoveUser = (user: IUserDashboard) => {
 		const newListUser = inviteUsers.filter(inviteUser => inviteUser._id !== user._id);
 		setInviteUsers(newListUser);
 	};
@@ -153,7 +151,6 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 				const project: IProject = data;
 				const newProjects = convertProject([ project ]);
 				dispatch(createProject(newProjects));
-
 				// auto create list ToDo -> Doing -> Review -> Done -> Pending
 				handleCreateList([ 'To Do', 'Doing', 'Review', 'Done', 'Pending' ], project._id);
 			}
@@ -162,7 +159,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 
 	const handleCreateList = async (names: string[], _projectId: string) => {
 		for (let name of names) {
-			const { isError, data } = await fetchDataAndShowNotify({
+			await fetchDataAndShowNotify({
 				fnFetchData: onCreateList,
 				variables:
 					{
@@ -173,11 +170,6 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 							},
 					},
 			});
-
-			if (!isError) {
-				const list = convertTaskList([ data ]);
-				dispatch(createNewList(list));
-			}
 		}
 	};
 
@@ -206,14 +198,6 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onBack, name
 					<div className='share-modal__shared'>
 						<div className='share-modal__shared__text'>Share only with:</div>
 						<div className='share-modal__shared__img'>
-							{/* <Tooltip placement='top' title={showText('Me')}>
-								<div>
-									<img
-										src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Disc_Plain_red.svg/1200px-Disc_Plain_red.svg.png'
-										alt=''
-									/>
-								</div>
-							</Tooltip> */}
 							{inviteUsers.map(user => (
 								<div key={user._id}>
 									<Image public_id={user.avatar} w={40} h={40} styles={{ borderRadius: '100rem' }} />

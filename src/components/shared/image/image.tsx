@@ -13,9 +13,10 @@ interface IProps {
 	styles?: object;
 	tooltip?: string;
 	placement?: TooltipPlacement;
+	onClick?: () => void;
 }
 
-const Image: React.FC<IProps> = ({ w, h, public_id, styles = {}, tooltip, placement }) => {
+const Image: React.FC<IProps> = ({ w, h, public_id, styles = {}, tooltip, placement, onClick }) => {
 	const cld = new Cloudinary({
 		cloud:
 			{
@@ -23,13 +24,20 @@ const Image: React.FC<IProps> = ({ w, h, public_id, styles = {}, tooltip, placem
 			},
 	});
 
+	const handleOnClickImage = () => {
+		if (onClick) {
+			console.log('clicked');
+			onClick();
+		}
+	};
+
 	const myImage = cld.image(public_id);
 
 	myImage.resize(fill().width(w).height(h));
 
 	return (
 		<Tooltip placement={placement || 'top'} title={tooltip || ''}>
-			<AdvancedImage cldImg={myImage} style={styles} />
+			<AdvancedImage cldImg={myImage} style={styles} onClick={handleOnClickImage} />
 		</Tooltip>
 	);
 };

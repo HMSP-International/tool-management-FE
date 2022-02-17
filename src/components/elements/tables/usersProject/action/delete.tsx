@@ -5,14 +5,14 @@ import { IInitialStatePaticipant } from 'slices/paticipant/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { getCollaboratorBeLongProject, getUserBeLongProject } from 'slices/paticipant/slice';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingView from 'components/shared/loadingView/loadingView';
 import { useMutation } from '@apollo/client';
 import { DELETE_PATICIPANT_MUTAIION, GET_USERS_BELONG_PROJECT_MUTAIION } from 'apis/paticipants/mutations';
 
 interface IProps {
-	user: IUser;
+	user: IUserDashboard;
 	_projectId: string;
 }
 
@@ -25,7 +25,7 @@ const DeleteAction: React.FC<IProps> = ({ user, _projectId }) => {
 		GET_USERS_BELONG_PROJECT_MUTAIION,
 	);
 
-	const handleRemoveUser = async (user: IUser, _projectId: string) => {
+	const handleRemoveUser = async (user: IUserDashboard, _projectId: string) => {
 		{
 			const newListUser = userBeLongProject.filter(inviteUser => inviteUser._id !== user._id);
 			dispatch(getUserBeLongProject(newListUser));

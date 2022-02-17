@@ -7,6 +7,9 @@ export const GET_USERS_BELONG_PROJECT_MUTAIION = gql`
 			_collaboratorId {
 				_id
 				_adminId
+				_memberId {
+					_id
+				}
 			}
 			_projectId {
 				_id

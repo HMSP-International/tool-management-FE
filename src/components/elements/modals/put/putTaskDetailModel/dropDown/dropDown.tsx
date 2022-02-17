@@ -18,7 +18,7 @@ const Dropdown: React.FC<IProps> = ({ currentList, taskId }) => {
 	const dispatch = useDispatch();
 
 	const handleClickToChangeList = async (_newListId: string) => {
-		const { isError } = await fetchDataAndShowNotify({
+		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onChangeListOfTask,
 			variables:
 				{
@@ -31,7 +31,7 @@ const Dropdown: React.FC<IProps> = ({ currentList, taskId }) => {
 		});
 
 		if (!isError) {
-			dispatch(changeListInTaskModel({ _oldListId: currentList, _newListId, _taskId: taskId }));
+			dispatch(changeListInTaskModel({ _oldListId: currentList, task: data }));
 		}
 	};
 

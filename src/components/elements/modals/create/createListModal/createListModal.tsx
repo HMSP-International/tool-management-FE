@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 // components
 import LoadingView from 'components/shared/loadingView/loadingView';
@@ -13,6 +13,10 @@ import { createNewList } from 'slices/taskList/slice';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { convertTaskList } from 'helpers/formatData/convertTaskList';
+// socket
+import { SocketContext } from 'socketIO/context';
+import { listEvents } from 'socketIO/events/listEvents';
+import { mainParamPage } from 'global/routes/page';
 // interfaces
 interface IProps {
 	hidden: boolean;
@@ -24,7 +28,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ messageError, setMessageError ] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
 	const params = useParams();
-
+	const socket = useContext(SocketContext);
 	// graphql
 	const [ onCreateList, { loading: loadingCreateList } ] = useMutation(CREATE_LIST_MUTATION);
 	// redux
@@ -50,7 +54,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 				{
 					createListInput:
 						{
-							_projectId: params._id,
+							_projectId: params[mainParamPage.projectId],
 							name,
 						},
 				},
@@ -59,6 +63,7 @@ const CreateListModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 		if (!isError) {
 			const list = convertTaskList([ data ]);
 			dispatch(createNewList(list));
+			socket.emit(listEvents.handleCreateList, { data: list, _projectId: params[mainParamPage.projectId] || '' });
 			setHidden(false);
 		}
 	};

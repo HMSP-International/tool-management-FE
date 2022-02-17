@@ -5,7 +5,7 @@ import TitleSpace from '../../titleSpace/titleSpace';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 // components
-import ErrorView from '../../../../shared/errorView/errorView';
+import ErrorView from 'components/shared/errorView/errorView';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // interfaces
 import { IInitialStateSpace, ISpace } from 'slices/space/interfaces';
@@ -23,6 +23,7 @@ import { GET_SPACES_QUERY } from 'apis/spaces/queries';
 import { GET_PROJECTS_MUTATION } from 'apis/projects/mutations';
 // helpers
 import { convertProject } from 'helpers/formatData/convertProject';
+import { mainRouterPage } from 'global/routes/page';
 
 const { SubMenu } = Menu;
 
@@ -45,13 +46,7 @@ const MySpace: React.FC<IProps> = ({ handleOpenModel }) => {
 					const { getSpaces } = dataSpace;
 					const spaces: string[] = getSpaces.map((space: ISpace) => space._id);
 					const { data } = await onGetProjects({
-						variables:
-							{
-								getProjectsInput:
-									{
-										_spacesId: spaces,
-									},
-							},
+						variables: { getProjectsInput: { _spacesId: spaces } },
 					});
 
 					const projects: IProject[] = data.getProjects;
@@ -118,7 +113,9 @@ const MySpace: React.FC<IProps> = ({ handleOpenModel }) => {
 								{keys.map(key =>
 									projectRedux.projects[key].map(project => (
 										<Menu.Item key={project._id} icon={<AiOutlineProject />}>
-											<Link to={`/manage/${project._id}`}>{project.name}</Link>
+											<Link to={`/${mainRouterPage.manage.index}/${project._id}`}>
+												{project.name}
+											</Link>
 										</Menu.Item>
 									)),
 								)}

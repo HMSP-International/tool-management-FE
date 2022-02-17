@@ -68,6 +68,15 @@ export const ShareModalStyled = styled(Modal)`
                     height: 40px;
                     object-fit: cover;
                 }
+
+                span {
+                    cursor: pointer;
+
+                    position: absolute;
+                    top: -22px;
+                    right: 16px;
+
+                }
             }
         }
 

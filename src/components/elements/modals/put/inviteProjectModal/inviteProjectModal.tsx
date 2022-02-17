@@ -3,11 +3,11 @@ import { Tooltip } from 'antd';
 // Styled Components
 import { ShareModalStyled } from './inviteProjectModal.styled';
 // Components
-import ListUserDrawer from 'components/elements/drawers/listUserDrawer/listUserDrawer';
+import ListUserDrawer from 'components/elements/drawers/find/listUserDrawer/listUserDrawer';
 import LoadingView from 'components/shared/loadingView/loadingView';
 import Image from 'components/shared/image/image';
 // interfaces
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 // graphql
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import {
@@ -37,7 +37,7 @@ const showText = (text: string) => {
 };
 
 const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject }) => {
-	const { _id: _projectId } = useParams();
+	const { _projectId } = useParams();
 	const [ onGetUsers, { loading: loadingGetUsers } ] = useMutation(GET_USERS_MUTATION);
 	// const [ onDeletePaticipant, { loading: loadingDeletePaticipant } ] = useMutation(DELETE_PATICIPANT_MUTAIION);
 	// const [ onCreatePaticiant, { loading: loadingCreatePaticipant } ] = useMutation(CREATE_PATICIPANT_MUTAIION);
@@ -75,7 +75,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 					});
 
 					if (!isError) {
-						const users: IUser[] = data.map((user: any) => user._memberId);
+						const users: IUserDashboard[] = data.map((user: any) => user._memberId);
 						dispatch(getUserBeLongProject(users));
 					}
 				}
@@ -92,7 +92,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 
 	if (loadingGetUserBelongProject || loadingGetUsers) return <LoadingView />;
 
-	const handleRemoveUser = async (user: IUser) => {
+	const handleRemoveUser = async (user: IUserDashboard) => {
 		const newListUser = userBeLongProject.filter(inviteUser => inviteUser._id !== user._id);
 		dispatch(getUserBeLongProject(newListUser));
 
@@ -113,7 +113,7 @@ const ShareWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, nameProject 
 		}
 	};
 
-	const handleClickEmail = async (user: IUser) => {
+	const handleClickEmail = async (user: IUserDashboard) => {
 		dispatch(getUserBeLongProject([ ...userBeLongProject, user ]));
 
 		const { isError } = await fetchDataAndShowNotify({

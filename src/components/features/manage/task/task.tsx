@@ -32,13 +32,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 	const handleShowTaskDetail = async () => {
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onGetTaskDetail,
-			variables:
-				{
-					getTaskByIdInput:
-						{
-							_taskId: item._id,
-						},
-				},
+			variables: { getTaskByIdInput: { _taskId: item._id } },
 		});
 
 		if (!isError) {

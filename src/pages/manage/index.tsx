@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 // components
 import Manage from 'components/features/manage';
-import ManageRoleproject from './[_id]/roles/index';
+import ManageRoleproject from './[_projectId]/roles/index';
 import ContainerPage from 'components/shared/containerPage/containerPage';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // graphql
@@ -24,7 +24,7 @@ import { RootState } from 'global/redux/rootReducer';
 import { IInitialStateUser } from 'slices/user/interfaces';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 
 const ManagePage: React.FC = () => {
 	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
@@ -49,7 +49,7 @@ const ManagePage: React.FC = () => {
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onGetProject,
-					variables: { getProjectInput: { _projectId: params._id } },
+					variables: { getProjectInput: { _projectId: params._projectId } },
 					isNotShowNotify: true,
 				});
 
@@ -64,7 +64,7 @@ const ManagePage: React.FC = () => {
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ dispatch, onGetProject, params._id ],
+		[ dispatch, onGetProject, params._projectId ],
 	);
 
 	useEffect(
@@ -73,11 +73,11 @@ const ManagePage: React.FC = () => {
 				if (!loadingGetUserBelongProject) {
 					const { data, isError } = await fetchDataAndShowNotify({
 						fnFetchData: onGetUserBeLongProject,
-						variables: { getUsersBelongProjectInput: { _projectId: params._id } },
+						variables: { getUsersBelongProjectInput: { _projectId: params._projectId } },
 					});
 
 					if (!isError) {
-						const users: IUser[] = data.map((user: any) => user._memberId);
+						const users: IUserDashboard[] = data.map((user: any) => user._memberId);
 						dispatch(getUserBeLongProject(users));
 					}
 				}
@@ -86,7 +86,7 @@ const ManagePage: React.FC = () => {
 			fetchData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ onGetUserBeLongProject, dispatch, params._id ],
+		[ onGetUserBeLongProject, dispatch, params._projectId ],
 	);
 
 	useEffect(() => {
@@ -104,10 +104,10 @@ const ManagePage: React.FC = () => {
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onFindPaticipantByPAM,
-					variables: { getPaticipantByProjectAndMemberInput: { _projectId: params._id } },
+					variables: { getPaticipantByProjectAndMemberInput: { _projectId: params._projectId } },
 					isNotShowNotify: true,
 				});
-				console.log(data);
+
 				if (isError) {
 					dispatch(currentPaticipant(null));
 				}
@@ -118,7 +118,7 @@ const ManagePage: React.FC = () => {
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ dispatch, navigate, onFindPaticipantByPAM, params._id ],
+		[ dispatch, navigate, onFindPaticipantByPAM, params._projectId ],
 	);
 
 	if (loadingGetProject) {

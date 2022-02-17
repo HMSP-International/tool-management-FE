@@ -1,4 +1,4 @@
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { ITask } from 'slices/task/interfaces';
 
 export interface IInitialStateComment {
@@ -10,7 +10,7 @@ export interface IInitialStateComment {
 
 export interface IComment {
 	_id: string;
-	_userId: IUser;
+	_userId: IUserDashboard;
 	content: string;
 	_taskId: ITask;
 }

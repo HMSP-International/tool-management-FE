@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { BiMailSend } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-
+import { mainRouterPage } from 'global/routes/page';
 import { ForgotStyled } from './forgot.styled';
-
 const NAME_INPUT = {
 	password: 'password',
 	email: 'youremail',
@@ -68,7 +67,7 @@ const Forgot: React.FC = () => {
 				<button onClick={handleSubmit}>Send me the link</button>
 			</div>
 			<div className='forgot-page__form-signin'>
-				<Link className='p' to={'/auth/login'}>
+				<Link className='p' to={`/${mainRouterPage.auth.login}`}>
 					or Sign in
 				</Link>
 			</div>

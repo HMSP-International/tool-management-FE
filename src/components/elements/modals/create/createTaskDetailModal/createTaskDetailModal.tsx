@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 // Styled Components
 import { ModalStyled } from './createTaskDetailModal.styled';
-
 // components
 import Image from 'components/shared/image/image';
 import TinyMce from 'components/shared/tinyMce/tinyMce';
+import ErrorView from 'components/shared/errorView/errorView';
 import LoadingView from 'components/shared/loadingView/loadingView';
 import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
 // graphql
 import { CREATE_TASK_MUTATION } from 'apis/task/mutations';
-import { useMutation } from '@apollo/client';
+import { GET_USER_BY_ID_QUERY } from 'apis/users/queries';
+import { useMutation, useQuery } from '@apollo/client';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createTaskInList } from 'slices/taskList/slice';
@@ -19,6 +20,13 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { IInitialStateUser } from 'slices/user/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { openNotification } from 'helpers/toastify/notification';
+import { useParams } from 'react-router-dom';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
+// socket
+import { SocketContext } from 'socketIO/context';
+import { taskEvents } from 'socketIO/events/taskEvents';
+import { getFirstKey } from 'helpers/object/getFirstKey';
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
 	hidden: boolean;
@@ -28,16 +36,23 @@ interface IProps {
 
 const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	// state
+	const socket = useContext(SocketContext);
+	const params = useParams();
 	const [ taskName, setTaskName ] = useState('');
 	// redux
 	const dispatch = useDispatch();
 	const userRedux: IInitialStateUser = useSelector((state: RootState) => state.user);
-	const [ assignee, setAssignee ] = useState('');
 	const [ descriptions, setDescriptions ] = useState<string>('');
 	const [ isShowDescription, setIsShopDescriptions ] = useState(false);
 	// graphql
 	const [ onCreateTask, { loading: loadingCreateTask } ] = useMutation(CREATE_TASK_MUTATION);
-
+	const {
+		loading: loadingGetUserById,
+		error: errorGetUserById,
+		data: onGetUserById,
+	} = useQuery(GET_USER_BY_ID_QUERY, { variables: { getUserByIdInput: { _userId: params[mainParamPage.userId] } } });
+	const currentUser: IUserDashboard = getFirstKey(onGetUserById);
+	const [ assignee, setAssignee ] = useState<IUserDashboard | null>(currentUser || null);
 	// event
 	const handleChangeTaskName = async (e: React.FormEvent<HTMLInputElement>) => {
 		const { value } = e.currentTarget;
@@ -63,6 +78,11 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 			// CREATE TASKs
 			if (!isError) {
 				dispatch(createTaskInList(data));
+				// socket
+				socket.emit(taskEvents.handleCreateTask, {
+					data,
+					_projectId: params[mainParamPage.projectId] || '',
+				});
 				setHidden(false);
 			}
 		}
@@ -74,10 +94,10 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	const handleGetDes = (text: string) => {
 		setDescriptions(text);
 		setIsShopDescriptions(false);
-		console.log(text);
 	};
 
-	if (loadingCreateTask) return <LoadingView />;
+	if (loadingCreateTask || loadingGetUserById) return <LoadingView />;
+	if (errorGetUserById) return <ErrorView error={errorGetUserById} />;
 
 	return (
 		<React.Fragment>
@@ -118,15 +138,6 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 					</div>
 
 					<div className='task-detail__assign'>
-						{/* <div className='task-detail__assign__list-selection'>
-							<select name='list' defaultValue='todo'>
-								<option value='todo'>To Do</option>
-								<option value='doing'>Doing</option>
-								<option value='review'>Review</option>
-								<option value='done'>Done</option>
-							</select>
-						</div> */}
-
 						<div className='task-detail__assign__detail'>
 							<div className='title'>Details</div>
 
@@ -135,7 +146,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 									<div className='left'>Assignee</div>
 									<div className='right'>
 										<div className='right__avt'>
-											<ListUserBeLongProjectDD onChangeUser={setAssignee} assignee={null} />
+											<ListUserBeLongProjectDD onChangeUser={setAssignee} assignee={assignee} />
 										</div>
 										<div className='right__name'>{''}</div>
 									</div>

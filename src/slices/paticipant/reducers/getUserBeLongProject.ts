@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { IInitialStatePaticipant } from '../interfaces';
 
-export const getUserBeLongProject = (state: IInitialStatePaticipant, action: PayloadAction<IUser[]>) => {
+export const getUserBeLongProject = (state: IInitialStatePaticipant, action: PayloadAction<IUserDashboard[]>) => {
 	state.userBeLongProject = action.payload;
 };

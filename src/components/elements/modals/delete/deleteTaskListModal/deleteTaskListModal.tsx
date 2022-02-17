@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 // graphql
 import { useMutation } from '@apollo/client';
 import { DELETE_LIST_MUTATION } from 'apis/taskList/mutations';
@@ -11,6 +12,10 @@ import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // Styled Components
 import { DeleteTaskListModalStyled } from './deleteTaskListModal.styled';
+// socket
+import { SocketContext } from 'socketIO/context';
+import { listEvents } from 'socketIO/events/listEvents';
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
 	hidden: boolean;
@@ -21,6 +26,9 @@ interface IProps {
 const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 	const [ onDeleteList, { loading } ] = useMutation(DELETE_LIST_MUTATION);
 	const dispatch = useDispatch();
+
+	const params = useParams();
+	const socket = useContext(SocketContext);
 
 	const hanldeDeleteListTask = async () => {
 		const { data, isError } = await fetchDataAndShowNotify({
@@ -36,6 +44,10 @@ const DeleteTaskListModal: React.FC<IProps> = ({ hidden, setHidden, listId }) =>
 
 		if (!isError) {
 			dispatch(deleteTaskList(data._id));
+			socket.emit(listEvents.handleDeleteList, {
+				data: data._id,
+				_projectId: params[mainParamPage.projectId] || '',
+			});
 		}
 	};
 

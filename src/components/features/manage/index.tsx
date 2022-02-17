@@ -1,14 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { useParams, useNavigate } from 'react-router-dom';
 // component
 import WorkSpace from './workSpace/workSpace';
-// import WithFetchedData from '../../../hocs/withFetchedData';
 import LoadingView from '../../shared/loadingView/loadingView';
-// import ErrorView from '../../shared/errorView/errorView';
 // interfaces
-import { DropResult } from 'react-beautiful-dnd';
-import { IList, ITaskList } from 'slices/taskList/interfaces';
+import { IList } from 'slices/taskList/interfaces';
 // graphql
 import { GET_LISTS_MUTATION } from 'apis/taskList/mutations';
 // helpers
@@ -17,6 +14,7 @@ import { convertTaskList } from 'helpers/formatData/convertTaskList';
 import { useDispatch } from 'react-redux';
 import { getListsFormatted } from 'slices/taskList/slice';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
+import { mainParamPage, mainRouterPage } from 'global/routes/page';
 
 const Manage: React.FC = () => {
 	const params = useParams();
@@ -36,18 +34,12 @@ const Manage: React.FC = () => {
 			const getData = async () => {
 				const { data, isError } = await fetchDataAndShowNotify({
 					fnFetchData: onGetLists,
-					variables:
-						{
-							getListsInput:
-								{
-									_projectId: params._id,
-								},
-						},
+					variables: { getListsInput: { _projectId: params[mainParamPage.projectId] } },
 					isNotShowNotify: true,
 				});
 
 				if (isError) {
-					navigate('/notFound');
+					navigate(`/${mainRouterPage.notFound}`);
 				}
 				else {
 					const lists: IList[] = data;
@@ -59,7 +51,7 @@ const Manage: React.FC = () => {
 			getData();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ navigate, dispatch, onGetLists, params._id ],
+		[ navigate, dispatch, onGetLists, params[mainParamPage.projectId] ],
 	);
 
 	useEffect(
@@ -69,63 +61,15 @@ const Manage: React.FC = () => {
 			};
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ params._id ],
+		[ params[mainParamPage.projectId] ],
 	);
-
-	// handle event
-	const handleDragEnd = useCallback((result: DropResult, columns: ITaskList) => {
-		if (!result.destination) return;
-		const { source, destination } = result;
-
-		if (source.droppableId !== destination.droppableId) {
-			const sourceColumn = columns[source.droppableId];
-			const destColumn = columns[destination.droppableId];
-			const sourceItems = [ ...sourceColumn.items ];
-			const destItems = [ ...destColumn.items ];
-			const [ removed ] = sourceItems.splice(source.index, 1);
-			destItems.splice(destination.index, 0, removed);
-
-			const newColumns = {
-				...columns,
-				[source.droppableId]:
-					{
-						...sourceColumn,
-						items: sourceItems,
-					},
-				[destination.droppableId]:
-					{
-						...destColumn,
-						items: destItems,
-					},
-			};
-
-			console.log(newColumns);
-		}
-		else {
-			const column = columns[source.droppableId];
-			const copiedItems = [ ...column.items ];
-			const [ removed ] = copiedItems.splice(source.index, 1);
-			copiedItems.splice(destination.index, 0, removed);
-
-			const newColumns = {
-				...columns,
-				[source.droppableId]:
-					{
-						...column,
-						items: copiedItems,
-					},
-			};
-
-			console.log(newColumns);
-		}
-	}, []);
 
 	// render;
 	if (loadingGetLists) {
 		return <LoadingView />;
 	}
 
-	return <WorkSpace onDragEnd={handleDragEnd} />;
+	return <WorkSpace />;
 };
 
 export default Manage;

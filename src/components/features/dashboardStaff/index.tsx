@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Modal
-import CreateNewUserDrawer from '../../elements/drawers/createUserDrawer/createUserDrawer';
+import CreateNewUserDrawer from 'components/elements/drawers/create/createUserDrawer/createUserDrawer';
 
 // components
-import ContainerPage from '../../shared/containerPage/containerPage';
-import UsersDashboard from '../../elements/tables/usersDashboard/usersDashboard';
+import ContainerPage from 'components/shared/containerPage/containerPage';
+import CustomersDashboard from 'components/elements/tables/usersDashboard/usersDashboard';
 import { DashboardStyled } from './index.styled';
-import LoadingView from '../../shared/loadingView/loadingView';
+import LoadingView from 'components/shared/loadingView/loadingView';
 
 // redux
 import { getUsers } from 'slices/dashboard/slice';
@@ -18,7 +18,7 @@ import { useMutation } from '@apollo/client';
 import { GET_USERS_MUTATION } from 'apis/users/mutations';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 
-const Dashboard: React.FC = () => {
+const DashboardStaff: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [ showCreateUserDrawer, setShowCreateUserDrawer ] = useState(false);
@@ -46,6 +46,15 @@ const Dashboard: React.FC = () => {
 		[ onGetUsers, dispatch, navigate ],
 	);
 
+	useEffect(
+		() => {
+			return () => {
+				dispatch(getUsers([]));
+			};
+		},
+		[ dispatch ],
+	);
+
 	if (loading) return <LoadingView />;
 
 	return (
@@ -55,7 +64,7 @@ const Dashboard: React.FC = () => {
 					<div className='dashboard__add-new-user'>
 						<button onClick={() => setShowCreateUserDrawer(true)}>Add new user</button>
 					</div>
-					<UsersDashboard />
+					<CustomersDashboard />
 				</DashboardStyled>
 			</ContainerPage>
 
@@ -66,4 +75,4 @@ const Dashboard: React.FC = () => {
 	);
 };
 
-export default Dashboard;
+export default DashboardStaff;

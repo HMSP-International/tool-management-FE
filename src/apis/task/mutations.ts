@@ -123,6 +123,7 @@ export const CHANGE_LIST_OF_TASK_MUTATION = gql`
 		changeListOfTask(changeListOfTaskInput: $changeListOfTaskInput) {
 			_id
 			_listId
+			order
 		}
 	}
 `;

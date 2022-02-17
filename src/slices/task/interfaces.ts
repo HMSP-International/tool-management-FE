@@ -1,6 +1,6 @@
 import { DraggableId } from 'react-beautiful-dnd';
 import { IComment } from 'slices/comment/interfaces';
-import { IUser } from 'slices/dashboard/interfaces';
+import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { IProject } from 'slices/project/interfaces';
 
 export interface IInitialStateTask {
@@ -13,13 +13,13 @@ export interface ITask {
 	name: string;
 	_listId: string;
 	order: number;
-	reporter: IUser;
+	reporter: IUserDashboard;
 	timestamp: {
 		createAt: Date;
 		updateAt: Date;
 	};
 	_projectId: IProject;
-	assignee: IUser | null;
+	assignee: IUserDashboard | null;
 	descriptions: string;
 	comments: IComment[];
 }

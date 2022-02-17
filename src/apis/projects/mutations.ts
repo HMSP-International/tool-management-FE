@@ -71,3 +71,15 @@ export const GET_PROJECT_BY_ID_MUTATION = gql`
 		}
 	}
 `;
+
+export const GET_PROJECT_BY_MEMBER_ID_AND_SPACE_ID_MUTATION = gql`
+	mutation GetProjectByMemberIdAndSpaceId($findByMemberIdAndSpaceIdInput: FindByMemberIdAndSpaceIdInput!) {
+		getProjectByMemberIdAndSpaceId(findByMemberIdAndSpaceIdInput: $findByMemberIdAndSpaceIdInput) {
+			_id
+			name
+			owner
+			_spaceId
+			order
+		}
+	}
+`;
