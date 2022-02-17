@@ -1,5 +1,5 @@
 import React from 'react';
-import { AiFillCloseSquare } from 'react-icons/ai';
+// import { AiFillCloseSquare } from 'react-icons/ai';
 // graphql
 // components
 import Image from 'components/shared/image/image';
