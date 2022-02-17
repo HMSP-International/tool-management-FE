@@ -1,6 +1,6 @@
 const prod = {
-	baseDomain: 'https://vercel.com/pdh372/hmsp-tool-management-be/graphql',
-	basePostUrl: 'https://vercel.com/pdh372/hmsp-tool-management-be',
+	baseDomain: 'https://hmsp-tool-management-be.vercel.app//graphql',
+	basePostUrl: 'https://hmsp-tool-management-be.vercel.app/',
 };
 
 export default prod;
