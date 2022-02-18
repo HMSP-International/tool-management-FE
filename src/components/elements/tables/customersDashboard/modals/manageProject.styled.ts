@@ -27,9 +27,33 @@ export const ManageProjectForCustomerStyled = styled(Modal)`
         }
 
         &__currentProject {
+            margin-top: 20px;
             width: 100%;
-            margin-top: 40px;
             justify-self: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+
+            &__item {
+                /* position: relative; */
+                .name {
+                    padding: 10px;
+                    border: 1px solid lightgray;
+                    cursor: pointer;
+                    position: absolute;
+                }
+                .menu{
+                    /* position: absolute; */
+                    z-index: 1000;
+                    bottom: -10px;
+                }
+            }
+        }
+
+        &__dropdown {
+            width: 100%;
+            justify-self: start;
+            height: 40px;
 
             .delete-project{
                 display: flex;

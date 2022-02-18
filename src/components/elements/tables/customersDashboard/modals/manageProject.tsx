@@ -5,6 +5,8 @@ import React from 'react';
 import Image from 'components/shared/image/image';
 import { ICustomerDashboard } from 'slices/dashboard/interfaces';
 import { ManageProjectForCustomerStyled } from './manageProject.styled';
+import ListSpaceAndProjectDD from 'components/elements/dropDown/listSpaceAndProjectDD/listSpaceAndProjectDD';
+import { Link } from 'react-router-dom';
 // helpers
 // redux
 
@@ -33,9 +35,65 @@ const ManageProjectForCustomer: React.FC<IProps> = ({ hidden, setHidden, custome
 				<div className='modal__manageProject__container__email'>
 					<p>{customer.email}</p>
 				</div>
-				<div className='modal__manageProject__container__currentProject' />
 
-				<div className='modal__manageProject__container__selection' />
+				<div className='modal__manageProject__container__currentProject'>
+					<div className='modal__manageProject__container__currentProject__item'>
+						<div className='name'>HMSP</div>
+						<div className='menu'>
+							<ul>
+								<li>
+									<Link to='#'>Profile Information</Link>
+								</li>
+								<li>
+									<Link to='#'>Change Password</Link>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div className='modal__manageProject__container__currentProject__item'>
+						<div className='name'>HMSP</div>
+						<div className='menu'>
+							<ul>
+								<li>
+									<Link to='#'>Profile Information</Link>
+								</li>
+								<li>
+									<Link to='#'>Change Password</Link>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div className='modal__manageProject__container__currentProject__item'>
+						<div className='name'>HMSP</div>
+						<div className='menu'>
+							<ul>
+								<li>
+									<Link to='#'>Profile Information</Link>
+								</li>
+								<li>
+									<Link to='#'>Change Password</Link>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div className='modal__manageProject__container__currentProject__item'>
+						<div className='name'>HMSP</div>
+						<div className='menu'>
+							<ul>
+								<li>
+									<Link to='#'>Profile Information</Link>
+								</li>
+								<li>
+									<Link to='#'>Change Password</Link>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div className='modal__manageProject__container__dropdown'>
+					<ListSpaceAndProjectDD />
+				</div>
 			</div>
 		</ManageProjectForCustomerStyled>
 	);
