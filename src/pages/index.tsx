@@ -1,12 +1,8 @@
-// import { useEffect, useState } from 'react';
+// import { useEffect } from 'react';
 import ContainerPage from '../components/shared/containerPage/containerPage';
 
 function HomePage () {
 	// const [ number, setNumber ] = useState(0);
-
-	// useEffect(() => {
-	// 	socket.emit('sendNumber');
-	// }, []);
 
 	const updateData = () => {
 		// socket.emit('increaseNumber', number + 1);
