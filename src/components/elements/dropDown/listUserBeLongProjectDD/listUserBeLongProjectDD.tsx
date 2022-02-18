@@ -18,7 +18,7 @@ import { IInitialStateEmployeeDuties } from 'slices/employeeDuties/interfaces';
 import { mainParamPage } from 'global/routes/page';
 
 interface IProps {
-	onChangeUser(T: IUserDashboard): void;
+	onChangeUser(T: string): void;
 	assignee: IUserDashboard | null;
 }
 
@@ -76,7 +76,7 @@ const ListUserBeLongProjectDD: React.FC<IProps> = ({ onChangeUser, assignee }) =
 		<Select
 			defaultValue={{
 				label: assignee ? assignee.email : 'Please choose member',
-				value: assignee ? assignee._id : '',
+				value: assignee ? assignee : '',
 			}}
 			onChange={handleChangeUser}
 			options={options}

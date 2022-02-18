@@ -24,6 +24,7 @@ import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { SocketContext } from 'socketIO/context';
 import { taskEvents } from 'socketIO/events/taskEvents';
 import { mainParamPage } from 'global/routes/page';
+import { GET_USER_BY_ID_Mutation } from 'apis/users/mutations';
 
 interface IProps {
 	hidden: boolean;
@@ -43,8 +44,26 @@ const CreateTaskDetailModalNotAssignee: React.FC<IProps> = ({ hidden, setHidden,
 	const [ isShowDescription, setIsShopDescriptions ] = useState(false);
 	// graphql
 	const [ onCreateTask, { loading: loadingCreateTask } ] = useMutation(CREATE_TASK_MUTATION);
+	const [ onGetUserById, { loading: loadingGetUserById } ] = useMutation(GET_USER_BY_ID_Mutation);
 	const [ assignee, setAssignee ] = useState<IUserDashboard | null>(null);
 	// event
+	const handleChangeAssignee = async (_userId: string) => {
+		const { data, isError } = await fetchDataAndShowNotify({
+			fnFetchData: onGetUserById,
+			variables:
+				{
+					getUserByIdInput:
+						{
+							_userId,
+						},
+				},
+		});
+
+		if (!isError) {
+			setAssignee(data);
+		}
+	};
+
 	const handleChangeTaskName = async (e: React.FormEvent<HTMLInputElement>) => {
 		const { value } = e.currentTarget;
 		setTaskName(value);
@@ -87,7 +106,7 @@ const CreateTaskDetailModalNotAssignee: React.FC<IProps> = ({ hidden, setHidden,
 		setIsShopDescriptions(false);
 	};
 
-	if (loadingCreateTask) return <LoadingView />;
+	if (loadingCreateTask || loadingGetUserById) return <LoadingView />;
 
 	return (
 		<React.Fragment>
@@ -136,7 +155,10 @@ const CreateTaskDetailModalNotAssignee: React.FC<IProps> = ({ hidden, setHidden,
 									<div className='left'>Assignee</div>
 									<div className='right'>
 										<div className='right__avt'>
-											<ListUserBeLongProjectDD onChangeUser={setAssignee} assignee={assignee} />
+											<ListUserBeLongProjectDD
+												onChangeUser={handleChangeAssignee}
+												assignee={assignee}
+											/>
 										</div>
 										<div className='right__name'>{''}</div>
 									</div>

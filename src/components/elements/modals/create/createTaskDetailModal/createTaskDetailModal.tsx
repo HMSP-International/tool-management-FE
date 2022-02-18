@@ -11,6 +11,7 @@ import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLong
 import { CREATE_TASK_MUTATION } from 'apis/task/mutations';
 import { GET_USER_BY_ID_QUERY } from 'apis/users/queries';
 import { useMutation, useQuery } from '@apollo/client';
+import { GET_USER_BY_ID_Mutation } from 'apis/users/mutations';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createTaskInList } from 'slices/taskList/slice';
@@ -52,11 +53,28 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 		data: onGetUserById,
 	} = useQuery(GET_USER_BY_ID_QUERY, { variables: { getUserByIdInput: { _userId: params[mainParamPage.userId] } } });
 	const currentUser: IUserDashboard = getFirstKey(onGetUserById);
+	const [ onGetUserByIdMutation, { loading: loadingGetUserByIdMutation } ] = useMutation(GET_USER_BY_ID_Mutation);
 	const [ assignee, setAssignee ] = useState<IUserDashboard | null>(currentUser || null);
 	// event
 	const handleChangeTaskName = async (e: React.FormEvent<HTMLInputElement>) => {
 		const { value } = e.currentTarget;
 		setTaskName(value);
+	};
+	const handleChangeAssignee = async (_userId: string) => {
+		const { data, isError } = await fetchDataAndShowNotify({
+			fnFetchData: onGetUserByIdMutation,
+			variables:
+				{
+					getUserByIdInput:
+						{
+							_userId,
+						},
+				},
+		});
+
+		if (!isError) {
+			setAssignee(data);
+		}
 	};
 
 	const handleCreateTask = async () => {
@@ -96,7 +114,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 		setIsShopDescriptions(false);
 	};
 
-	if (loadingCreateTask || loadingGetUserById) return <LoadingView />;
+	if (loadingCreateTask || loadingGetUserById || loadingGetUserByIdMutation) return <LoadingView />;
 	if (errorGetUserById) return <ErrorView error={errorGetUserById} />;
 
 	return (
@@ -146,7 +164,10 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 									<div className='left'>Assignee</div>
 									<div className='right'>
 										<div className='right__avt'>
-											<ListUserBeLongProjectDD onChangeUser={setAssignee} assignee={assignee} />
+											<ListUserBeLongProjectDD
+												onChangeUser={handleChangeAssignee}
+												assignee={assignee}
+											/>
 										</div>
 										<div className='right__name'>{''}</div>
 									</div>

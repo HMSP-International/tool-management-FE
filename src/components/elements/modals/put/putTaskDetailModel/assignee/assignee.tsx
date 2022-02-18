@@ -1,12 +1,12 @@
 // components
 import ListUserBeLongProjectDD from 'components/elements/dropDown/listUserBeLongProjectDD/listUserBeLongProjectDD';
-import { IUserDashboard } from 'slices/dashboard/interfaces';
+// import { IUserDashboard } from 'slices/dashboard/interfaces';
 import { ITask } from 'slices/task/interfaces';
 import { AssigneeStyled } from './assignee.styled';
 
 interface IProps {
 	task: ITask;
-	handleAssignee: (newAssigne: IUserDashboard) => void;
+	handleAssignee: (newAssigne: string) => void;
 }
 const Assignee: React.FC<IProps> = ({ task, handleAssignee }) => {
 	return (
