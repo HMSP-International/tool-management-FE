@@ -5,6 +5,7 @@ import { DropDownStyled, MenuStyled } from './taskListDD.styled';
 
 // components
 import CreateTaskDetailModal from '../../modals/create/createTaskDetailModal/createTaskDetailModal';
+import CreateTaskDetailModalNotAssignee from '../../modals/create/createTaskDetailModal/createTaskDetailModalNotAssignee';
 import DeleteTaskListModal from '../../modals/delete/deleteTaskListModal/deleteTaskListModal';
 import ChangeNameList from '../../modals/put/changeListModal/changeListModal';
 // redux
@@ -12,6 +13,8 @@ import { useSelector } from 'react-redux';
 // interfaces
 import { RootState } from 'global/redux/rootReducer';
 import { IInitialStatePaticipant } from 'slices/paticipant/interfaces';
+import { mainParamPage } from '../../../../global/routes/page';
+import { useParams } from 'react-router-dom';
 
 interface IProps {
 	listId: string;
@@ -23,7 +26,7 @@ const WorkSpaceDropDown: React.FC<IProps> = ({ listId }) => {
 	const [ isShowDeleteTaskList, setIsShowDeleteTaskList ] = React.useState(false);
 
 	const { currentPaticipant }: IInitialStatePaticipant = useSelector((state: RootState) => state.paticipant);
-
+	const params = useParams();
 	const menu =
 		currentPaticipant === null ? (
 			<MenuStyled>
@@ -64,8 +67,18 @@ const WorkSpaceDropDown: React.FC<IProps> = ({ listId }) => {
 				</DropDownStyled>
 			)}
 
-			{isShowCreateTask && (
+			{params[mainParamPage.userId] &&
+			isShowCreateTask && (
 				<CreateTaskDetailModal hidden={isShowCreateTask} setHidden={setIsShowCreateTask} listId={listId} />
+			)}
+
+			{!params[mainParamPage.userId] &&
+			isShowCreateTask && (
+				<CreateTaskDetailModalNotAssignee
+					hidden={isShowCreateTask}
+					setHidden={setIsShowCreateTask}
+					listId={listId}
+				/>
 			)}
 
 			{isShowChangeList && (

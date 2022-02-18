@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { IInitialStateAuth } from '../../slices/auth/interfaces';
+import { IInitialStateAuth } from 'slices/auth/interfaces';
 import * as devEnv from './dev';
 import * as prodEnv from './prod';
 let apis;
@@ -38,7 +38,6 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-	// uri: apis.baseDomain,
 	cache: new InMemoryCache(),
 	link: authLink.concat(httpLink),
 });
