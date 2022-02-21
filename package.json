@@ -13,6 +13,7 @@
     "@tinymce/tinymce-react": "^3.13.0",
     "antd": "^4.17.2",
     "config": "^3.3.6",
+    "cross-env": "^7.0.3",
     "deep-equal": "^2.0.5",
     "dotenv": "^10.0.0",
     "graphql": "^16.0.1",
@@ -34,8 +35,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "SET NODE_ENV=production&&react-scripts start",
-    "dev": "SET NODE_ENV=development&&react-scripts start",
+    "start": "cross-env SET NODE_ENV=production&&react-scripts start",
+    "dev": "cross-env SET NODE_ENV=development&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -35,17 +35,50 @@ export const ManageProjectForCustomerStyled = styled(Modal)`
             gap: 20px;
 
             &__item {
-                /* position: relative; */
+                position: relative;
                 .name {
                     padding: 10px;
                     border: 1px solid lightgray;
                     cursor: pointer;
-                    position: absolute;
+                    height: 40px;
+                    border-radius: 6px;
                 }
                 .menu{
-                    /* position: absolute; */
+                    overflow: hidden;
+                    position: absolute;
                     z-index: 1000;
-                    bottom: -10px;
+                    width: 110%;
+                    left: 103%;
+                    top: 0%;
+                    height: fit-content;
+                    
+                    ul {
+                        width: 100%;
+                        margin: 0px;
+                        display: grid;
+                        gap: 3px;
+                        li {
+                            height: 40px;
+                            background-color: lightgray;
+                            list-style-type: none;
+                            padding: 5px 10px;
+                            border-radius: 5px;
+                            
+                            display: flex;
+                            align-items: center;
+                            
+                            white-space: nowrap;
+                            width: 100%;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+
+                            cursor: pointer;
+                        }
+
+                        li.menu__li-invited {
+                            background-color: lightgreen;
+                        }
+                    }
                 }
             }
         }
