@@ -13,6 +13,13 @@ import { useSelector } from 'react-redux';
 // import { IProject } from 'slices/project/interfaces';
 import { RootState } from 'global/redux/rootReducer';
 import { IInitialStateSpace } from 'slices/space/interfaces';
+import { IInitialStateProject } from 'slices/project/interfaces';
+
+const classNames = {
+	menuInvited: 'menu__li-invited',
+	menuDisabled: 'menu__li-disable',
+};
+
 interface IProps {
 	hidden: boolean;
 	setHidden(value: boolean): void;
@@ -21,12 +28,24 @@ interface IProps {
 
 const ManageProjectForCustomer: React.FC<IProps> = ({ hidden, setHidden, customer }) => {
 	const spaceRedux: IInitialStateSpace = useSelector((state: RootState) => state.space);
+	const projectRedux: IInitialStateProject = useSelector((state: RootState) => state.project);
 	const [ dropdownIndex, setDropdownIndex ] = useState(-1);
 	// const [ projectsInvited, setProjectsInvited ] = useState<IProject[]>([]);
 
 	const handleSetDropdownIndex = (index: number) => {
 		if (dropdownIndex === index) setDropdownIndex(-1);
 		else setDropdownIndex(index);
+	};
+
+	const handleChangeColor = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+		const className = e.currentTarget.className;
+
+		if (className === classNames.menuInvited) {
+			e.currentTarget.className = classNames.menuDisabled;
+		}
+		else if (className === classNames.menuDisabled) {
+			e.currentTarget.className = classNames.menuInvited;
+		}
 	};
 
 	return (
@@ -57,10 +76,15 @@ const ManageProjectForCustomer: React.FC<IProps> = ({ hidden, setHidden, custome
 							{dropdownIndex === index && (
 								<div className='menu'>
 									<ul>
-										<li className='menu__li-invited'>
-											Profile Information Information Information Information
-										</li>
-										<li className='menu__li-disable'>Change Password</li>
+										{projectRedux.projects[space._id].map((project, index) => (
+											<li
+												className='menu__li-invited'
+												key={index}
+												onClick={e => handleChangeColor(e)}
+											>
+												{project.name}
+											</li>
+										))}
 									</ul>
 								</div>
 							)}
@@ -69,7 +93,7 @@ const ManageProjectForCustomer: React.FC<IProps> = ({ hidden, setHidden, custome
 				</div>
 
 				<div className='modal__manageProject__container__dropdown'>
-					<ListSpaceAndProjectDD />
+					<ListSpaceAndProjectDD spaceInvited={spaceRedux.spaces} />
 				</div>
 			</div>
 		</ManageProjectForCustomerStyled>

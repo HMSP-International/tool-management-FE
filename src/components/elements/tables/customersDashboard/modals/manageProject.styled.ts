@@ -44,19 +44,36 @@ export const ManageProjectForCustomerStyled = styled(Modal)`
                     border-radius: 6px;
                 }
                 .menu{
+                    height: fit-content;
+                    top: 0%;
                     overflow: hidden;
                     position: absolute;
                     z-index: 1000;
                     width: 110%;
                     left: 103%;
-                    top: 0%;
-                    height: fit-content;
+                    transition: all 0.3s ease-out;
+
+                    animation: growDown 300ms ease-in-out forwards;
+                    transform-origin: top center;
+                    @keyframes growDown {
+                        0% {
+                            transform: scaleY(0)
+                        }
+                        80% {
+                            transform: scaleY(1.1)
+                        }
+                        100% {
+                            transform: scaleY(1)
+                        }
+                    }
                     
                     ul {
                         width: 100%;
                         margin: 0px;
                         display: grid;
                         gap: 3px;
+
+                        transition: all 0.3s ease-out;
                         li {
                             height: 40px;
                             background-color: lightgray;
@@ -73,10 +90,12 @@ export const ManageProjectForCustomerStyled = styled(Modal)`
                             text-overflow: ellipsis;
 
                             cursor: pointer;
+                            transition: all 0.3s ease-out;
                         }
 
                         li.menu__li-invited {
                             background-color: lightgreen;
+                            transition: all 0.3s ease-out;
                         }
                     }
                 }
