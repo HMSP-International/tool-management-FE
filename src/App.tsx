@@ -19,15 +19,15 @@ import PrivateRouteLogined from 'components/shared/privateRoute/privateRouteLogi
 import { mainRouterPage } from 'global/routes/page';
 
 function App () {
-	console.log('- Login -> email: pdh@gmail.com - pass: 123456');
-	console.log('- Description Start->----------------------------');
-	console.log('- Using: Nestjs, Reactjs, Graphql, Redux toolkit, SocketIo, AntDesign');
-	console.log(`- The application makes task management like trello, jira,... .
-				Moreover, customers can add tasks such as fixing bugs 
-				or requesting more functionality for our company 
-				and know the progress of their requests`);
-	console.log('Description End->--------------------------------');
-	console.log('Note: If you see a long wait, the server is probably sleeping, please wait a moment');
+	// console.log('- Login -> email: pdh@gmail.com - pass: 123456');
+	// console.log('- Description Start->----------------------------');
+	// console.log('- Using: Nestjs, Reactjs, Graphql, Redux toolkit, SocketIo, AntDesign');
+	// console.log(`- The application makes task management like trello, jira,... .
+	// 			Moreover, customers can add tasks such as fixing bugs
+	// 			or requesting more functionality for our company
+	// 			and know the progress of their requests`);
+	// console.log('Description End->--------------------------------');
+	// console.log('Note: If you see a long wait, the server is probably sleeping, please wait a moment');
 
 	return (
 		<SocketContext.Provider value={socket}>
