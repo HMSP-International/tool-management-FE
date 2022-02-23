@@ -20,10 +20,10 @@ const Image: React.FC<IProps> = ({ w, h, public_id, styles = {}, tooltip, placem
 	const cld = new Cloudinary({
 		cloud:
 			{
-				cloudName: 'hmsp-com',
+				cloudName: process.env.REACT_APP_CLOUDINARY_NAME,
 			},
 	});
-
+	console.log(process.env.REACT_APP_CLOUDINARY_NAME);
 	const handleOnClickImage = () => {
 		if (onClick) {
 			console.log('clicked');

@@ -20,11 +20,10 @@ interface IProps {
 
 const ImageLink: React.FC<IProps> = ({ w, h, public_id, styles = {}, tooltip, placement, link }) => {
 	const navigate = useNavigate();
-
 	const cld = new Cloudinary({
 		cloud:
 			{
-				cloudName: 'hmsp-com',
+				cloudName: process.env.REACT_APP_CLOUDINARY_NAME,
 			},
 	});
 
