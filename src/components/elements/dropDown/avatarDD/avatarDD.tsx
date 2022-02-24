@@ -53,14 +53,14 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 				</Menu.Item>
 			)}
 
-			{handleCheckAuth() && (
+			{/* {handleCheckAuth() && (
 				<Menu.Item className='menu-item' key={'2'}>
 					<Link to='/dashboard-customer' className='menu__body__tabs-item'>
 						<AiFillDashboard style={{ color: 'white', fontSize: '20px' }} />
 						<h4>Dashboard Customer</h4>
 					</Link>
 				</Menu.Item>
-			)}
+			)} */}
 
 			<Menu.Item className='menu-item' key={'3'}>
 				<button onClick={handleLogout}>
