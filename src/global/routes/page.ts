@@ -43,4 +43,9 @@ export const mainRouterPage = {
 			index: 'dashboard-customer',
 			customerId: `dashboard-customer/:${mainParamPage.customerId}`,
 		},
+	taskDoing:
+		{
+			index: 'task-doing',
+			withProject: `task-doing/:${mainParamPage.projectId}/*`,
+		},
 };

@@ -11,29 +11,21 @@ import ManagePage from 'pages/manage';
 
 import NotFound from 'pages/notFound';
 import ProfilePage from 'pages/profile';
+import TaskDoingPage from 'pages/task-doing';
 import VerifyPage from 'pages/verify';
-import Menu from 'components/features/menu/menu';
 import PrivateRouteLogined from 'components/shared/privateRoute/privateRouteLogined/privateRouteLogined';
+import PrivateRouteMenu from 'components/shared/privateRoute/privateRouteMenu/privateRouteMenu';
 
 // routes
 import { mainRouterPage } from 'global/routes/page';
 
 function App () {
-	// console.log('- Login -> email: pdh@gmail.com - pass: 123456');
-	// console.log('- Description Start->----------------------------');
-	// console.log('- Using: Nestjs, Reactjs, Graphql, Redux toolkit, SocketIo, AntDesign');
-	// console.log(`- The application makes task management like trello, jira,... .
-	// 			Moreover, customers can add tasks such as fixing bugs
-	// 			or requesting more functionality for our company
-	// 			and know the progress of their requests`);
-	// console.log('Description End->--------------------------------');
-	// console.log('Note: If you see a long wait, the server is probably sleeping, please wait a moment');
-
 	return (
 		<SocketContext.Provider value={socket}>
 			<div className='app'>
 				{/* Start Router */}
-				<Menu />
+				<PrivateRouteMenu />
+
 				<Routes>
 					<Route
 						path={mainRouterPage.home}
@@ -101,6 +93,8 @@ function App () {
 							</PrivateRouteLogined>
 						}
 					/>
+
+					<Route path={mainRouterPage.taskDoing.withProject} element={<TaskDoingPage />} />
 
 					<Route
 						path={mainRouterPage.verify}
