@@ -32,7 +32,7 @@ const columns: TableColumn<IPaticipant>[] = [
 				const cld = new Cloudinary({
 					cloud:
 						{
-							cloudName: 'hmsp-com',
+							cloudName: process.env.REACT_APP_CLOUDINARY_NAME,
 						},
 				});
 

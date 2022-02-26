@@ -15,6 +15,7 @@ import { RootState } from 'global/redux/rootReducer';
 import { IInitialStatePaticipant } from 'slices/paticipant/interfaces';
 import { mainParamPage } from '../../../../global/routes/page';
 import { useParams } from 'react-router-dom';
+import { IInitialStateAuth } from 'slices/auth/interfaces';
 
 interface IProps {
 	listId: string;
@@ -26,6 +27,8 @@ const WorkSpaceDropDown: React.FC<IProps> = ({ listId }) => {
 	const [ isShowDeleteTaskList, setIsShowDeleteTaskList ] = React.useState(false);
 
 	const { currentPaticipant }: IInitialStatePaticipant = useSelector((state: RootState) => state.paticipant);
+	const { jwt }: IInitialStateAuth = useSelector((state: RootState) => state.auth);
+
 	const params = useParams();
 	const menu =
 		currentPaticipant === null ? (
@@ -47,6 +50,8 @@ const WorkSpaceDropDown: React.FC<IProps> = ({ listId }) => {
 				</Menu.Item>
 			</MenuStyled>
 		);
+
+	if (jwt === '') return null;
 
 	return (
 		<React.Fragment>
