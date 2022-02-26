@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
 // 3rd Components
-import { DragDropContext, DraggableLocation, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import List from '../taskList/taskList';
 import TaskListDD from 'components/elements/dropDown/taskListDD/taskListDD';
 // Styled Components
@@ -11,112 +10,19 @@ import WorkSpaceSocketHoc from './workSpace.socket.hoc';
 import { DropResult } from 'react-beautiful-dnd';
 import { IInitialStateList } from 'slices/taskList/interfaces';
 // redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'global/redux/rootReducer';
-import { changeListInTaskSocket, getListsFormatted } from 'slices/taskList/slice';
 // graphql
-import { useMutation } from '@apollo/client';
-import {
-	PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN_ANOTHER_LIST_MUTATION,
-	PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION,
-} from 'apis/taskList/mutations';
 // helpers
-import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 // socket
-import { SocketContext } from 'socketIO/context';
-import { taskEvents } from 'socketIO/events/taskEvents';
-import { mainParamPage } from 'global/routes/page';
 
 interface IProps {}
 
 const WorkSpace: React.FC<IProps> = () => {
-	const dispatch = useDispatch();
-	const params = useParams();
-	const socket = useContext(SocketContext);
 	const { lists: columns }: IInitialStateList = useSelector((state: RootState) => state.taskList);
 	// graphql
-	const [ onDragAndDropIn1List ] = useMutation(PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN1LIST_MUTATION);
-	const [ onDragAndDropInAnotherList ] = useMutation(PUT_LIST_OF_TASK_WITH_DRAG_AND_DROP_IN_ANOTHER_LIST_MUTATION);
 	// handle event
-	const handleDragEnd = (result: DropResult) => {
-		if (!result.destination) return;
-		const { source, destination, draggableId: taskId } = result;
-
-		// start improve UX
-		dispatch(
-			changeListInTaskSocket({
-				destination: { ...destination, _listId: destination.droppableId },
-				_taskId: taskId,
-				source: { ...source, _listId: source.droppableId },
-			}),
-		);
-		// end improve UX
-
-		if (source.droppableId !== destination.droppableId) {
-			handleDragAndDropInAnotherList(destination, taskId);
-		}
-		else {
-			handleDragAndDropIn1List(destination, taskId);
-		}
-	};
-
-	const handleDragAndDropInAnotherList = async (destination: DraggableLocation, taskId: string) => {
-		const oldColumns = { ...columns };
-
-		const changeListOfTaskWithDragAndDropInAnotherListInput = {
-			destination:
-				{
-					index: destination.index,
-					_listId: destination.droppableId,
-				},
-			_taskId: taskId,
-		};
-
-		const { isError, data } = await fetchDataAndShowNotify({
-			fnFetchData: onDragAndDropInAnotherList,
-			variables: { changeListOfTaskWithDragAndDropInAnotherListInput },
-		});
-
-		if (!isError) {
-			dispatch(changeListInTaskSocket(data));
-
-			const input = {
-				data,
-				_projectId: params[mainParamPage.projectId] || '',
-			};
-			socket.emit(taskEvents.handleDragAndDropInAnotherList, input);
-		}
-		else {
-			dispatch(getListsFormatted(oldColumns));
-		}
-	};
-
-	const handleDragAndDropIn1List = async (destination: DraggableLocation, taskId: string) => {
-		const oldColumns = { ...columns };
-
-		const changeListOfTaskWithDragAndDropIn1ListInput = {
-			destination: { index: destination.index },
-			_taskId: taskId,
-		};
-
-		const { isError, data } = await fetchDataAndShowNotify({
-			fnFetchData: onDragAndDropIn1List,
-			variables: { changeListOfTaskWithDragAndDropIn1ListInput },
-		});
-
-		if (!isError) {
-			dispatch(changeListInTaskSocket(data));
-
-			const input = {
-				data,
-				_projectId: params[mainParamPage.projectId] || '',
-			};
-			socket.emit(taskEvents.handleDragAndDropIn1List, input);
-		}
-		else {
-			dispatch(getListsFormatted(oldColumns));
-		}
-	};
+	const handleDragEnd = (result: DropResult) => {};
 
 	return (
 		<WorkSpaceSocketHoc>

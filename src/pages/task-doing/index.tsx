@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 // components
-import Manage from 'components/features/manage';
+import TaskDoing from 'components/features/task-doing';
 import ContainerPage from 'components/shared/containerPage/containerPage';
 import LoadingView from 'components/shared/loadingView/loadingView';
 // graphql
@@ -121,7 +121,7 @@ const TaskDoingPage: React.FC = () => {
 	return (
 		<ContainerPage title='Manage Task'>
 			<Routes>
-				<Route path='/' element={<Manage />} />
+				<Route path='/' element={<TaskDoing />} />
 			</Routes>
 		</ContainerPage>
 	);

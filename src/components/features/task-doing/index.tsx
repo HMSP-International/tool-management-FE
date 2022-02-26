@@ -16,7 +16,7 @@ import { getListsFormatted } from 'slices/taskList/slice';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
 import { mainParamPage, mainRouterPage } from 'global/routes/page';
 
-const Manage: React.FC = () => {
+const TaskDoing: React.FC = () => {
 	const params = useParams();
 	const navigate = useNavigate();
 
@@ -72,4 +72,4 @@ const Manage: React.FC = () => {
 	return <WorkSpace />;
 };
 
-export default Manage;
+export default TaskDoing;
