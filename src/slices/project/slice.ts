@@ -10,11 +10,13 @@ export const spaceSlice: Slice = createSlice({
 });
 const { reducer, actions } = spaceSlice;
 export const {
+	addNewViewerToProject,
 	changeProject,
 	getProjects,
 	currentProject,
 	deleteProject,
 	createProject,
 	getProjectsFromCollaborator,
+	removeViewerFromProject,
 } = actions;
 export default reducer;

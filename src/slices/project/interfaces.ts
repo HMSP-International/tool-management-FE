@@ -19,4 +19,5 @@ export interface IProject {
 	owner: string;
 	_id: string;
 	_spaceId: string;
+	viewers: string[];
 }

@@ -68,6 +68,7 @@ export const GET_PROJECT_BY_ID_MUTATION = gql`
 			name
 			order
 			owner
+			viewers
 		}
 	}
 `;
@@ -80,6 +81,22 @@ export const GET_PROJECT_BY_MEMBER_ID_AND_SPACE_ID_MUTATION = gql`
 			owner
 			_spaceId
 			order
+		}
+	}
+`;
+
+export const ADD_NEW_VIEWER_TO_PROJECT_MUTATION = gql`
+	mutation addNewViewerToProject($addNewViewerInput: AddNewViewerInput!) {
+		addNewViewerToProject(addNewViewerInput: $addNewViewerInput) {
+			viewers
+		}
+	}
+`;
+
+export const REMOVE_VIEWER_FROM_PROJECT_MUTATION = gql`
+	mutation removeViewerFromProject($removeViewerInput: RemoveViewerInput!) {
+		removeViewerFromProject(removeViewerInput: $removeViewerInput) {
+			viewers
 		}
 	}
 `;

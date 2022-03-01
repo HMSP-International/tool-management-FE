@@ -1,18 +1,19 @@
+import { Menu } from 'antd';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu } from 'antd';
 import { AiOutlineSetting } from 'react-icons/ai';
 // components
 import CreateListModal from 'components/elements/modals/create/createListModal/createListModal';
 import InviteProjectModal from 'components/elements/modals/put/inviteProjectModal/inviteProjectModal';
 import ChangeProjectModal from 'components/elements/modals/put/changeProjectModal/changeProjectModal';
 import DeleteProjectModal from 'components/elements/modals/delete/deleteProjectModal/deleteProjectModal';
+import AddCustomerToProjectModal from 'components/elements/modals/put/addCustomerToProjectModal/addCustomerToProjectModal';
 // redux
 import { useSelector } from 'react-redux';
 import { RootState } from 'global/redux/rootReducer';
 // interface
-import { DropDownStyled, MenuStyled } from './configProjectDD.styled';
 import { IInitialStateProject } from 'slices/project/interfaces';
+import { DropDownStyled, MenuStyled } from './configProjectDD.styled';
 // routes
 import { mainRouterPage } from 'global/routes/page';
 
@@ -26,6 +27,7 @@ const WorkSpaceDropDown: React.FC<IProps> = () => {
 	const [ showChangeProject, setShowChangeProject ] = useState(false);
 	const [ showDeleteProject, setShowDeleteProject ] = useState(false);
 	const [ showInviteProject, setShowInviteProject ] = useState(false);
+	const [ addCustomerToProject, setAddCustomerToProject ] = useState(false);
 	// redux
 	const { currentProject: project }: IInitialStateProject = useSelector((state: RootState) => state.project);
 
@@ -42,7 +44,10 @@ const WorkSpaceDropDown: React.FC<IProps> = () => {
 					<button onClick={() => setShowChangeProject(true)}>Edit Project</button>
 				</Menu.Item>
 				<Menu.Item className='menu-item' key='4'>
-					<button onClick={() => setShowInviteProject(true)}>Invite</button>
+					<button onClick={() => setShowInviteProject(true)}>Add Staff</button>
+				</Menu.Item>
+				<Menu.Item className='menu-item' key='4'>
+					<button onClick={() => setAddCustomerToProject(true)}>Add Customer</button>
 				</Menu.Item>
 				<Menu.Item className='menu-item' key='5'>
 					<button onClick={() => navigate(`/${mainRouterPage.manage.index}/${project._id}/roles`)}>
@@ -82,6 +87,10 @@ const WorkSpaceDropDown: React.FC<IProps> = () => {
 					setHidden={setShowInviteProject}
 					nameProject={project.name}
 				/>
+			)}
+
+			{addCustomerToProject && (
+				<AddCustomerToProjectModal hidden={addCustomerToProject} setHidden={setAddCustomerToProject} />
 			)}
 		</React.Fragment>
 	);
