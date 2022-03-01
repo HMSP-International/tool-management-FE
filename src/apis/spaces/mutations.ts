@@ -50,3 +50,28 @@ export const DELETE_SPACE_MUTATION = gql`
 		}
 	}
 `;
+
+export const ADD_NEW_VIEWER_TO_SPACE_MUTATION = gql`
+	mutation addNewViewerToSpace($addNewViewerInput: AddNewViewerInput!) {
+		addNewViewerToProject(addNewViewerInput: $addNewViewerInput) {
+			viewers
+		}
+	}
+`;
+
+export const REMOVE_VIEWER_FROM_SPACE_MUTATION = gql`
+	mutation removeViewerFromSpace($removeViewerInput: RemoveViewerInput!) {
+		removeViewerFromProject(removeViewerInput: $removeViewerInput) {
+			viewers
+		}
+	}
+`;
+
+export const GET_SPACE_BY_PROJECT_ID_MUTATION = gql`
+	mutation getSpacesByProjectId($findByProjectId: FindByProjectId!) {
+		getSpacesByProjectId(findByProjectId: $findByProjectId) {
+			viewers
+			_id
+		}
+	}
+`;

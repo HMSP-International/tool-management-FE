@@ -46,7 +46,7 @@ const Header: React.FC<IProps> = ({ onClose }) => {
 			<div className='menu__header__logo'>
 				<Link to={`/${mainRouterPage.home}`}>
 					<AvatarDD>
-						<img src='https://cdn.logo.com/hotlink-ok/logo-social.png' alt='hmsp' />
+						<img src='/logo/logo.png' alt='hmsp' style={{ objectFit: 'contain' }} />
 					</AvatarDD>
 				</Link>
 

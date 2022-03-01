@@ -16,7 +16,6 @@ const INITIAL_STATE: IInitialStateProject = {
 			owner: '',
 			_id: '',
 			_spaceId: '',
-			viewers: [],
 		},
 };
 

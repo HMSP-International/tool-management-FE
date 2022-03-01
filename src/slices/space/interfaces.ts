@@ -10,4 +10,5 @@ export interface ISpace {
 	order: number;
 	owner: string;
 	_id: string;
+	viewers: string[];
 }

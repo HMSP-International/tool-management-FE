@@ -52,10 +52,7 @@ const CreateWorkSpaceModal: React.FC<IProps> = ({ hidden, setHidden, onSubmit })
 				className='modal__work-space-modal'
 			>
 				<div className='modal__work-space-modal__logo'>
-					<img
-						src='https://lh3.googleusercontent.com/sYGCKFdty43En6yLGeV94mfNGHXfVj-bQYitHRndarB7tHmQq_kyVxhlPejeCBVEEYUbnKG2_jUzgNXoPoer6XJm71V3uz2Z6q0CmNw=w0'
-						alt=''
-					/>
+					<img src='/logo/logo White.png' alt='' />
 				</div>
 				<div className='modal__work-space-modal__title'>Create New Space</div>
 				<div className='modal__work-space-modal__input'>
