@@ -85,7 +85,7 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 			<ModalStyled centered visible={hidden} width={'90vw'} footer={null} className='modal__task-detail'>
 				<section className='task-detail__container'>
 					<div className='task-detail__header'>
-						{/* <div className='task-detail__header__tag'>MT - 6</div> */}
+						<div className='task-detail__header__tag'>T - {task.order + 1}</div>
 						<div className='task-detail__header__close' onClick={() => setHidden(false)}>
 							X
 						</div>

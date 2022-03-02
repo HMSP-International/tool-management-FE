@@ -72,6 +72,11 @@ export const InformationStyled = styled.article`
 				height: 50px;
 				cursor: pointer;
 				border-radius: 100rem;
+
+				.change-avatar {
+					height: 100%;
+					width: 100%;
+				}
 			}
 		}
 	}

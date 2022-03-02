@@ -220,7 +220,7 @@ export const ModalStyled = styled(Modal)`
         .task-detail__header{
             grid-column: 1 / span 2;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
 
             &__tag{
