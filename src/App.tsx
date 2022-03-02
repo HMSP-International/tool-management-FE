@@ -18,6 +18,7 @@ import PrivateRouteMenu from 'components/shared/privateRoute/privateRouteMenu/pr
 
 // routes
 import { mainRouterPage } from 'global/routes/page';
+import Empty from 'pages/task-doing/empty';
 
 function App () {
 	return (
@@ -95,6 +96,7 @@ function App () {
 					/>
 
 					<Route path={mainRouterPage.taskDoing.withProject} element={<TaskDoingPage />} />
+					<Route path={mainRouterPage.taskDoing.index} element={<Empty />} />
 
 					<Route
 						path={mainRouterPage.verify}

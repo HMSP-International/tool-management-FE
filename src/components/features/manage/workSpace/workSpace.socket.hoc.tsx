@@ -16,6 +16,7 @@ import { projectEvents } from 'socketIO/events/projectEvents';
 import { taskEvents } from 'socketIO/events/taskEvents';
 import { changeCurrentTaskModal } from 'slices/task/slice';
 import { listEvents } from 'socketIO/events/listEvents';
+import { mainParamPage } from 'global/routes/page';
 
 interface IProps {}
 
@@ -72,13 +73,17 @@ const WorkSpaceSocketHoc: React.FC<IProps> = ({ children }) => {
 	// Project
 	useEffect(
 		() => {
-			socket.emit(projectEvents.connectionToProject, { data: { _projectId: params._projectId || '' } });
+			socket.emit(projectEvents.connectionToProject, {
+				data: { _projectId: params[mainParamPage.projectId] || '' },
+			});
 
 			return () => {
-				socket.emit(projectEvents.disconnectionToProject, { data: { _projectId: params._projectId || '' } });
+				socket.emit(projectEvents.disconnectionToProject, {
+					data: { _projectId: params[mainParamPage.projectId] || '' },
+				});
 			};
 		},
-		[ dispatch, params._projectId, socket ],
+		[dispatch, params, socket],
 	);
 
 	return <React.Fragment>{children}</React.Fragment>;

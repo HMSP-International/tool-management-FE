@@ -31,7 +31,7 @@ const WorkSpaceDropDown: React.FC = ({ children }) => {
 	};
 
 	const handleLogout = () => {
-		dispatch(logout(''));
+		dispatch(logout({}));
 		window.location.replace(`/${mainRouterPage.auth.login}`);
 	};
 
