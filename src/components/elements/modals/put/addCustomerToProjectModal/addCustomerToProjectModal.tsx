@@ -2,14 +2,9 @@ import { AddCustomerToProjectModalStyled } from './addCustomerToProjectModal.sty
 // interfaces
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { mainParamPage } from 'global/routes/page';
 import { useMutation } from '@apollo/client';
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-import {
-	ADD_NEW_VIEWER_TO_SPACE_MUTATION,
-	GET_SPACE_BY_PROJECT_ID_MUTATION,
-	REMOVE_VIEWER_FROM_SPACE_MUTATION,
-} from 'apis/spaces/mutations';
+import { ADD_EMAIL_TO_VIEWER, GET_REVIEWS_MUTATION, REMOVE_EMAIL_FROM_VIEWER_MUTATION } from 'apis/viewers/mutations';
 
 interface IProps {
 	hidden: boolean;
@@ -19,24 +14,21 @@ interface IProps {
 const AddCustomerToProjectModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const [ newEmail, setNewEmail ] = useState('');
 	const [ viewers, setViewers ] = useState<string[]>([]);
-	const [ spaceId, setSpaceId ] = useState<string>('');
 	const params = useParams();
 
-	const [ onGetSpaceByProjectId ] = useMutation(GET_SPACE_BY_PROJECT_ID_MUTATION);
-	const [ onAddNewViewerToProject ] = useMutation(ADD_NEW_VIEWER_TO_SPACE_MUTATION);
-	const [ onRemoveViewerFromProject ] = useMutation(REMOVE_VIEWER_FROM_SPACE_MUTATION);
+	const [ onGetSpaceByProjectId ] = useMutation(GET_REVIEWS_MUTATION);
+	const [ onAddNewViewerToProject ] = useMutation(ADD_EMAIL_TO_VIEWER);
+	const [ onRemoveViewerFromProject ] = useMutation(REMOVE_EMAIL_FROM_VIEWER_MUTATION);
 
 	useEffect(
 		() => {
 			const fetchData = async () => {
 				const { isError, data } = await fetchDataAndShowNotify({
 					fnFetchData: onGetSpaceByProjectId,
-					variables: { findByProjectId: { _projectId: params[mainParamPage.projectId] } },
 				});
 
 				if (!isError) {
-					setSpaceId(data._id);
-					setViewers(data.viewers);
+					setViewers(data.emails);
 				}
 			};
 
@@ -51,14 +43,14 @@ const AddCustomerToProjectModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 
 	const handleAddNewEmail = async () => {
 		if (newEmail === '') return;
-		console.log(spaceId);
+
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onAddNewViewerToProject,
-			variables: { addNewViewerInput: { _spaceId: spaceId, email: newEmail } },
+			variables: { addNewEmail: { email: newEmail } },
 		});
 
 		if (!isError) {
-			setViewers(data.viewers);
+			setViewers(data.emails);
 			setNewEmail('');
 		}
 	};
@@ -66,11 +58,11 @@ const AddCustomerToProjectModal: React.FC<IProps> = ({ hidden, setHidden }) => {
 	const handleRemoveEmail = async (email: string) => {
 		const { isError, data } = await fetchDataAndShowNotify({
 			fnFetchData: onRemoveViewerFromProject,
-			variables: { removeViewerInput: { _spaceId: spaceId, email } },
+			variables: { removeEmail: { email } },
 		});
 
 		if (!isError) {
-			setViewers(data.viewers);
+			setViewers(data.emails);
 		}
 	};
 
