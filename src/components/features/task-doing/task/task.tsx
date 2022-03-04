@@ -54,7 +54,7 @@ const Task: React.FC<IProps> = ({ provided, snapshot, item }) => {
 				onClick={handleShowTaskDetail}
 			>
 				<div className='task-name'>{item.name}</div>
-				<div className='task-type'>{'T - ' + (item.order + 1)}</div>
+				<div className='task-type'>{'T - ' + item.stt}</div>
 				<div className='task-bottom'>
 					<div className='task-bottom__project'>{}</div>
 					<div className='task-bottom__avt'>

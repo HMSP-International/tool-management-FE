@@ -22,4 +22,5 @@ export interface ITask {
 	assignee: IUserDashboard | null;
 	descriptions: string;
 	comments: IComment[];
+	stt: number;
 }

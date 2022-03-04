@@ -12,6 +12,7 @@ export const CREATE_TASK_MUTATION = gql`
 				avatar
 				email
 			}
+			stt
 		}
 	}
 `;
@@ -28,6 +29,7 @@ export const GET_TASKS_BY_LISTID_MUTATION = gql`
 				avatar
 				email
 			}
+			stt
 		}
 	}
 `;
@@ -71,6 +73,7 @@ export const GET_TASK_DETAIL_MUTATION = gql`
 					_id
 				}
 			}
+			stt
 		}
 	}
 `;
