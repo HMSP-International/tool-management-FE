@@ -91,7 +91,7 @@ export const CHANGE_EMAIL_MUTATION = gql`
 
 export const GET_USER_BY_ID_Mutation = gql`
 	mutation GetUserById($getUserByIdInput: GetUserByIdInput!) {
-		getUserById(getUserByIdInput: $getUserByIdInput) {
+		getUserByIdM(getUserByIdInput: $getUserByIdInput) {
 			_id
 			displayName
 			email

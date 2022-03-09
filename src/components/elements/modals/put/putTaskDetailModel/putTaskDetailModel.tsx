@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_ASSIGNEE_TASK_MUTATION, DELETE_TASKS_MUTATION } from 'apis/task/mutations';
 // helpers
 import { fetchDataAndShowNotify } from 'helpers/graphql/fetchDataAndShowNotify';
-import { dateMongooseToDateJs } from 'helpers/date/dateMongooseToDateJs';
 // interfaces
 import { RootState } from 'global/redux/rootReducer';
 import { ITask } from 'slices/task/interfaces';
@@ -24,6 +23,7 @@ import { useParams } from 'react-router-dom';
 // socket
 import { taskEvents } from 'socketIO/events/taskEvents';
 import Assignee from './assignee/assignee';
+import Timestamp from './timestamp/timestamp';
 // import { IUserDashboard } from 'slices/dashboard/interfaces';
 
 interface IProps {
@@ -112,8 +112,9 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 						</div>
 
 						<div className='task-detail__assign__timestamp'>
-							<div className='created'>Created {dateMongooseToDateJs(task.timestamp.createAt)}</div>
-							<div className='updated'>Updated {dateMongooseToDateJs(task.timestamp.updateAt)}</div>
+							<Timestamp task={task} />
+							{/* <div className='created'>Created {dateMongooseToDateJs(task.timestamp.createAt)}</div> */}
+							{/* <div className='updated'>Updated {dateMongooseToDateJs(task.timestamp.updateAt)}</div> */}
 						</div>
 						<div className='task-detail__group-btn'>
 							<div className='task-detail__assign__btn-delete'>

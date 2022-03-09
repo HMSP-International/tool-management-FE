@@ -79,7 +79,7 @@ const CreateTaskDetailModalNotAssignee: React.FC<IProps> = ({ hidden, setHidden,
 							{
 								_listId: listId,
 								name: taskName,
-								assignee: assignee || null,
+								assignee: assignee === null ? null : assignee._id,
 								descriptions,
 							},
 					},

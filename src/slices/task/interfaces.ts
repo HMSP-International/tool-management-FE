@@ -23,4 +23,11 @@ export interface ITask {
 	descriptions: string;
 	comments: IComment[];
 	stt: number;
+	estimatedTime: IEstimatedTime[];
+}
+
+export interface IEstimatedTime {
+	_listId: string;
+	totalTime: number;
+	lastTime: string | null;
 }

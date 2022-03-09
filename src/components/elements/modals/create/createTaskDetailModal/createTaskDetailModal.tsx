@@ -79,6 +79,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 
 	const handleCreateTask = async () => {
 		if (taskName) {
+			console.log(assignee === null ? null : assignee._id);
 			const { data, isError } = await fetchDataAndShowNotify({
 				fnFetchData: onCreateTask,
 				variables:
@@ -87,7 +88,7 @@ const CreateTaskDetail: React.FC<IProps> = ({ hidden, setHidden, listId }) => {
 							{
 								_listId: listId,
 								name: taskName,
-								assignee: assignee || null,
+								assignee: assignee === null ? null : assignee._id,
 								descriptions,
 							},
 					},

@@ -74,6 +74,11 @@ export const GET_TASK_DETAIL_MUTATION = gql`
 				}
 			}
 			stt
+			estimatedTime {
+				_listId
+				totalTime
+				lastTime
+			}
 		}
 	}
 `;
