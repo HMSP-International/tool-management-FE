@@ -39,6 +39,10 @@ export const ModalStyled = styled(Modal)`
                 }
             }
 
+            &__completion-time{
+                
+            }
+
             &__timestamp{
                 margin: 20px;
 

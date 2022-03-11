@@ -24,6 +24,7 @@ export interface ITask {
 	comments: IComment[];
 	stt: number;
 	estimatedTime: IEstimatedTime[];
+	completionTime: number;
 }
 
 export interface IEstimatedTime {

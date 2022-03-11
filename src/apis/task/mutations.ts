@@ -79,6 +79,7 @@ export const GET_TASK_DETAIL_MUTATION = gql`
 				totalTime
 				lastTime
 			}
+			completionTime
 		}
 	}
 `;
@@ -131,6 +132,17 @@ export const CHANGE_LIST_OF_TASK_MUTATION = gql`
 		changeListOfTask(changeListOfTaskInput: $changeListOfTaskInput) {
 			_id
 			_listId
+			order
+		}
+	}
+`;
+
+export const CHANGE_COMPLETION_TIME_OF_TASK_MUTATION = gql`
+	mutation changeCompletionTime($changeCompletionTimeInput: ChangeCompletionTimeInput!) {
+		changeCompletionTime(changeCompletionTimeInput: $changeCompletionTimeInput) {
+			_id
+			_listId
+			completionTime
 			order
 		}
 	}

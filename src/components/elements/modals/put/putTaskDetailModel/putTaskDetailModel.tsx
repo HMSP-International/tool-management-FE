@@ -5,8 +5,9 @@ import { ModalStyled } from './putTaskDetailModel.styled';
 import Comment from './comment/comment';
 import NameTask from './nameTask/nameTask';
 import DropDown from './dropDown/dropDown';
-import Description from './description/description';
 import Reporter from './reporter/reporter';
+import Description from './description/description';
+import CompletionTime from './completionTime/completionTime';
 // graphql
 import { useMutation } from '@apollo/client';
 // redux
@@ -24,7 +25,6 @@ import { useParams } from 'react-router-dom';
 import { taskEvents } from 'socketIO/events/taskEvents';
 import Assignee from './assignee/assignee';
 import Timestamp from './timestamp/timestamp';
-// import { IUserDashboard } from 'slices/dashboard/interfaces';
 
 interface IProps {
 	hidden: boolean;
@@ -111,10 +111,14 @@ const PutTaskDetail: React.FC<IProps> = ({ hidden, setHidden }) => {
 							</div>
 						</div>
 
+						<div className='task-detail__assign__completion-time'>
+							<CompletionTime completionTime={task.completionTime} taskId={task._id} />
+						</div>
+
+						<hr style={{ marginTop: '20px', borderBottom: 'none', borderTop: '1px solid lightgray' }} />
+
 						<div className='task-detail__assign__timestamp'>
 							<Timestamp task={task} />
-							{/* <div className='created'>Created {dateMongooseToDateJs(task.timestamp.createAt)}</div> */}
-							{/* <div className='updated'>Updated {dateMongooseToDateJs(task.timestamp.updateAt)}</div> */}
 						</div>
 						<div className='task-detail__group-btn'>
 							<div className='task-detail__assign__btn-delete'>
